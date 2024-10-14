@@ -7,30 +7,59 @@
 
 import XCTest
 @testable import Student_Assistant
+import CoreData
 
 final class Student_AssistantTests: XCTestCase {
+    var context: NSManagedObjectContext!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    override func setUp() {
+        super.setUp()
+        // Setup Core Data stack for testing
+        let persistentContainer = NSPersistentContainer(name: "StudentAssistant")
+        persistentContainer.loadPersistentStores { _, error in
+            if let error = error {
+                fatalError("Failed to load store: \(error)")
+            }
         }
+        context = persistentContainer.viewContext
     }
 
+    override func tearDown() {
+        context = nil
+        super.tearDown()
+    }
+
+    func testAssignmentCreation() {
+        let assignment = Assignment(context: context)
+        assignment.assignmentID = UUID()
+        assignment.assignmentTitle = "Math Homework"
+        assignment.assignmentDescription = "Complete exercises from chapter 3"
+        assignment.assignmentDate = Date()
+        assignment.assignmentStatus = .pending
+
+        XCTAssertNotNil(assignment.assignmentID)
+        XCTAssertEqual(assignment.assignmentTitle, "Math Homework")
+        XCTAssertEqual(assignment.assignmentDescription, "Complete exercises from chapter 3")
+        XCTAssertEqual(assignment.assignmentStatus, .pending)
+    }
+
+    func testCheckIfCompleted() {
+        let assignment = Assignment(context: context)
+        assignment.assignmentStatus = .completed
+        XCTAssertTrue(assignment.checkIfCompleted())
+    }
+
+    func testCheckIfOverdue() {
+        let assignment = Assignment(context: context)
+        assignment.assignmentStatus = .inProgress
+        assignment.assignmentDate = Date().addingTimeInterval(-86400) // 1 day in the past
+        XCTAssertTrue(assignment.checkIfOverdue())
+    }
+
+    func testCheckIfNotOverdue() {
+        let assignment = Assignment(context: context)
+        assignment.assignmentStatus = .pending
+        assignment.assignmentDate = Date().addingTimeInterval(86400) // 1 day in the future
+        XCTAssertFalse(assignment.checkIfOverdue())
+    }
 }

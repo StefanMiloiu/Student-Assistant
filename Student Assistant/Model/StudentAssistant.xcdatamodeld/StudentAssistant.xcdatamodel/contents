@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Assignment" representedClassName="Assignment" syncable="YES">
+        <attribute name="assignmentDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="assignmentDescription" optional="YES" attributeType="String"/>
+        <attribute name="assignmentID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="assignmentStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="assignmentTitle" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Exam" representedClassName="Exam" syncable="YES">
+        <attribute name="examDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="examID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="examLocation" optional="YES" attributeType="String"/>
+        <attribute name="examSubject" optional="YES" attributeType="String"/>
+    </entity>
+</model>
