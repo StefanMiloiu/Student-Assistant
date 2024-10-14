@@ -35,9 +35,7 @@ struct MonthAndYearPickerView: View {
                         updateCurrentDate()
                     }
                 }
-                
-                
-                
+
                 // Month Picker
                 Section {
                     Picker("Month", selection: $selectedMonth) {
@@ -55,8 +53,6 @@ struct MonthAndYearPickerView: View {
             .scrollDisabled(true)
             .frame(width: 350, height: 200, alignment: .center)
             .clipShape(RoundedRectangle(cornerRadius: 20))
-            
-            
         }
     }
     

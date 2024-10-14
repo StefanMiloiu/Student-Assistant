@@ -16,6 +16,8 @@ struct ExamsCalendarView: View {
     @State private var selectedDay: Int = Calendar.current.component(.day, from: Date())
     @State private var selectedTime = Date()
     @State var isSelected: Bool = false
+    @State var isTapped: Bool = false
+    @State var showInfo: Bool = false
     
     private var calendar: Calendar {
         Calendar.current
@@ -29,16 +31,30 @@ struct ExamsCalendarView: View {
             header
             Spacer()
             // Days of the week
-            daysOfWeek
             // Days in the month
-            if !isSelected {
+            
+            if isSelected {
+                AddExamPopUpVIew(year: selectedYear,
+                                 month: selectedMonth,
+                                 day: selectedDay,
+                                 isSelected: $isSelected)
+            }
+            if isTapped {
+                DetailedExamsView(isTapped: $isTapped,
+                                  day: selectedDay,
+                                  month: selectedMonth,
+                                  year: selectedYear)
+            }
+            if !(isSelected || isTapped) {
+                daysOfWeek
                 daysInMonth
-            } else {
-                AddExamPopUpVIew(year: selectedYear, month: selectedMonth, day: selectedDay, isSelected: $isSelected)
             }
             Spacer()
-
         }
+        .sheet(isPresented: $showInfo, content: {
+            CalendarInfoView()
+        })
+        .presentationDetents([.medium])
         .onAppear {
             print(vm.fetchExams())
         }
@@ -51,10 +67,23 @@ struct ExamsCalendarView: View {
     }
     
     private var displayDate: some View {
-        Text("Exams \n \(String(selectedYear)) / \(selectedMonth)")
-            .font(.title)
-            .fontWeight(.heavy)
-            .multilineTextAlignment(.center)
+        
+        HStack {
+            Text("Exams \n \(String(selectedYear)) / \(selectedMonth)")
+                .font(.title)
+                .fontWeight(.heavy)
+                .multilineTextAlignment(.center)
+            
+            Button(action: {
+                showInfo = true
+            }){
+                Image(systemName: "info.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .padding(.leading, 100)
+            }
+        }
     }
     
     // Days of the week
@@ -81,12 +110,14 @@ struct ExamsCalendarView: View {
             ForEach(1...daysInMonth.count, id: \.self) { day in
                 DayInMonth(day: day, month: selectedMonth, year: selectedYear)
                     .onLongPressGesture {
-                        print(day, selectedYear, selectedMonth)
                         selectedDay = day
                         isSelected = true
                     }
                     .onTapGesture {
-                        
+                        selectedDay = day
+                        if vm.fetchExam(day: day, month: selectedMonth, year: selectedYear) != nil {
+                            isTapped = true
+                        }
                     }
             }
             

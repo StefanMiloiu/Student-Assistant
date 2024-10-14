@@ -38,20 +38,35 @@ struct AddExamPopUpVIew: View {
                     .frame(width: 250, height: 50)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            Button(action: {
-                let date = vm.generateDate(day: day, month: month, year: year, time: examTime)
-                if let date {
-                    let result = vm.addExam(subject: examSubject, date: date, location: examLocation)
-                    if result {
-                        isSelected = false
-                    }
+            
+            HStack {
+                
+                Button(action: {
+                    isSelected = false
+                }) {
+                    Text("Back")
+                        .frame(width: 100, height: 40)
+                        .foregroundStyle(.white)
+                        .background(Color.gray)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
-            }) {
-                Text("Save")
-                    .frame(width: 100, height: 40)
-                    .foregroundStyle(.white)
-                    .background(Color.red)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                
+                Button(action: {
+                    let date = vm.generateDate(day: day, month: month, year: year, time: examTime)
+                    if let date {
+                        let result = vm.addExam(subject: examSubject, date: date, location: examLocation)
+                        if result {
+                            isSelected = false
+                        }
+                    }
+                }) {
+                    Text("Save")
+                        .frame(width: 100, height: 40)
+                        .foregroundStyle(.white)
+                        .background(Color.red)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                
             }
         }
         .padding()
