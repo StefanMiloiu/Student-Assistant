@@ -54,10 +54,12 @@ struct CalendarInfoView: View {
                     VStack {
                         Text("Exam Subject")
                             .font(.title)
+                            .foregroundStyle(.black)
                         Spacer()
                         
                         ScrollView {
                             Text("Exam Location")
+                                .foregroundStyle(.black)
                         }
                         .padding()
                         .frame(width: 250, height: 100)
@@ -70,6 +72,7 @@ struct CalendarInfoView: View {
                         HStack {
                             Text("Date   \n\(Date(), formatter: formatter())")
                                 .multilineTextAlignment(.center)
+                                .foregroundStyle(.black)
                                 .fontWeight(.heavy)
                             
                         }
@@ -83,15 +86,23 @@ struct CalendarInfoView: View {
             } header: {
                 Text("Adding a new exam")
             }
-            
         }
     }
     
-    private func formatter() -> DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy hh:mm"
-        return formatter
+    func formatter() -> DateFormatter {
+        let timeZone = TimeZone.current
+        _ = timeZone.identifier
+        return getFormattedCurrentDateTime(in: timeZone)
     }
+    
+    func getFormattedCurrentDateTime(in timeZone: TimeZone) -> DateFormatter {
+        _ = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // Change format as needed
+        dateFormatter.timeZone = timeZone
+        return dateFormatter
+    }
+    
 }
 
 #Preview {

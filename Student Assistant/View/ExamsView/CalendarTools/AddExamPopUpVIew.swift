@@ -42,7 +42,9 @@ struct AddExamPopUpVIew: View {
             HStack {
                 
                 Button(action: {
-                    isSelected = false
+                    withAnimation {
+                        isSelected = false
+                    }
                 }) {
                     Text("Back")
                         .frame(width: 100, height: 40)

@@ -80,8 +80,5 @@ class DataManager: DataManagerProtocol {
             print("Failed to fetch or delete objects: \(error.localizedDescription)")
         }
     }
-    
-    
-    
-    
+
 }

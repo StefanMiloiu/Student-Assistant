@@ -19,19 +19,19 @@ struct DayInMonth: View {
         VStack {
             if exam != nil {
                 Text("\(day)")
-                    .frame(width: 50, height: 50)
+                    .frame(width: 45, height: 45)
                     .background(.gray)
                     .clipShape(Circle())
-                    .frame(width: 50, height: 50)
+                    .frame(width: 45, height: 45)
                     .padding(.bottom)
                     .background(Color.red)
                     .clipShape(RoundedRectangle(cornerRadius: 25))
             } else {
                 Text("\(day)")
-                    .frame(width: 50, height: 50)
+                    .frame(width: 45, height: 45)
                     .background(.gray)
                     .clipShape(Circle())
-                    .frame(width: 70, height: 70)
+                    .frame(width: 65, height: 65)
             }
         }
         .onAppear {

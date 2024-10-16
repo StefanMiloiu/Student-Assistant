@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class AssignmentListViewModel: ObservableObject {
     @Published var assignments: [Assignment] = []
@@ -44,7 +45,9 @@ class AssignmentListViewModel: ObservableObject {
         fetchAssignments() // Refresh assignments after deletion
     }
     
-    func changeStatus(for assignment: Assignment, newStatus: Status){
+    func changeStatus(for assignment: Assignment, newStatus: Status) {
+        print("Apelata")
+        print(assignments)
         assignmentRepo.updateStatus(assignment: assignment, status: newStatus)
         fetchAssignments()
         print(assignments)

@@ -26,7 +26,7 @@ class ExamListViewModel: ObservableObject {
     
     // Sorts the exams list
     func sortExams() {
-        exams.sort(by: {$0.examDate! > $1.examDate!})
+        exams.sort(by: {$0.examDate! < $1.examDate!})
     }
     
     // Function to add a new exam
@@ -82,5 +82,13 @@ class ExamListViewModel: ObservableObject {
     
     func deleteAllExams() {
         examRepo.deleteAllExams()
+    }
+    
+    func deleteExam(_ exam: Exam) {
+        examRepo.deleteObject(object: exam)
+    }
+    
+    func deletePastExams() {
+        examRepo.deletePastExams()
     }
 }

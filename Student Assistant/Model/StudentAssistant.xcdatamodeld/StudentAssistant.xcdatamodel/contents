@@ -13,4 +13,11 @@
         <attribute name="examLocation" optional="YES" attributeType="String"/>
         <attribute name="examSubject" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="TrackTime" representedClassName="TrackTime" syncable="YES">
+        <attribute name="trackTimeEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="trackTimeID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="trackTimeNotes" optional="YES" attributeType="String"/>
+        <attribute name="trackTimeStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="trackTimeSubject" optional="YES" attributeType="String"/>
+    </entity>
 </model>

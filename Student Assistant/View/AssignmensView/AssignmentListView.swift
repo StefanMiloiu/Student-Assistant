@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AssignmentListView: View {
-    @StateObject var viewModel = AssignmentListViewModel()
+    @ObservedObject var viewModel = AssignmentListViewModel()
     
     var body: some View {
         NavigationView {
@@ -43,7 +43,11 @@ struct AssignmentListView: View {
             .tint(.red)  // Apply tint here
             )
             .onAppear {
+                print("On appear")
                 viewModel.fetchAssignments() // Load assignments on appear
+            }
+            .onChange(of: viewModel.assignments) { _, _ in
+                print("On change")
             }
         }
         .tint(.red)

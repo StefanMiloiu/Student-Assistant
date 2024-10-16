@@ -30,7 +30,6 @@ struct MonthAndYearPickerView: View {
                             }
                         }
                     }
-                    .foregroundStyle(.black)
                     .onChange(of: selectedYear) {
                         updateCurrentDate()
                     }

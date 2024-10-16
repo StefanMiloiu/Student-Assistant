@@ -21,6 +21,7 @@ struct ExamRepo: DataManagerProtocol {
     }
     
     func fetchObject<Exam>() -> [Exam] where Exam : NSManagedObject {
+        deletePastExams()
         return dataManager.fetchObject()
     }
     
@@ -35,10 +36,10 @@ struct ExamRepo: DataManagerProtocol {
     func addExam(subject: String, date: Date, location: String) -> Bool {
         let context = dataManager.getContext()
         let exam = Exam(context: context)
-     /* exam.setValue(UUID(), forKey: "examID")
-        exam.setValue(subject, forKey: "examSubject")
-        exam.setValue(date, forKey: "examDate")
-        exam.setValue(location, forKey: "examLocation") */
+        /* exam.setValue(UUID(), forKey: "examID")
+         exam.setValue(subject, forKey: "examSubject")
+         exam.setValue(date, forKey: "examDate")
+         exam.setValue(location, forKey: "examLocation") */
         exam.examID = UUID()
         exam.examDate = date
         exam.examLocation = location
@@ -49,6 +50,21 @@ struct ExamRepo: DataManagerProtocol {
     
     func deleteAllExams() {
         dataManager.deleteObject(object: Exam())
+    }
+    
+    func deletePastExams() {
+        do {
+            let context = dataManager.getContext()
+            let request: NSFetchRequest<Exam> = Exam.fetchRequest()
+            request.predicate = NSPredicate(format: "examDate < %@", Date() as CVarArg)
+            let exams = try? context.fetch(request)
+            exams?.forEach { context.delete($0) }
+            try context.save()
+            print("Successfully deleted all objects of type \(Exam.self).")
+        } catch {
+            print("Failed to fetch or delete objects: \(error.localizedDescription)")
+        }
+        
     }
     
     

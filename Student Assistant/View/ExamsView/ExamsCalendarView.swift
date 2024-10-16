@@ -18,6 +18,7 @@ struct ExamsCalendarView: View {
     @State var isSelected: Bool = false
     @State var isTapped: Bool = false
     @State var showInfo: Bool = false
+    @State var showList: Bool = false
     
     private var calendar: Calendar {
         Calendar.current
@@ -27,17 +28,23 @@ struct ExamsCalendarView: View {
         VStack {
             // Header with month picker
             displayDate
+                .sheet(isPresented: $showList, content: {
+                    ExamsListView()
+                })
             Spacer()
             header
+                .sheet(isPresented: $showInfo, content: {
+                    CalendarInfoView()
+                })
             Spacer()
-            // Days of the week
-            // Days in the month
             
             if isSelected {
                 AddExamPopUpVIew(year: selectedYear,
                                  month: selectedMonth,
                                  day: selectedDay,
                                  isSelected: $isSelected)
+                .transition(.move(edge: .bottom)) // Add animation for appearing and disappearing
+                .animation(.easeInOut(duration: 0.15), value: isSelected)
             }
             if isTapped {
                 DetailedExamsView(isTapped: $isTapped,
@@ -47,17 +54,16 @@ struct ExamsCalendarView: View {
             }
             if !(isSelected || isTapped) {
                 daysOfWeek
-                daysInMonth
+                ZStack {
+                    Color.gray.opacity(0.15)
+                        .clipShape(RoundedRectangle(cornerRadius: 25))
+                        .scaleEffect(y: 1)
+                    daysInMonth
+                }
             }
             Spacer()
         }
-        .sheet(isPresented: $showInfo, content: {
-            CalendarInfoView()
-        })
         .presentationDetents([.medium])
-        .onAppear {
-            print(vm.fetchExams())
-        }
         .padding()
     }
     
@@ -67,22 +73,36 @@ struct ExamsCalendarView: View {
     }
     
     private var displayDate: some View {
-        
         HStack {
+            Spacer()
+            Button(action : {
+                showInfo = false
+                showList = true
+            }) {
+                Image(systemName: "list.dash")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+            }
+            
+            Spacer()
             Text("Exams \n \(String(selectedYear)) / \(selectedMonth)")
                 .font(.title)
                 .fontWeight(.heavy)
                 .multilineTextAlignment(.center)
             
+            Spacer()
             Button(action: {
+                showList = false
                 showInfo = true
             }){
                 Image(systemName: "info.circle")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
-                    .padding(.leading, 100)
             }
+            Spacer()
+            
         }
     }
     
@@ -111,7 +131,9 @@ struct ExamsCalendarView: View {
                 DayInMonth(day: day, month: selectedMonth, year: selectedYear)
                     .onLongPressGesture {
                         selectedDay = day
-                        isSelected = true
+                        withAnimation {
+                            isSelected = true
+                        }
                     }
                     .onTapGesture {
                         selectedDay = day
@@ -120,11 +142,10 @@ struct ExamsCalendarView: View {
                         }
                     }
             }
-            
         }
+        
+        
     }
-    
-  
 }
 
 

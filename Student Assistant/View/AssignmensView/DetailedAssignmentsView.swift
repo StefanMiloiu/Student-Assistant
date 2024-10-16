@@ -15,7 +15,6 @@ struct DetailedAssignmentsView: View {
     
     @State var showStatusButtons: Bool = false
     
-    
     var body: some View {
         VStack(spacing: 20) {
             
