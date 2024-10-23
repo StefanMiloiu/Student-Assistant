@@ -11,6 +11,7 @@ import SwiftUI
 // MARK: - Screen Enum
 /// Represents different screens in the app that can be navigated to.
 enum Screen: String, Identifiable, Hashable {
+    case dashboard  /// Dashboard
     case home       /// Home
     case signUp     /// Sign Up
     case logIn      /// LogIn screen
@@ -111,6 +112,8 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
             SignUpView()
         case .forgotPassword:
             ForgotPasswordView()
+        case .dashboard:
+            DashboardView()
         case .home:
             MainView()           /// Home screen view
         case .assignments:

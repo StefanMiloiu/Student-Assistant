@@ -18,4 +18,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(ExamListViewModel())
+        .environmentObject(AppCoordinatorImpl())
 }
