@@ -7,66 +7,76 @@
 
 import SwiftUI
 
+// MARK: - AssignmentListView
 struct AssignmentListView: View {
-    @ObservedObject var viewModel = AssignmentListViewModel()
+    // MARK: - Properties
+    @ObservedObject var viewModel: AssignmentListViewModel // The view model to manage assignments
+    @Binding var selectedStatus: String // The currently selected status filter for assignments
+    var filteredForDate: [Assignment]? // Optional filtered assignments based on a date range
     
-    var body: some View {
-        NavigationView {
-            VStack {
-                List {
-                    ForEach(viewModel.assignments, id: \.assignmentID) { assignment in
-                        NavigationLink(destination: DetailedAssignmentsView(assignment: assignment)) {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Circle()
-                                        .fill(assignment.assignmentStatus.getColor())
-                                        .frame(width: 15, height: 15)
-                                    Text(assignment.assignmentTitle ?? "No title")
-                                        .font(.headline)
-                                }
-                                Text(assignment.assignmentDescription ?? "No title" )
-                                    .font(.subheadline)
-                                Text("Due: \(assignment.assignmentDate ?? Date(), formatter: dateFormatter)")
-                            }
-                        }
-                        .tint(.red)  // Apply tint here
-                    }
-                    .onDelete(perform: deleteAssignment)
-                }
-            }
-            .navigationTitle("Assignments")
-            .navigationBarItems(leading: EditButton())
-            .navigationBarItems(trailing:
-                                    NavigationLink(destination: AddAssignmentView()) {
-                Image(systemName: "plus")
-            }
-            .tint(.red)  // Apply tint here
-            )
-            .onAppear {
-                print("On appear")
-                viewModel.fetchAssignments() // Load assignments on appear
-            }
-            .onChange(of: viewModel.assignments) { _, _ in
-                print("On change")
-            }
+    // MARK: - Computed Property
+    var filteredList: [Assignment] {
+        // Filter the list based on the selected status and any date filtering
+        if let filteredForDate, !filteredForDate.isEmpty {
+            return filteredForDate.filter { $0.assignmentStatus == .completed } // Filter completed assignments if date is provided
         }
-        .tint(.red)
+        
+        // Return assignments based on the selected status
+        if selectedStatus == "Failed" {
+            return viewModel.assignments.filter { $0.assignmentStatus == .failed }
+        } else if selectedStatus == "In Progress" {
+            return viewModel.assignments.filter { !($0.assignmentStatus == .failed || $0.assignmentStatus == .completed) }
+        }
+        // Default to completed assignments if no specific status is selected
+        return viewModel.assignments.filter { $0.assignmentStatus == .completed }
     }
     
+    // MARK: - Body
+    var body: some View {
+        List {
+            // Iterate over the filtered list of assignments
+            ForEach(filteredList, id: \.assignmentID) { assignment in
+                NavigationLink(destination: DetailedAssignmentsView(assignment: assignment, vm: viewModel)) {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            // Display the assignment status color
+                            Circle()
+                                .fill(assignment.assignmentStatus.getColor()) // Color based on assignment status
+                                .frame(width: 15, height: 15)
+                            // Display the assignment title
+                            Text(assignment.assignmentTitle ?? "No title")
+                                .font(.headline)
+                        }
+                        // Display the assignment description
+                        Text(assignment.assignmentDescription ?? "No description")
+                            .font(.subheadline)
+                        // Display the assignment date with a formatted string
+                        Text("\(assignment.assignmentStatus == .completed ? "Completion:" : "Due:") \(assignment.assignmentDate ?? Date(), formatter: dateFormatter)")
+                    }
+                }
+                .tint(.red)  // Apply a tint color to the navigation link
+            }
+            .onDelete(perform: deleteAssignment) // Enable deletion of assignments
+        }
+    }
+    
+    // MARK: - Delete Assignment Function
     private func deleteAssignment(at offsets: IndexSet) {
         for index in offsets {
-            viewModel.deleteAssignment(at: index)
+            viewModel.deleteAssignment(at: index) // Call delete function in the view model
         }
     }
 }
 
+// MARK: - Date Formatter
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .none
+    formatter.dateStyle = .short // Set the date style to short
+    formatter.timeStyle = .none  // Do not display time
     return formatter
 }()
 
+// MARK: - Preview
 #Preview {
-    AssignmentListView()
+    AssignmentListView(viewModel: AssignmentListViewModel(), selectedStatus: .constant("In Progress"))
 }

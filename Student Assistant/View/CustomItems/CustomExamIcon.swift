@@ -38,7 +38,7 @@ struct CustomExamIcon: View {
 
 struct CustomNumberOfExams: View {
     
-    @StateObject var vm  = ExamListViewModel()
+    @EnvironmentObject var vm: ExamListViewModel
     
     var body: some View {
         ZStack {

@@ -38,7 +38,7 @@ class ExamListViewModel: ObservableObject {
         return true
     }
     
-    func fetchExam(day: Int, month: Int, year: Int) -> Exam? {
+    func fetchExam(day: Int, month: Int, year: Int) -> [Exam] {
         var dateComponents = DateComponents()
         dateComponents.day = day
         dateComponents.month = month
@@ -51,7 +51,7 @@ class ExamListViewModel: ObservableObject {
             
             self.fetchExams()
             
-            return self.exams.first { exam in
+            return self.exams.filter { exam in
                 if let examDate = exam.examDate {
                     let examDateWithoutTime = calendar.startOfDay(for: examDate)
                     return examDateWithoutTime == dateWithoutTime
@@ -62,7 +62,7 @@ class ExamListViewModel: ObservableObject {
             print("Invalid date.")
         }
         
-        return nil
+        return []
     }
     
     func generateDate(day: Int, month: Int, year: Int, time: Date) -> Date? {
@@ -82,6 +82,7 @@ class ExamListViewModel: ObservableObject {
     
     func deleteAllExams() {
         examRepo.deleteAllExams()
+        fetchExams()
     }
     
     func deleteExam(_ exam: Exam) {

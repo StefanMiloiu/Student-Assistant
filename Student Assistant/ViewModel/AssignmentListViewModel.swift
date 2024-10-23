@@ -20,7 +20,14 @@ class AssignmentListViewModel: ObservableObject {
     // Fetch assignments
     func fetchAssignments() {
         assignments.removeAll()
+        assignmentRepo.verifyAssignmentsOverDue()
         assignments = assignmentRepo.fetchObject()
+        sortAssignments()
+    }
+    
+    func fetchCompletedAssignments() {
+        assignments.removeAll()
+        assignments = assignmentRepo.fetchObject().filter {$0.assignmentStatus == .completed}
         sortAssignments()
     }
     
@@ -46,10 +53,15 @@ class AssignmentListViewModel: ObservableObject {
     }
     
     func changeStatus(for assignment: Assignment, newStatus: Status) {
-        print("Apelata")
-        print(assignments)
         assignmentRepo.updateStatus(assignment: assignment, status: newStatus)
         fetchAssignments()
-        print(assignments)
+    }
+    
+    func fetchCurrentAssignments() -> [Assignment]{
+        return assignmentRepo.fetchObject().filter {$0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending}
+    }
+    
+    func fetchFailedAssignments() -> [Assignment]{
+        return assignmentRepo.fetchObject().filter {$0.assignmentStatus == .failed}
     }
 }

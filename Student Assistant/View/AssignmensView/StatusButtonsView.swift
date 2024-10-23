@@ -10,6 +10,7 @@ import SwiftUI
 struct StatusButtonsView: View {
     
     var assignment: Assignment
+    @ObservedObject var vm: AssignmentListViewModel
     @Binding var showStatusButtons: Bool
     
     var body: some View {

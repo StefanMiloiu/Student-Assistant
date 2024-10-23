@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    
     var body: some View {
-        MainView()
+        CoordinatorView()
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(ExamListViewModel())
 }

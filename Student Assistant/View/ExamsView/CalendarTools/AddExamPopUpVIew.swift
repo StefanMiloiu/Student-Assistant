@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddExamPopUpVIew: View {
     
-    @StateObject var vm = ExamListViewModel()
+    @EnvironmentObject var vm: ExamListViewModel
     let year: Int
     let month: Int
     let day: Int
@@ -81,4 +81,6 @@ struct AddExamPopUpVIew: View {
 
 #Preview {
     AddExamPopUpVIew(year: 2024, month: 10, day: 20, isSelected: .constant(true))
+        .environmentObject(ExamListViewModel()) // Injecting the environment object
+
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="BackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="SeT-sG-3cK">
+                                <rect key="frame" x="-54" y="216" width="501" height="695"/>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Student" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Iv3-mU-mtp">
+                                <rect key="frame" x="130.66666666666663" y="167" width="132.33333333333337" height="41.333333333333343"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="41"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Assistant" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Jq-2v-qp6">
+                                <rect key="frame" x="187" y="216.33333333333334" width="181" height="50.666666666666657"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9Jq-2v-qp6" firstAttribute="top" secondItem="Iv3-mU-mtp" secondAttribute="bottom" constant="8" id="Bm8-xT-iBt"/>
+                            <constraint firstAttribute="bottom" secondItem="SeT-sG-3cK" secondAttribute="bottom" constant="-59" id="DRZ-pi-h9K"/>
+                            <constraint firstItem="9Jq-2v-qp6" firstAttribute="top" secondItem="Iv3-mU-mtp" secondAttribute="bottom" constant="8" id="H6d-Ll-5oB"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="9Jq-2v-qp6" secondAttribute="bottom" constant="551" id="Hfu-Av-7Rz"/>
+                            <constraint firstItem="SeT-sG-3cK" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="-54" id="PnS-98-YJI"/>
+                            <constraint firstItem="Iv3-mU-mtp" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="108" id="Pzx-fG-VZG"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="Iv3-mU-mtp" secondAttribute="trailing" constant="130" id="Wly-mq-Vfa"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="9Jq-2v-qp6" secondAttribute="trailing" constant="25" id="Xbd-V8-uRC"/>
+                            <constraint firstItem="SeT-sG-3cK" firstAttribute="top" secondItem="Iv3-mU-mtp" secondAttribute="bottom" constant="7.6666666666666572" id="kOG-SC-iJk"/>
+                            <constraint firstItem="Iv3-mU-mtp" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="130.66999999999999" id="raP-Lx-14p"/>
+                            <constraint firstItem="SeT-sG-3cK" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" constant="54" id="vPp-e6-q1p"/>
+                            <constraint firstItem="9Jq-2v-qp6" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="187" id="yvh-vb-cZ7"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="BackgroundImage" width="430" height="738"/>
+    </resources>
+</document>

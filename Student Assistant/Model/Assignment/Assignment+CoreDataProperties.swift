@@ -19,7 +19,7 @@ import SwiftUICore
     func toString() -> String {
         switch self {
         case .pending:
-            return "Pending"
+            return "Not started"
         case .completed:
             return "Completed"
         case .failed:

@@ -16,7 +16,7 @@ struct MainTrackTimeView: View {
             TimeTrackPicker(pickerSelection: $pickerSelection)
                 .padding()
             if pickerSelection == "Stopwatch" {
-                
+                StopwatchView()
             } else {
                 TimeTrackHistory()
             }

@@ -14,11 +14,15 @@ struct TimeTrackHistory: View {
     var body: some View {
         List {
             ForEach(vm.times, id: \.trackTimeID) {time in
+                NavigationLink {
+                    TimeTrackDetailView(time: time)
+                } label: {
                     VStack(alignment: .leading) {
                         Text(time.trackTimeSubject ?? "Could not get subject.")
                             .font(.headline)
-                        Text(time.getStudiedTime() ?? "Could not get time studied." )
+                        Text(time.getStudiedTime() ?? "Currently studying..." )
                             .font(.subheadline)
+                    }
                 }
             }
         }

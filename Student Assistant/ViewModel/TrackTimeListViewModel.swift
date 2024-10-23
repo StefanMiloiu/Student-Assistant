@@ -52,7 +52,7 @@ class TrackTimeListViewModel: ObservableObject {
      The entries are sorted in ascending order, meaning older entries come first.
     */
     func sortTimes() {
-        self.times.sort(by: { $0.trackTimeEnd! < $1.trackTimeEnd! })
+        self.times.sort(by: { $0.trackTimeEnd ?? Date() < $1.trackTimeEnd ?? Date() })
     }
     
     /*
@@ -89,6 +89,30 @@ class TrackTimeListViewModel: ObservableObject {
     */
     func fetchStartedTimes() -> TrackTime? {
         return trackTimeRepo.fetchStartedTrackTime()
+    }
+    
+    /*
+     Fetches the time and trsnforms it into a String.
+     - Returns: An optional `String` object, "10:10:10" or nil if no object found
+     */
+    func fetchStopWatchTimes() -> String? {
+        let time = fetchStartedTimes()
+        if let time {
+            let currentDifference = Date().timeIntervalSince((time.trackTimeStart)!)
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.hour, .minute, .second]
+            formatter.zeroFormattingBehavior = .pad
+            return formatter.string(from: TimeInterval(currentDifference))
+        }
+        return nil
+    }
+    
+    /*
+     Deletes started time traking session
+     */
+    func deleteStartedSession() {
+        guard let time = fetchStartedTimes() else { return }
+        trackTimeRepo.deleteObject(object: time)
     }
     
 }

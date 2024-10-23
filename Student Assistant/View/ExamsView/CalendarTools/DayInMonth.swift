@@ -9,15 +9,15 @@ import SwiftUI
 
 struct DayInMonth: View {
     
-    @StateObject var vm = ExamListViewModel()
+    @EnvironmentObject var vm: ExamListViewModel
     let day: Int
     let month: Int
     let year: Int
-    @State private var exam: Exam? = nil
+    @State private var exams: [Exam] = []
     
     var body: some View {
         VStack {
-            if exam != nil {
+            if !exams.isEmpty {
                 Text("\(day)")
                     .frame(width: 45, height: 45)
                     .background(.gray)
@@ -35,17 +35,22 @@ struct DayInMonth: View {
             }
         }
         .onAppear {
-            exam = vm.fetchExam(day: day, month: month, year: year)
+            exams = vm.fetchExam(day: day, month: month, year: year)
         }
         .onChange(of: month) {
-            exam = vm.fetchExam(day: day, month: month, year: year)
+            exams = vm.fetchExam(day: day, month: month, year: year)
         }
         .onChange(of: year) {
-            exam = vm.fetchExam(day: day, month: month, year: year)
+            exams = vm.fetchExam(day: day, month: month, year: year)
+        }
+        .onChange(of: vm.exams) { // Notify on exams change
+            exams = vm.fetchExam(day: day, month: month, year: year)
         }
     }
 }
 
 #Preview {
     DayInMonth(day: 14, month: 10, year: 2024)
+        .environmentObject(ExamListViewModel()) // Injecting the environment object
+    
 }

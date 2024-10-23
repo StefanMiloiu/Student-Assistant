@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MonthAndYearPickerView: View {
     
+    @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    
     private var calendar: Calendar {
         Calendar.current
     }
@@ -47,6 +49,12 @@ struct MonthAndYearPickerView: View {
                         updateCurrentDate()
                     }
                 }
+                .onChange(of: appCoordinator.selectedMonth) {
+                    updateCurrentDataCoordinator()
+                }
+                .onChange(of: appCoordinator.selectedYear) {
+                    updateCurrentDataCoordinator()
+                }
                 
             }
             .scrollDisabled(true)
@@ -57,6 +65,12 @@ struct MonthAndYearPickerView: View {
     
     private func updateCurrentDate() {
         if let newDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth)) {
+            currentDate = newDate
+        }
+    }
+    
+    private func updateCurrentDataCoordinator() {
+        if let newDate = calendar.date(from: DateComponents(year: appCoordinator.selectedYear, month: appCoordinator.selectedMonth)) {
             currentDate = newDate
         }
     }

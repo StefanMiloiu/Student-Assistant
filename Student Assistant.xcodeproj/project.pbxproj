@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E9658522CC9120B00D99398 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658512CC9120B00D99398 /* FirebaseAuth */; };
+		8E9658542CC9120B00D99398 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658532CC9120B00D99398 /* FirebaseAuthCombine-Community */; };
+		8E9658562CC9120B00D99398 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658552CC9120B00D99398 /* FirebaseCore */; };
+		8E9658582CC9120B00D99398 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658572CC9120B00D99398 /* FirebaseDatabase */; };
+		8E96585A2CC9120B00D99398 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658592CC9120B00D99398 /* FirebaseFirestore */; };
+		8E96585C2CC9120B00D99398 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8E96585B2CC9120B00D99398 /* FirebaseFirestoreCombine-Community */; };
 		8ED245572CBAAD4A0007E37C /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 8ED245562CBAAD4A0007E37C /* Swinject */; };
 		8EED9E422CBC39540055A0E8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 8EED9E412CBC39540055A0E8 /* SwiftUIIntrospect */; };
 		8EED9E462CBC39540055A0E8 /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 8EED9E452CBC39540055A0E8 /* SwiftUIIntrospect-Static */; };
@@ -36,6 +42,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		8E96584D2CC9115500D99398 /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		8ED2451A2CBAA3C00007E37C /* Student Assistant */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Student Assistant";
@@ -61,6 +72,12 @@
 				8ED245572CBAAD4A0007E37C /* Swinject in Frameworks */,
 				8EED9E422CBC39540055A0E8 /* SwiftUIIntrospect in Frameworks */,
 				8EED9E462CBC39540055A0E8 /* SwiftUIIntrospect-Static in Frameworks */,
+				8E96585C2CC9120B00D99398 /* FirebaseFirestoreCombine-Community in Frameworks */,
+				8E9658522CC9120B00D99398 /* FirebaseAuth in Frameworks */,
+				8E9658562CC9120B00D99398 /* FirebaseCore in Frameworks */,
+				8E96585A2CC9120B00D99398 /* FirebaseFirestore in Frameworks */,
+				8E9658582CC9120B00D99398 /* FirebaseDatabase in Frameworks */,
+				8E9658542CC9120B00D99398 /* FirebaseAuthCombine-Community in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +101,7 @@
 		8ED2450F2CBAA3BF0007E37C = {
 			isa = PBXGroup;
 			children = (
+				8E96584D2CC9115500D99398 /* Resources */,
 				8ED2451A2CBAA3C00007E37C /* Student Assistant */,
 				8ED2452B2CBAA3C20007E37C /* Student AssistantTests */,
 				8ED245352CBAA3C20007E37C /* Student AssistantUITests */,
@@ -117,6 +135,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				8E96584D2CC9115500D99398 /* Resources */,
 				8ED2451A2CBAA3C00007E37C /* Student Assistant */,
 			);
 			name = "Student Assistant";
@@ -124,6 +143,12 @@
 				8ED245562CBAAD4A0007E37C /* Swinject */,
 				8EED9E412CBC39540055A0E8 /* SwiftUIIntrospect */,
 				8EED9E452CBC39540055A0E8 /* SwiftUIIntrospect-Static */,
+				8E9658512CC9120B00D99398 /* FirebaseAuth */,
+				8E9658532CC9120B00D99398 /* FirebaseAuthCombine-Community */,
+				8E9658552CC9120B00D99398 /* FirebaseCore */,
+				8E9658572CC9120B00D99398 /* FirebaseDatabase */,
+				8E9658592CC9120B00D99398 /* FirebaseFirestore */,
+				8E96585B2CC9120B00D99398 /* FirebaseFirestoreCombine-Community */,
 			);
 			productName = "Student Assistant";
 			productReference = 8ED245182CBAA3C00007E37C /* Student Assistant.app */;
@@ -210,6 +235,7 @@
 			packageReferences = (
 				8ED245552CBAAD4A0007E37C /* XCRemoteSwiftPackageReference "Swinject" */,
 				8EED9E402CBC39540055A0E8 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8ED245192CBAA3C00007E37C /* Products */;
@@ -410,17 +436,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "Student Assistant/Student Assistant.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Student Assistant/Preview Content\"";
 				DEVELOPMENT_TEAM = 8B683A2ABG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Student-Assistant-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = " ";
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -448,17 +476,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "Student Assistant/Student Assistant.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Student Assistant/Preview Content\"";
 				DEVELOPMENT_TEAM = 8B683A2ABG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Student-Assistant-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = " ";
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -600,6 +630,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.4.0;
+			};
+		};
 		8ED245552CBAAD4A0007E37C /* XCRemoteSwiftPackageReference "Swinject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Swinject/Swinject.git";
@@ -619,6 +657,36 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8E9658512CC9120B00D99398 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		8E9658532CC9120B00D99398 /* FirebaseAuthCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAuthCombine-Community";
+		};
+		8E9658552CC9120B00D99398 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		8E9658572CC9120B00D99398 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		8E9658592CC9120B00D99398 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		8E96585B2CC9120B00D99398 /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
 		8ED245562CBAAD4A0007E37C /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8ED245552CBAAD4A0007E37C /* XCRemoteSwiftPackageReference "Swinject" */;
