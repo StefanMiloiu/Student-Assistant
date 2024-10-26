@@ -40,19 +40,18 @@ class AssignmentListViewModel: ObservableObject {
     }
     
     // Fetch completed assignments
-    func fetchCompletedAssignments() {
-        assignments = assignmentRepo.fetchObject().filter { $0.assignmentStatus == .completed }
-        sortAssignments()
+    func fetchCompletedAssignments() -> [Assignment] {
+        return assignments.filter { $0.assignmentStatus == .completed }
     }
     
     // Fetch current assignments
     func fetchCurrentAssignments() -> [Assignment] {
-        return assignmentRepo.fetchObject().filter { $0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending }
+        return assignments.filter { $0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending }
     }
     
     // Fetch failed assignments
     func fetchFailedAssignments() -> [Assignment] {
-        return assignmentRepo.fetchObject().filter { $0.assignmentStatus == .failed }
+        return assignments.filter { $0.assignmentStatus == .failed }
     }
     
     // Add a new assignment to Firestore and Core Data

@@ -22,6 +22,8 @@ struct Student_AssistantApp: App {
     
     @StateObject var appCoordinator: AppCoordinatorImpl = AppCoordinatorImpl()
     @StateObject var examViewModel: ExamListViewModel = ExamListViewModel()
+    @StateObject var assignmentsViewModel: AssignmentListViewModel = AssignmentListViewModel()
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
@@ -29,6 +31,7 @@ struct Student_AssistantApp: App {
             ContentView()
                 .environmentObject(examViewModel)
                 .environmentObject(appCoordinator)
+                .environmentObject(assignmentsViewModel)
         }
     }
 }

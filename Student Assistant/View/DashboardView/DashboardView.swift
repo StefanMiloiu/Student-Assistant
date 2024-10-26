@@ -14,8 +14,13 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                
+            VStack(alignment: .leading) {
+                HStack {
+                    AssignmentsDashboard()
+                        .padding(.horizontal, 10)
+                    Spacer()
+                }
+                Spacer()
             }
             .alert(isPresented: $showConfirmationAlert) {
                 Alert(title: Text("Do you want to sign out?"),
@@ -35,8 +40,10 @@ struct DashboardView: View {
             .toolbar {
                 // Sign Out button
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Sign Out") {
+                    Button {
                         showConfirmationAlert.toggle()
+                    } label: {
+                        Image(systemName: "door.right.hand.open")
                     }
                 }
             }
@@ -47,4 +54,5 @@ struct DashboardView: View {
 
 #Preview {
     DashboardView()
+        .environmentObject(AssignmentListViewModel())
 }

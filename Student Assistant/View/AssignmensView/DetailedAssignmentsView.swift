@@ -12,7 +12,7 @@ struct DetailedAssignmentsView: View {
     
     // MARK: - Properties
     var assignment: Assignment // The assignment object passed as a parameter
-    @ObservedObject var vm: AssignmentListViewModel // The view model for managing assignments
+    @EnvironmentObject var vm: AssignmentListViewModel // The view model for managing assignments
     @State var showStatusButtons: Bool = false // State to toggle the visibility of status buttons
     @State var progress: Float = 0.45
     
@@ -60,7 +60,7 @@ struct DetailedAssignmentsView: View {
             
             // Show status buttons if toggled on
             if showStatusButtons {
-                StatusButtonsView(assignment: assignment, vm: vm, showStatusButtons: $showStatusButtons) // View for changing the assignment status
+                StatusButtonsView(assignment: assignment, showStatusButtons: $showStatusButtons) // View for changing the assignment status
             }
         }
         .onAppear {

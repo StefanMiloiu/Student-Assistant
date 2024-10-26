@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - AssignmentListView
 struct AssignmentListView: View {
     // MARK: - Properties
-    @ObservedObject var viewModel: AssignmentListViewModel // The view model to manage assignments
+    @EnvironmentObject var viewModel: AssignmentListViewModel // The view model to manage assignments
     @Binding var selectedStatus: String // The currently selected status filter for assignments
     var filteredForDate: [Assignment]? // Optional filtered assignments based on a date range
     
@@ -36,7 +36,7 @@ struct AssignmentListView: View {
         List {
             // Iterate over the filtered list of assignments
             ForEach(filteredList, id: \.assignmentID) { assignment in
-                NavigationLink(destination: DetailedAssignmentsView(assignment: assignment, vm: viewModel)) {
+                NavigationLink(destination: DetailedAssignmentsView(assignment: assignment)) {
                     VStack(alignment: .leading) {
                         HStack {
                             // Display the assignment status color
@@ -80,5 +80,5 @@ private let dateFormatter: DateFormatter = {
 
 // MARK: - Preview
 #Preview {
-    AssignmentListView(viewModel: AssignmentListViewModel(), selectedStatus: .constant("In Progress"))
+    AssignmentListView(selectedStatus: .constant("In Progress"))
 }

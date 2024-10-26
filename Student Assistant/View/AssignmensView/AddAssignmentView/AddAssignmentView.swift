@@ -11,7 +11,7 @@ enum Focus {
 struct AddAssignmentView: View {
     
     // MARK: - Properties
-    @ObservedObject var vm = AssignmentListViewModel()
+    @EnvironmentObject var vm: AssignmentListViewModel
     @Environment(\.presentationMode) var presentationMode
     
     @State private var title: String = ""

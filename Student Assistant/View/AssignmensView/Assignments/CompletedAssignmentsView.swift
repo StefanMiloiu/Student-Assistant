@@ -19,7 +19,7 @@ enum DisplayModes: String, CaseIterable {
 struct CompletedAssignmentsView: View {
     
     // MARK: - Properties
-    @ObservedObject var vm = AssignmentListViewModel()
+    @EnvironmentObject var vm: AssignmentListViewModel
     @State private var displayMode: DisplayModes = .sevenDays
     @State private var selectedStatus = "Completed"
     
@@ -64,11 +64,11 @@ struct CompletedAssignmentsView: View {
                 emptyStateView()
             } else {
                 assignmentChart()
-                AssignmentListView(viewModel: vm, selectedStatus: $selectedStatus, filteredForDate: filteredAssignments)
+                AssignmentListView(selectedStatus: $selectedStatus, filteredForDate: filteredAssignments)
             }
         }
-        .onAppear {
-            vm.fetchCompletedAssignments() // Fetch assignments when view appears
+        .onChange(of: vm.assignments) {
+            vm.fetchAssignments() // Fetch assignments when view appears
         }
     }
     

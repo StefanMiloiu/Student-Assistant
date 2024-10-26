@@ -11,7 +11,7 @@ import SwiftUI
 struct AssignmentsView: View {
     
     // MARK: - Properties
-    @ObservedObject var viewModel = AssignmentListViewModel()
+    @EnvironmentObject var viewModel: AssignmentListViewModel
     @State private var selectedStatus: String = "In Progress"
 
     var body: some View {
@@ -60,7 +60,7 @@ struct AssignmentsView: View {
 
                     // MARK: - Assignment List
                     Section {
-                        AssignmentListView(viewModel: viewModel, selectedStatus: $selectedStatus, filteredForDate: nil)
+                        AssignmentListView(selectedStatus: $selectedStatus, filteredForDate: nil)
                     }
                 }
             }

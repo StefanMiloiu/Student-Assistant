@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompletedStatus: View {
     
-    @ObservedObject var vm = AssignmentListViewModel()
+    @EnvironmentObject var vm: AssignmentListViewModel
     @Binding var showStatusButtons: Bool
     var assignment: Assignment
     
