@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import SwiftUICore
 
-@objc public enum Status: Int16 {
+@objc public enum Status: Int16, Codable {
     case pending = 0
     case inProgress = 1
     case completed = 2
@@ -53,9 +53,12 @@ extension Assignment {
     @NSManaged public var assignmentID: UUID?
     @NSManaged public var assignmentTitle: String?
     @NSManaged public var assignmentDescription: String?
+    @NSManaged public var assignmentGotDate: Date?
     @NSManaged public var assignmentDate: Date?
     @NSManaged public var assignmentStatus: Status
-    
+    @NSManaged public var isSynced: Bool
+    @NSManaged public var lastSynced: Date?
+    @NSManaged public var lastUpdated: Date?
 }
 
 extension Assignment : Identifiable {

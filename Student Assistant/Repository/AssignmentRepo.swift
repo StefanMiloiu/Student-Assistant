@@ -56,12 +56,48 @@ struct AssignmentRepo: DataManagerProtocol {
     func addAssignment(title: String, description: String, dueDate: Date) {
         let context = DataManager.shared.persistentContainer.viewContext
         let assignment = Assignment(context: context)
+        
         assignment.assignmentID = UUID()
         assignment.assignmentTitle = title
         assignment.assignmentDescription = description
+        assignment.assignmentGotDate = Date() // Current date when the assignment is created
         assignment.assignmentDate = dueDate
         assignment.assignmentStatus = .pending
+        assignment.isSynced = false
+        assignment.lastUpdated = Date() // Setting lastUpdated to the current date
+        assignment.lastSynced = nil // Not synced yet
+        
         saveContext() // Save the context after adding the assignment
+    }
+    
+    func addAssignment(_ assignment: AssignmentFirebase) {
+        let context = DataManager.shared.persistentContainer.viewContext
+        let assignmentCoreData = Assignment(context: context)
+        
+        assignmentCoreData.assignmentID = assignment.assignmentID
+        assignmentCoreData.assignmentTitle = assignment.assignmentTitle
+        assignmentCoreData.assignmentDescription = assignment.assignmentDescription
+        assignmentCoreData.assignmentGotDate = assignment.assignmentGotDate
+        assignmentCoreData.assignmentStatus = assignment.assignmentStatus
+        assignmentCoreData.assignmentDate = assignment.assignmentDate
+        assignmentCoreData.isSynced = assignment.isSynced ?? false
+        assignmentCoreData.lastUpdated = assignment.lastUpdated
+        assignmentCoreData.lastSynced = assignment.lastSynced
+        
+        saveContext()
+    }
+    
+    func fetchAssignmentByID(assignmentID: UUID) -> Assignment? {
+        let context = dataManager.getContext()
+        let request: NSFetchRequest<Assignment> = Assignment.fetchRequest()
+        request.predicate = NSPredicate(format: "assignmentID == %@", assignmentID as CVarArg)
+        
+        do {
+            return try context.fetch(request).first // Fetch the first matching assignment, if any
+        } catch {
+            print("Error fetching assignment by ID: \(error)")
+            return nil
+        }
     }
     
     // MARK: - Update Assignment Status
@@ -71,6 +107,9 @@ struct AssignmentRepo: DataManagerProtocol {
     ///   - status: The new `Status` to set.
     func updateStatus(assignment: Assignment, status: Status) {
         assignment.assignmentStatus = status
+        assignment.isSynced = false // Mark as unsynced on status change
+        assignment.lastUpdated = Date() // Update lastUpdated to reflect the modification time
+        
         saveContext() // Save the context after updating the status
     }
     

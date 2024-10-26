@@ -27,6 +27,18 @@ struct AssignmentsView: View {
                         } label: {
                             Text("Assignments History")
                         }
+                        
+                        Button(action: {
+                            viewModel.syncAssignments()
+                        }) {
+                            HStack(spacing: 0) { // Adjust spacing between text and icon
+                                Text("Synchronize Assignments")
+                                Spacer()
+                                Image(systemName: "arrow.down.circle.dotted")
+                            }
+                            .frame(maxWidth: .infinity) // Make the HStack take up the full width
+                            .multilineTextAlignment(.center) // Center text and icon within HStack
+                        }
                     }
 
                     // MARK: - Assignment Status Picker
@@ -88,10 +100,11 @@ struct AssignmentsView: View {
         .padding(.horizontal, 50)
     }
 
-    // MARK: - Delete Assignment
+    // MARK: - Delete Assignment Function
     private func deleteAssignment(at offsets: IndexSet) {
-        for index in offsets {
-            viewModel.deleteAssignment(at: index)
+        offsets.forEach { index in
+            let assignment = viewModel.assignments[index] // Get the assignment from the filtered list
+            viewModel.deleteAssignment(assignment) // Call delete function with the assignment instance
         }
     }
 }

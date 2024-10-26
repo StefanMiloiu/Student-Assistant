@@ -18,29 +18,14 @@ struct SignUpView: View {
     var body: some View {
         VStack {
             ZStack {
-                Color.gray
-                    .ignoresSafeArea()
-                    .frame(height: 100)
-                Text("Student")
-                    .foregroundStyle(.white)
-                    .font(.title)
-                    .padding(.top, 50)
-            }
-            HStack {
-                Spacer()
                 Image("Icon")
                     .resizable()
-                    .frame(width: 75, height: 75)
+                    .frame(width: 100, height: 100)
                     .aspectRatio(contentMode: .fit)
-                    
-                Spacer()
-
-                Text("Assistant")
-                    .font(.title)
-                    .foregroundStyle(.gray)
-                Spacer()
+                    .shadow(radius: 20)
+                    .padding()
             }
-            .padding(.bottom, 150)
+            .padding(.bottom, 75)
             
             Text("Create your account to start your journey.")
                 .multilineTextAlignment(.center)
@@ -89,7 +74,7 @@ struct SignUpView: View {
                                 appCoordinator.path = NavigationPath() // Clear previous views
                                 appCoordinator.push(.logIn) // Navigate to logIn after successful sign up
                             } catch {
-                                alertMessage = "Sign up failed. Please try again."
+                                alertMessage = "Email already used."
                                 alertIsPresented.toggle()
                             }
                         }

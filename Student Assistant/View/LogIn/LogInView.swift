@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LogInView: View {
     
+    
     @State var email: String = ""
     @State var password: String = ""
     @State var alertIsPresented: Bool = false
@@ -17,29 +18,15 @@ struct LogInView: View {
     var body: some View {
         VStack {
             ZStack {
-                Color.gray
-                    .ignoresSafeArea()
-                    .frame(height: 100)
-                Text("Student")
-                    .foregroundStyle(.white)
-                    .font(.title)
-                    .padding(.top, 50)
-            }
-            HStack {
-                Spacer()
                 Image("Icon")
                     .resizable()
-                    .frame(width: 75, height: 75)
+                    .frame(width: 100, height: 100)
                     .aspectRatio(contentMode: .fit)
-                    
-                Spacer()
-
-                Text("Assistant")
-                    .font(.title)
-                    .foregroundStyle(.gray)
-                Spacer()
+                    .shadow(radius: 20)
+                    .padding()
             }
-            .padding(.bottom, 100)
+            .padding(.top)
+            .padding(.bottom, 75)
             
             Text("Start your journey with us by connecting to your account.")
                 .multilineTextAlignment(.center)

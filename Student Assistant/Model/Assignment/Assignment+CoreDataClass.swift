@@ -42,6 +42,13 @@ public class Assignment: NSManagedObject {
     func getTime() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter.string(from: self.assignmentDate!)
+        return dateFormatter.string(from: self.assignmentDate ?? Date())
+    }
+    
+    //MARK: - Sync need check
+    /// - Returns: `true` if needs sync, otherwise `false`
+    func needsSync() -> Bool {
+        guard let lastSynced = self.lastSynced else { return true } // If never synced, needs sync
+        return self.lastUpdated ?? Date() > lastSynced
     }
 }

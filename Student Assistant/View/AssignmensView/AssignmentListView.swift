@@ -61,9 +61,11 @@ struct AssignmentListView: View {
     }
     
     // MARK: - Delete Assignment Function
+    // MARK: - Delete Assignment Function
     private func deleteAssignment(at offsets: IndexSet) {
-        for index in offsets {
-            viewModel.deleteAssignment(at: index) // Call delete function in the view model
+        offsets.forEach { index in
+            let assignment = filteredList[index] // Get the assignment from the filtered list
+            viewModel.deleteAssignment(assignment) // Call delete function with the assignment instance
         }
     }
 }

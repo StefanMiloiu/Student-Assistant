@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ForgotPasswordView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @State var verificationEmail: String = ""
     @State var alert: Bool = false
-    
+    @State var alertMessage: String = ""
     var body: some View {
         VStack {
             
@@ -30,7 +31,15 @@ struct ForgotPasswordView: View {
                         try await AuthManager.shared.resetPassword(for: verificationEmail)
                         verificationEmail = ""
                         appCoordinator.pop()
-                    } catch {
+                    } catch let error as AuthErrorCode {
+                        switch error {
+                        case .userNotFound:
+                            alert.toggle()
+                            alertMessage = "User not found."
+                        default:
+                            alert.toggle()
+                            alertMessage = "Something went wrong. Please try again later."
+                        }
                         alert.toggle()
                     }
                 }
@@ -42,7 +51,7 @@ struct ForgotPasswordView: View {
             Spacer()
         }
         .alert(isPresented: $alert) {
-            Alert(title: Text("Error"), message: Text("Something went wrong. Please try again later."))
+            Alert(title: Text("Error"), message: Text("\(alertMessage)"))
         }
     }
 }

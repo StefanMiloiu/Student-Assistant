@@ -62,4 +62,15 @@ final class Student_AssistantTests: XCTestCase {
         assignment.assignmentDate = Date().addingTimeInterval(86400) // 1 day in the future
         XCTAssertFalse(assignment.checkIfOverdue())
     }
+    
+    func testFirebaseRepo() {
+        let repo = AssignmentRepoFirebase()
+        repo.fetchDocumentsByEmail(email: "miloius@yahoo.com") { (result: Result<[AssignmentFirebase], Error>) in
+            print(result)
+        }
+        
+        repo.fetchDocuments(from: "assignments") { (result: Result<[AssignmentFirebase], Error>) in
+            print("Result: \(result)")
+        }
+    }
 }

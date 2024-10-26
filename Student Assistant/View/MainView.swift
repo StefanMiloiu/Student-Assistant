@@ -89,7 +89,7 @@ struct MainView: View {
                 }
         }
         .navigationBarTitleDisplayMode(.inline)  // Title display mode
-        .colorScheme(.light)  // Force light mode
+        
     }
 }
 

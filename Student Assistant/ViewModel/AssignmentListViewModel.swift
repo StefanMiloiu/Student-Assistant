@@ -9,15 +9,29 @@ import Foundation
 import SwiftUI
 
 class AssignmentListViewModel: ObservableObject {
-    @Published var assignments: [Assignment] = []
+    @Published var assignments: [Assignment] = [] // Use Core Data Assignment model
     private let assignmentRepo: AssignmentRepo
+    private let assignmentFirestore: AssignmentRepoFirebase
+    private let syncManager: SyncManager
     
-    init(assignmentRepo: AssignmentRepo = Injection.shared.container.resolve(AssignmentRepo.self)!) {
+    init(assignmentRepo: AssignmentRepo = Injection.shared.container.resolve(AssignmentRepo.self)!,
+         syncManager: SyncManager = SyncManager(),
+         assignmentFirestore: AssignmentRepoFirebase = AssignmentRepoFirebase()) {
         self.assignmentRepo = assignmentRepo
-        fetchAssignments()
+        self.syncManager = syncManager
+        self.assignmentFirestore = assignmentFirestore
+        fetchAssignments() // Initially fetch assignments from Firestore
     }
     
-    // Fetch assignments
+    func syncAssignments() {
+        syncManager.syncAssignments { [weak self] result in
+            if result {
+                self?.fetchAssignments()
+            }
+        }
+    }
+    
+    // Fetch assignments from Firestore
     func fetchAssignments() {
         assignments.removeAll()
         assignmentRepo.verifyAssignmentsOverDue()
@@ -25,43 +39,69 @@ class AssignmentListViewModel: ObservableObject {
         sortAssignments()
     }
     
+    // Fetch completed assignments
     func fetchCompletedAssignments() {
-        assignments.removeAll()
-        assignments = assignmentRepo.fetchObject().filter {$0.assignmentStatus == .completed}
+        assignments = assignmentRepo.fetchObject().filter { $0.assignmentStatus == .completed }
         sortAssignments()
     }
     
-    // Sorts assignments list
-    func sortAssignments() {
-        self.assignments = assignments.sorted(by: {$0.assignmentDate! < $1.assignmentDate!})
+    // Fetch current assignments
+    func fetchCurrentAssignments() -> [Assignment] {
+        return assignmentRepo.fetchObject().filter { $0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending }
     }
     
-    // Add a new assignment
-    func addAssignment(title: String, description: String, dueDate: Date) -> Bool{
-        guard title != "",
-              description != "" else { return false }
-        assignmentRepo.addAssignment(title: title, description: description, dueDate: dueDate)
-        fetchAssignments() // Refresh assignments after adding
+    // Fetch failed assignments
+    func fetchFailedAssignments() -> [Assignment] {
+        return assignmentRepo.fetchObject().filter { $0.assignmentStatus == .failed }
+    }
+    
+    // Add a new assignment to Firestore and Core Data
+    func addAssignment(title: String, description: String, dueDate: Date) -> Bool {
+        guard !title.isEmpty, !description.isEmpty else { return false }
+        
+        assignmentRepo.addAssignment(title: title,
+                                     description: description,
+                                     dueDate: dueDate)
+        syncManager.syncAssignments { [weak self] result in
+            if result {
+                self?.fetchAssignments()
+            }
+        }
         return true
     }
     
-    // Delete an assignment
-    func deleteAssignment(at index: Int) {
-        let assignmentToDelete = assignments[index]
-        assignmentRepo.deleteObject(object: assignmentToDelete) // Call repo method to delete
-        fetchAssignments() // Refresh assignments after deletion
+    // Delete an assignment from Firestore and Core Data
+    func deleteAssignment(_ assignment: Assignment) {
+        assignmentRepo.deleteObject(object: assignment) // Also delete from Core Data
+        syncManager.syncAssignments { [weak self] result in
+            if result {
+                self?.fetchAssignments()
+            }        }
     }
     
+    // Change the status of an assignment in Firestore and Core Data
     func changeStatus(for assignment: Assignment, newStatus: Status) {
-        assignmentRepo.updateStatus(assignment: assignment, status: newStatus)
-        fetchAssignments()
+        self.assignmentRepo.updateStatus(assignment: assignment, status: newStatus) // Update in Core Data
+        syncManager.syncAssignments { [weak self] result in
+            if result {
+                self?.fetchAssignments()
+            }        }
     }
     
-    func fetchCurrentAssignments() -> [Assignment]{
-        return assignmentRepo.fetchObject().filter {$0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending}
+    // Sort assignments list
+    func sortAssignments() {
+        self.assignments.sort(by: { $0.assignmentDate! < $1.assignmentDate! })
     }
     
-    func fetchFailedAssignments() -> [Assignment]{
-        return assignmentRepo.fetchObject().filter {$0.assignmentStatus == .failed}
+    // Helper method to map Firestore model to Core Data model
+    private func mapFirebaseToCoreData(_ firebaseAssignment: AssignmentFirebase) -> Assignment {
+        let coreDataAssignment = Assignment(context: DataManager.shared.getContext())
+        coreDataAssignment.assignmentID = firebaseAssignment.assignmentID
+        coreDataAssignment.assignmentTitle = firebaseAssignment.assignmentTitle
+        coreDataAssignment.assignmentDescription = firebaseAssignment.assignmentDescription
+        coreDataAssignment.assignmentGotDate = firebaseAssignment.assignmentGotDate
+        coreDataAssignment.assignmentDate = firebaseAssignment.assignmentDate
+        coreDataAssignment.assignmentStatus = firebaseAssignment.assignmentStatus
+        return coreDataAssignment
     }
 }

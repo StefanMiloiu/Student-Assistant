@@ -3,9 +3,13 @@
     <entity name="Assignment" representedClassName="Assignment" syncable="YES">
         <attribute name="assignmentDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="assignmentDescription" optional="YES" attributeType="String"/>
+        <attribute name="assignmentGotDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="assignmentID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="assignmentStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="assignmentTitle" optional="YES" attributeType="String"/>
+        <attribute name="isSynced" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastSynced" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="Exam" representedClassName="Exam" syncable="YES">
         <attribute name="examDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

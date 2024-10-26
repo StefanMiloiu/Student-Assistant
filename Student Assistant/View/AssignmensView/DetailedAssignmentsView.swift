@@ -14,12 +14,14 @@ struct DetailedAssignmentsView: View {
     var assignment: Assignment // The assignment object passed as a parameter
     @ObservedObject var vm: AssignmentListViewModel // The view model for managing assignments
     @State var showStatusButtons: Bool = false // State to toggle the visibility of status buttons
+    @State var progress: Float = 0.45
     
     // MARK: - Body
     var body: some View {
         VStack(spacing: 20) {
             // Display the title of the assignment
             Text(assignment.assignmentTitle ?? "No Title")
+                .multilineTextAlignment(.center)
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.bottom, 30)
@@ -54,10 +56,15 @@ struct DetailedAssignmentsView: View {
             // Button to change the status of the assignment
             MainButtonForStatus(showStatusButtons: $showStatusButtons)
             
+            ProgressView(value: progress)
+            
             // Show status buttons if toggled on
             if showStatusButtons {
                 StatusButtonsView(assignment: assignment, vm: vm, showStatusButtons: $showStatusButtons) // View for changing the assignment status
             }
+        }
+        .onAppear {
+            progress = getPercentageDone(assignment)
         }
         .padding() // General padding for the entire view
     }
@@ -70,6 +77,29 @@ private let dateFormatter: DateFormatter = {
     formatter.timeStyle = .none // Do not display time
     return formatter
 }()
+
+private func getPercentageDone(_ assignment: Assignment) -> Float {
+    // Get the starting and ending dates as time intervals since 1970
+    guard let startingDate = assignment.assignmentGotDate?.timeIntervalSince1970,
+          let endingDate = assignment.assignmentDate?.timeIntervalSince1970 else {
+        return 0.0 // Return 0 if dates are not available
+    }
+    
+    // Current date as time interval since 1970
+    let currentDate = Date().timeIntervalSince1970
+    
+    // Calculate the total duration of the assignment
+    let totalDuration = endingDate - startingDate
+    
+    // Calculate the elapsed time from the starting date to the current date
+    let elapsedTime = currentDate - startingDate
+    
+    // Calculate the percentage done
+    let percentage = totalDuration > 0 ? (elapsedTime / totalDuration) : 0.0
+    
+    // Ensure the percentage is clamped between 0 and 1
+    return max(0.0, min(1.0, Float(percentage)))
+}
 
 // MARK: - Preview
 //#Preview {

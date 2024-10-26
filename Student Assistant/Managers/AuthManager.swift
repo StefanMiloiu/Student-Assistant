@@ -17,6 +17,8 @@ struct AuthManager {
     /// Private initializer to prevent multiple instances from being created.
     private init(){}
     
+    private let syncManager = SyncManager()
+    
     
     //MARK: - Authentification methods
     /// Asynchronous function to sign up a new user with Firebase.
@@ -58,6 +60,7 @@ struct AuthManager {
             // Save login state and user details to UserDefaults after a successful sign-in.
             UserDefaults().isLoggedIn = true
             UserDefaults().userName = email
+            syncManager.onLogInSync()
         } catch {
             // Throw a custom error if sign-in fails.
             throw AuthManagerErrors.signInFailed
@@ -79,9 +82,26 @@ struct AuthManager {
         }
     }
     
-    /// Asynchronous function to send a password reset email to the provided email address.
+    /// Asynchronous function to send a password reset email if the user has an account.
     func resetPassword(for email: String) async throws {
-        // Request Firebase to send a password reset email to the user.
-        try await Auth.auth().sendPasswordReset(withEmail: email)
+        do {
+            // Attempt to send the password reset email.
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+            print("Password reset email sent.")
+        } catch let error as NSError {
+            // Handle specific Firebase error codes
+            if let errorCode = AuthErrorCode(rawValue: error.code) {
+                switch errorCode {
+                case .userNotFound:
+                    // Handle case where the user doesn't have an account
+                    print("No account found for this email address.")
+                    throw AuthErrorCode.userNotFound // Re-throw if you want to handle it elsewhere
+                default:
+                    // Handle other potential errors
+                    print("Failed to send password reset email: \(error.localizedDescription)")
+                    throw error
+                }
+            }
+        }
     }
 }
