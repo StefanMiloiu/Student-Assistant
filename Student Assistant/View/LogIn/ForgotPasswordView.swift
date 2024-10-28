@@ -43,7 +43,6 @@ struct ForgotPasswordView: View {
                         alert.toggle()
                     }
                 }
-                        
             }){
                 Text("Send Verification Email")
                     .tint(.blue)

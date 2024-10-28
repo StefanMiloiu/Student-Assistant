@@ -10,6 +10,7 @@ import SwiftUI
 struct DashboardView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    @EnvironmentObject var assignmentsVM: AssignmentListViewModel
     @State var showConfirmationAlert: Bool = false
     
     var body: some View {
@@ -48,6 +49,9 @@ struct DashboardView: View {
                 }
             }
             .navigationTitle("Dashboard") // Optional: Set the title of the navigation bar
+            .onAppear {
+                assignmentsVM.fetchAssignments()
+            }
         }
     }
 }

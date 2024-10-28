@@ -14,6 +14,8 @@ struct LogInView: View {
     @State var password: String = ""
     @State var alertIsPresented: Bool = false
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    @EnvironmentObject var assignmentsViewModel: AssignmentListViewModel
+
     
     var body: some View {
         VStack {
@@ -66,15 +68,21 @@ struct LogInView: View {
                 }
             }
             
-            
             Spacer()
             
+            //MARK: - Log In With Apple
+            LogInWithApple()
+                .frame(maxWidth: .infinity)
+                .frame(height: 45)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .padding(.horizontal, 50)
             //MARK: - Log In Button
             Button {
                 Task {
                     do{
                         try await AuthManager.shared.signIn(email: email, password: password)
                         appCoordinator.path = NavigationPath() // This clears all previous views
+                        assignmentsViewModel.fetchAssignments()
                     } catch {
                         alertIsPresented.toggle()
                     }

@@ -94,7 +94,7 @@ struct AssignmentsView: View {
                 .scaledToFit()
                 .frame(width: 50)
         }
-        .frame(width: 325, height: 300, alignment: .center)
+        .frame(width: 350, height: 300, alignment: .center)
         .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 50))
         .padding(.horizontal, 50)
@@ -112,4 +112,5 @@ struct AssignmentsView: View {
 // MARK: - Preview
 #Preview {
     AssignmentsView()
+        .environmentObject(AssignmentListViewModel())
 }

@@ -84,7 +84,7 @@ struct CompletedAssignmentsView: View {
                 .scaledToFit()
                 .frame(width: 50)
         }
-        .frame(width: 325, height: 300)
+        .frame(width: 350, height: 400)
         .background(Color.red.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 50))
     }

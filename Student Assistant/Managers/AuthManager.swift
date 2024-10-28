@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import AuthenticationServices
 
 // Singleton struct to manage Firebase Authentication functions like sign up, sign in, and sign out.
 struct AuthManager {
@@ -102,6 +103,29 @@ struct AuthManager {
                     throw error
                 }
             }
+        }
+    }
+    
+    func authenticateWithFirebase(credential: ASAuthorizationAppleIDCredential) async throws {
+        guard let identityToken = credential.identityToken else {
+            print("Unable to fetch identity token")
+            return
+        }
+        guard let tokenString = String(data: identityToken, encoding: .utf8) else {
+            print("Unable to serialize token string from data: \(identityToken.debugDescription)")
+            return
+        }
+        
+        // Initialize a Firebase credential with the Apple ID token
+        let firebaseCredential = OAuthProvider.credential(providerID: AuthProviderID.apple, idToken: tokenString, accessToken: nil)
+        // Sign in with Firebase
+        do {
+            let result = try await Auth.auth().signIn(with: firebaseCredential)
+            UserDefaults().userName = result.user.email
+            UserDefaults().isLoggedIn = true
+            print("User signed in with Apple: \(String(describing: result.user.email))")
+        } catch {
+            throw error
         }
     }
 }

@@ -17,7 +17,6 @@ struct AssignmentsPieChart: View {
         let statuses = viewModel.assignments.map { $0.assignmentStatus.toString() }
         let counts = Dictionary(grouping: statuses, by: { $0 })
             .mapValues { Double($0.count) }
-        
         return counts.map { (status: $0.key, count: $0.value) }
     }
     
@@ -28,6 +27,10 @@ struct AssignmentsPieChart: View {
             || $0.assignmentStatus == .pending
         }.count
         let failedCount = viewModel.assignments.filter { $0.assignmentStatus == .failed }.count
+        
+        if completedCount == 0 || inProgressCount == 0 || failedCount == 0 {
+            return [(status: "", count: 1, color: .gray)]
+        }
         
         return [
                (status: "Completed", count: Double(completedCount), color: .green),
