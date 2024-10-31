@@ -14,13 +14,13 @@ import CoreData
  while interacting with the Core Data context.
 */
 struct TrackTimeRepo: DataManagerProtocol {
-    
-    //MARK: - Properties
+
+    // MARK: - Properties
     /*
      The data manager responsible for Core Data operations.
     */
     let dataManager: DataManagerProtocol
-    
+
     /*
      Initializes the repository with a default `DataManager` using dependency injection.
      - Parameter dataManager: A `DataManagerProtocol` implementation, defaulting to the resolved `DataManager` from the injection container.
@@ -28,7 +28,7 @@ struct TrackTimeRepo: DataManagerProtocol {
     init(dataManager: DataManagerProtocol = Injection.shared.container.resolve(DataManager.self)!) {
         self.dataManager = dataManager
     }
-    
+
     // MARK: - Core Data Operations
     /*
      Saves changes to the Core Data context.
@@ -37,20 +37,20 @@ struct TrackTimeRepo: DataManagerProtocol {
     func saveContext() {
         dataManager.saveContext()
     }
-    
+
     /*
      Fetches objects of type `TrackTime` from Core Data.
      - Returns: An array of `TrackTime` objects.
     */
-    func fetchObject<TrackTime>() -> [TrackTime] where TrackTime : NSManagedObject {
+    func fetchObject<TrackTime>() -> [TrackTime] where TrackTime: NSManagedObject {
         dataManager.fetchObject()
     }
-    
+
     /*
      Deletes a specified `TrackTime` object from Core Data.
      - Parameter object: The `TrackTime` object to delete.
     */
-    func deleteObject<TrackTime>(object: TrackTime) where TrackTime : NSManagedObject {
+    func deleteObject<TrackTime>(object: TrackTime) where TrackTime: NSManagedObject {
         dataManager.deleteObject(object: object)
     }
 
@@ -61,7 +61,7 @@ struct TrackTimeRepo: DataManagerProtocol {
     func getContext() -> NSManagedObjectContext {
         dataManager.getContext()
     }
-    
+
     /*
      Starts tracking time for a specific subject.
      This function creates a new `TrackTime` object in the context, sets a unique ID,
@@ -76,11 +76,11 @@ struct TrackTimeRepo: DataManagerProtocol {
         trackTime.trackTimeID = UUID()
         trackTime.trackTimeStart = startDate
         trackTime.trackTimeSubject = subject
-        
+
         // Save the newly created tracking object
         saveContext()
     }
-    
+
     /*
      Ends the current tracking session.
      This function fetches the last started `TrackTime` object and assigns the end date and any notes provided.
@@ -92,11 +92,11 @@ struct TrackTimeRepo: DataManagerProtocol {
         let trackTime: TrackTime = fetchObject().last!
         trackTime.trackTimeEnd = endDate
         trackTime.trackTimeNotes = notes
-        
+
         // Save the updates to the tracking object
         saveContext()
     }
-    
+
     /*
      Fetches the currently active `TrackTime` object.
      This method looks for any `TrackTime` object where the `trackTimeEnd` is still `nil`,
@@ -104,10 +104,10 @@ struct TrackTimeRepo: DataManagerProtocol {
      - Returns: An optional `TrackTime` object, or `nil` if no session is active.
     */
     func fetchStartedTrackTime() -> TrackTime? {
-        if let timer: TrackTime = fetchObject().filter( {$0.trackTimeEnd == nil} ).first {
+        if let timer: TrackTime = fetchObject().filter( {$0.trackTimeEnd == nil}).first {
             return timer
         }
         return nil
     }
-    
+
 }

@@ -14,20 +14,29 @@ extension Date {
               let endingDate = assignment.assignmentDate?.timeIntervalSince1970 else {
             return 0.0 // Return 0 if dates are not available
         }
-        
+
         // Current date as time interval since 1970
         let currentDate = Date().timeIntervalSince1970
-        
+
         // Calculate the total duration of the assignment
         let totalDuration = endingDate - startingDate
-        
+
         // Calculate the elapsed time from the starting date to the current date
         let elapsedTime = currentDate - startingDate
-        
+
         // Calculate the percentage done
         let percentage = totalDuration > 0 ? (elapsedTime / totalDuration) : 0.0
-        
+
         // Ensure the percentage is clamped between 0 and 1
         return max(0.0, min(1.0, Float(percentage)))
+    }
+
+    static func dateFrom(year: Int, month: Int) -> Date {
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = 1
+        // Use the current calendar to create the date
+        return Calendar.current.date(from: components) ?? Date()
     }
 }

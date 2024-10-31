@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailedExamsView: View {
-    
+
     @EnvironmentObject var vm: ExamListViewModel
     @Binding var isTapped: Bool
     let day: Int
@@ -22,7 +22,7 @@ struct DetailedExamsView: View {
                     Text("\(exam.examSubject ?? "No exam found")")
                         .font(.title)
                     Spacer()
-                    
+
                     ScrollView {
                         Text("\(exam.examLocation ?? "No location found")")
                     }
@@ -31,9 +31,9 @@ struct DetailedExamsView: View {
                     .background(Color.white) // Background for the entire popup
                     .cornerRadius(20)
                     .shadow(radius: 5)
-                    
+
                     Spacer()
-                    
+
                     HStack {
                         Button(action: {
                             isTapped = false
@@ -44,7 +44,7 @@ struct DetailedExamsView: View {
                                 .background(Color.gray)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
-                        
+
                         Text("Date   \n\(exam.examDate ?? Date(), formatter: formatter())")
                             .multilineTextAlignment(.center)
                             .fontWeight(.heavy)
@@ -69,7 +69,7 @@ struct DetailedExamsView: View {
         .padding(.vertical, 50)
         .frame(width: 350)
     }
-    
+
     private func formatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -81,5 +81,5 @@ struct DetailedExamsView: View {
 #Preview {
     DetailedExamsView(isTapped: .constant(false), day: 2, month: 10, year: 2024)
         .environmentObject(ExamListViewModel()) // Injecting the environment object
-    
+
 }

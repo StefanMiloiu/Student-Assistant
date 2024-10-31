@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddExamPopUpVIew: View {
-    
+
     @EnvironmentObject var vm: ExamListViewModel
     let year: Int
     let month: Int
@@ -17,7 +17,7 @@ struct AddExamPopUpVIew: View {
     @State private var examLocation: String = ""
     @State private var examTime: Date = Date()
     @Binding var isSelected: Bool
-    
+
     var body: some View {
         VStack {
             TextField("Subject", text: $examSubject)
@@ -25,22 +25,22 @@ struct AddExamPopUpVIew: View {
                 .disableAutocorrection(true)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color(.systemGray6))) // Background for textfield
-            
+
             TextField("Location", text: $examLocation)
                 .textInputAutocapitalization(.sentences)
                 .disableAutocorrection(true)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color(.systemGray6)))
-            
+
             Section {
                 DatePicker("Exam Time", selection: $examTime, displayedComponents: .hourAndMinute)
                     .datePickerStyle(CompactDatePickerStyle())
                     .frame(width: 250, height: 50)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            
+
             HStack {
-                
+
                 Button(action: {
                     withAnimation {
                         isSelected = false
@@ -52,7 +52,7 @@ struct AddExamPopUpVIew: View {
                         .background(Color.gray)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
-                
+
                 Button(action: {
                     let date = vm.generateDate(day: day, month: month, year: year, time: examTime)
                     if let date {
@@ -68,7 +68,7 @@ struct AddExamPopUpVIew: View {
                         .background(Color.red)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
-                
+
             }
         }
         .padding()

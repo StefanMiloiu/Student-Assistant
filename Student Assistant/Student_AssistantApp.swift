@@ -11,21 +11,18 @@ import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
     FirebaseApp.configure()
     return true
   }
 }
 
 @main
-struct Student_AssistantApp: App {
-    
+struct StudentAssistantApp: App {
     @StateObject var appCoordinator: AppCoordinatorImpl = AppCoordinatorImpl()
     @StateObject var examViewModel: ExamListViewModel = ExamListViewModel()
     @StateObject var assignmentsViewModel: AssignmentListViewModel = AssignmentListViewModel()
-    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
     var body: some Scene {
         WindowGroup {
             ContentView()

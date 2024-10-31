@@ -13,7 +13,7 @@ class AssignmentListViewModel: ObservableObject {
     private let assignmentRepo: AssignmentRepo
     private let assignmentFirestore: AssignmentRepoFirebase
     private let syncManager: SyncManager
-    
+
     init(assignmentRepo: AssignmentRepo = Injection.shared.container.resolve(AssignmentRepo.self)!,
          syncManager: SyncManager = SyncManager(),
          assignmentFirestore: AssignmentRepoFirebase = AssignmentRepoFirebase()) {
@@ -22,7 +22,7 @@ class AssignmentListViewModel: ObservableObject {
         self.assignmentFirestore = assignmentFirestore
         fetchAssignments() // Initially fetch assignments from Firestore
     }
-    
+
     func syncAssignments() {
         syncManager.syncAssignments { [weak self] result in
             if result {
@@ -30,7 +30,7 @@ class AssignmentListViewModel: ObservableObject {
             }
         }
     }
-    
+
     // Fetch assignments from Firestore
     func fetchAssignments() {
         assignments.removeAll()
@@ -38,26 +38,26 @@ class AssignmentListViewModel: ObservableObject {
         assignments = assignmentRepo.fetchObject()
         sortAssignments()
     }
-    
+
     // Fetch completed assignments
     func fetchCompletedAssignments() -> [Assignment] {
         return assignments.filter { $0.assignmentStatus == .completed }
     }
-    
+
     // Fetch current assignments
     func fetchCurrentAssignments() -> [Assignment] {
         return assignments.filter { $0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending }
     }
-    
+
     // Fetch failed assignments
     func fetchFailedAssignments() -> [Assignment] {
         return assignments.filter { $0.assignmentStatus == .failed }
     }
-    
+
     // Add a new assignment to Firestore and Core Data
     func addAssignment(title: String, description: String, dueDate: Date) -> Bool {
         guard !title.isEmpty, !description.isEmpty else { return false }
-        
+
         assignmentRepo.addAssignment(title: title,
                                      description: description,
                                      dueDate: dueDate)
@@ -68,7 +68,7 @@ class AssignmentListViewModel: ObservableObject {
         }
         return true
     }
-    
+
     // Delete an assignment from Firestore and Core Data
     func deleteAssignment(_ assignment: Assignment) {
         assignmentRepo.deleteObject(object: assignment) // Also delete from Core Data
@@ -77,7 +77,7 @@ class AssignmentListViewModel: ObservableObject {
                 self?.fetchAssignments()
             }        }
     }
-    
+
     // Change the status of an assignment in Firestore and Core Data
     func changeStatus(for assignment: Assignment, newStatus: Status) {
         self.assignmentRepo.updateStatus(assignment: assignment, status: newStatus) // Update in Core Data
@@ -86,12 +86,12 @@ class AssignmentListViewModel: ObservableObject {
                 self?.fetchAssignments()
             }        }
     }
-    
+
     // Sort assignments list
     func sortAssignments() {
         self.assignments.sort(by: { $0.assignmentDate! < $1.assignmentDate! })
     }
-    
+
     // Helper method to map Firestore model to Core Data model
     private func mapFirebaseToCoreData(_ firebaseAssignment: AssignmentFirebase) -> Assignment {
         let coreDataAssignment = Assignment(context: DataManager.shared.getContext())

@@ -9,14 +9,14 @@ import SwiftUI
 import FirebaseAuth
 
 struct ForgotPasswordView: View {
-    
+
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @State var verificationEmail: String = ""
     @State var alert: Bool = false
     @State var alertMessage: String = ""
     var body: some View {
         VStack {
-            
+
             TextField("Enter your email", text: $verificationEmail)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
@@ -24,7 +24,7 @@ struct ForgotPasswordView: View {
                 .background(Color.secondary.opacity(0.5))
                 .cornerRadius(10)
                 .padding()
-            
+
             Button(action: {
                 Task {
                     do {
@@ -43,7 +43,7 @@ struct ForgotPasswordView: View {
                         alert.toggle()
                     }
                 }
-            }){
+            }) {
                 Text("Send Verification Email")
                     .tint(.blue)
             }

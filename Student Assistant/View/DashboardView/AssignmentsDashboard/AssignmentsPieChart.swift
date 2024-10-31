@@ -9,9 +9,9 @@ import SwiftUI
 import Charts
 
 struct AssignmentsPieChart: View {
-    
+
     @EnvironmentObject var viewModel: AssignmentListViewModel
-    
+
     // Group assignments by status and calculate count per status
     private var aassignmentData: [(status: String, count: Double)] {
         let statuses = viewModel.assignments.map { $0.assignmentStatus.toString() }
@@ -19,7 +19,7 @@ struct AssignmentsPieChart: View {
             .mapValues { Double($0.count) }
         return counts.map { (status: $0.key, count: $0.value) }
     }
-    
+
     private var assignmentData: [(status: String, count: Double, color: Color)] {
         let completedCount = viewModel.assignments.filter { $0.assignmentStatus == .completed }.count
         let inProgressCount = viewModel.assignments.filter {
@@ -27,20 +27,18 @@ struct AssignmentsPieChart: View {
             || $0.assignmentStatus == .pending
         }.count
         let failedCount = viewModel.assignments.filter { $0.assignmentStatus == .failed }.count
-        
+
         if completedCount == 0 || inProgressCount == 0 || failedCount == 0 {
             return [(status: "", count: 1, color: .gray)]
         }
-        
+
         return [
                (status: "Completed", count: Double(completedCount), color: .green),
                (status: "In Progress", count: Double(inProgressCount), color: .yellow),
                (status: "Failed", count: Double(failedCount), color: .red)
            ]
     }
-    
-    
-    
+
     var body: some View {
         Chart(assignmentData, id: \.status) { data in
             SectorMark(

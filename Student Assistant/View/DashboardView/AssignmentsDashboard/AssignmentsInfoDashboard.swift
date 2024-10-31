@@ -10,7 +10,7 @@ import SwiftUI
 struct AssignmentsInfo: View {
     @EnvironmentObject var viewModel: AssignmentListViewModel
     let status: Status
-    
+
     var body: some View {
         HStack {
             Circle()
@@ -21,7 +21,7 @@ struct AssignmentsInfo: View {
                 .foregroundColor(.primary)
         }
     }
-    
+
     private func color(for status: Status) -> Color {
         switch status {
         case .completed: return .green
@@ -29,7 +29,7 @@ struct AssignmentsInfo: View {
         default: return .yellow
         }
     }
-    
+
     private func infoText(for status: Status) -> String {
         switch status {
         case .completed:

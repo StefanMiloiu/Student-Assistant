@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct DayInMonth: View {
-    
+
     @EnvironmentObject var vm: ExamListViewModel
     let day: Int
     let month: Int
     let year: Int
     @State private var exams: [Exam] = []
-    
+
     var body: some View {
         VStack {
             if !exams.isEmpty {
@@ -52,5 +52,5 @@ struct DayInMonth: View {
 #Preview {
     DayInMonth(day: 14, month: 10, year: 2024)
         .environmentObject(ExamListViewModel()) // Injecting the environment object
-    
+
 }

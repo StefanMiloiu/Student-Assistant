@@ -9,10 +9,10 @@ import SwiftUI
 
 /// A view that presents a segmented picker to select assignment statuses.
 struct PickerAssignments: View {
-    
+
     /// The binding to the selected assignment status.
     @Binding var selectedStatus: String
-    
+
     var body: some View {
         Picker("Select Assignment Status", selection: $selectedStatus) {
             Text("In Progress")

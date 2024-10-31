@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct TimeTrackHistory: View {
-    
+
     @StateObject var vm = TrackTimeListViewModel()
-    
+
     var body: some View {
         List {
             ForEach(vm.times, id: \.trackTimeID) {time in

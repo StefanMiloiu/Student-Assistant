@@ -10,8 +10,9 @@ import SwiftUI
 // MARK: - CoordinatorView
 /// This view coordinates navigation, sheet presentation, and full-screen cover handling.
 struct CoordinatorView: View {
-    @EnvironmentObject var appCoordinator: AppCoordinatorImpl  /// The app's coordinator for managing navigation and modals
-    
+    @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    /// The app's coordinator for managing navigation and modals
+
     // MARK: - Body
     var body: some View {
         NavigationStack(path: $appCoordinator.path) {

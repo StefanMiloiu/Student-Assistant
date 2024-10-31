@@ -12,13 +12,13 @@ import FirebaseFirestore
 protocol FirebaseDataManagerProtocol {
     /// Saves an encodable document to a specified Firestore collection.
     func saveDocument<T: Encodable>(data: T, to collection: String, completion: @escaping (Result<Void, Error>) -> Void)
-    
+
     /// Fetches all documents from a specified Firestore collection and decodes them into the specified type.
     func fetchDocuments<T: Decodable>(from collection: String, completion: @escaping (Result<[T], Error>) -> Void)
-    
+
     /// Fetches documents from a Firestore collection based on an email field match and decodes them into the specified type.
     func fetchDocumentsByEmail<T: Decodable>(from collection: String, email: String, completion: @escaping (Result<[T], Error>) -> Void)
-    
+
     /// Deletes a document with a specified ID from a Firestore collection.
     func deleteDocument(from collection: String, with documentID: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
@@ -36,7 +36,7 @@ class FirebaseDataManager: FirebaseDataManagerProtocol {
     func saveDocument<T: Encodable>(data: T, to collection: String, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             // Attempting to add the document to the Firestore collection.
-            let _ = try db.collection(collection).addDocument(from: data) { error in
+            _ = try db.collection(collection).addDocument(from: data) { error in
                 // Handle completion if an error occurs or upon successful save.
                 if let error = error {
                     completion(.failure(error))
@@ -66,7 +66,7 @@ class FirebaseDataManager: FirebaseDataManagerProtocol {
             }
         }
     }
-    
+
     /// Fetches documents by matching a specific email field in a Firestore collection.
     /// - Parameters:
     ///   - collection: The Firestore collection name to search in.

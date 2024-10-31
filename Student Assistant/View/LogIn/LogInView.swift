@@ -8,15 +8,13 @@
 import SwiftUI
 
 struct LogInView: View {
-    
-    
+
     @State var email: String = ""
     @State var password: String = ""
     @State var alertIsPresented: Bool = false
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @EnvironmentObject var assignmentsViewModel: AssignmentListViewModel
 
-    
     var body: some View {
         VStack {
             ZStack {
@@ -29,26 +27,25 @@ struct LogInView: View {
             }
             .padding(.top)
             .padding(.bottom, 75)
-            
+
             Text("Start your journey with us by connecting to your account.")
                 .multilineTextAlignment(.center)
                 .font(.title3)
                 .foregroundStyle(.gray)
                 .padding(.horizontal, 50)
                 .padding(.bottom, 25)
-            
-            
-            
-            //MARK: - Email and Password fields
+
+            // MARK: - Email and Password fields
             TextField("Email", text: $email)
                 .textInputAutocapitalization(.never)
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 2)) // Custom border
+                .background(RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray, lineWidth: 2))
                 .padding(.bottom, 10)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 50)
                 .padding(.vertical, 10)
-            
+
             SecureField("Password", text: $password)
                 .textInputAutocapitalization(.never)
                 .padding()
@@ -57,7 +54,7 @@ struct LogInView: View {
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 50)
                 .padding(.bottom, 10)
-            
+
             HStack {
                 Text("Forgot your password?")
                 Button(action: {
@@ -67,19 +64,19 @@ struct LogInView: View {
                         .tint(.blue)
                 }
             }
-            
+
             Spacer()
-            
-            //MARK: - Log In With Apple
+
+            // MARK: - Log In With Apple
             LogInWithApple()
                 .frame(maxWidth: .infinity)
                 .frame(height: 45)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .padding(.horizontal, 50)
-            //MARK: - Log In Button
+            // MARK: - Log In Button
             Button {
                 Task {
-                    do{
+                    do {
                         try await AuthManager.shared.signIn(email: email, password: password)
                         appCoordinator.path = NavigationPath() // This clears all previous views
                         assignmentsViewModel.fetchAssignments()
@@ -95,8 +92,8 @@ struct LogInView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 50)
             }
-            
-            //MARK: - Sign Up Button and text
+
+            // MARK: - Sign Up Button and text
             Text("No Account? Create your account by ")
                 .padding(.horizontal, 50)
             Button {
@@ -107,7 +104,7 @@ struct LogInView: View {
                     .buttonStyle(.borderless)
                     .tint(.blue)
             }
-            
+
         }
         .alert(isPresented: $alertIsPresented) {
             Alert(title: Text("Invalid Crendentials"), dismissButton: .default(Text("OK")))

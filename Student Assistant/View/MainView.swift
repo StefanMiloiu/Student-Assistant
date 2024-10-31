@@ -9,26 +9,26 @@ import SwiftUI
 
 /// The main view of the Student Assistant app.
 struct MainView: View {
-    
+
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl  // Access to the app's navigation coordinator
     @State var selectedTimer: Bool = false  // State variable to track if the timer view is selected
-    
+
     // MARK: - Navigation Views
-    
+
     /// A view for assignments.
     var assignmentsView: some View {
         appCoordinator.build(.assignments)
     }
-    
+
     /// A view for exams.
     var examsView: some View {
         appCoordinator.build(.exams)
     }
-    
+
     var dashboardView: some View {
         appCoordinator.build(.dashboard)
     }
-    
+
     /// A view for tracking time.
     var trackTimeView: some View {
         VStack {
@@ -43,7 +43,7 @@ struct MainView: View {
                 MainTrackTimeView()  // Main view for tracking time
                     .transition(.opacity)  // Use opacity transition
             }
-            
+
             // Back Button
             Button(action: {
                 withAnimation {
@@ -65,7 +65,7 @@ struct MainView: View {
             .padding(.bottom, 115)  // Bottom padding
         }
     }
-    
+
     /// The main body of the view.
     var body: some View {
         TabView {
@@ -77,19 +77,19 @@ struct MainView: View {
                 .tabItem {
                     Label("Assignments", systemImage: "note.text")
                 }
-            
+
             examsView
                 .tabItem {
                     Label("Exams", systemImage: "calendar")
                 }
-            
+
             trackTimeView
                 .tabItem {
                     Label("Track Time", systemImage: "clock")
                 }
         }
         .navigationBarTitleDisplayMode(.inline)  // Title display mode
-        
+
     }
 }
 

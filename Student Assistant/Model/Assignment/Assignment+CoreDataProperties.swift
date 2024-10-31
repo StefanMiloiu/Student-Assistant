@@ -15,7 +15,7 @@ import SwiftUICore
     case inProgress = 1
     case completed = 2
     case failed = 3
-    
+
     func toString() -> String {
         switch self {
         case .pending:
@@ -28,7 +28,7 @@ import SwiftUICore
             return "InProgress"
         }
     }
-    
+
     func getColor() -> Color {
         switch self {
         case .pending:
@@ -43,13 +43,12 @@ import SwiftUICore
     }
 }
 
-
 extension Assignment {
-    
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Assignment> {
         return NSFetchRequest<Assignment>(entityName: "Assignment")
     }
-    
+
     @NSManaged public var assignmentID: UUID?
     @NSManaged public var assignmentTitle: String?
     @NSManaged public var assignmentDescription: String?
@@ -61,6 +60,6 @@ extension Assignment {
     @NSManaged public var lastUpdated: Date?
 }
 
-extension Assignment : Identifiable {
-    
+extension Assignment: Identifiable {
+
 }

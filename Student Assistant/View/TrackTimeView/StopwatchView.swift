@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct StopwatchView: View {
-    
+
     @ObservedObject var vm = TrackTimeListViewModel()
     @State var time: String = ""
     @State var subject: String = ""
@@ -18,22 +18,22 @@ struct StopwatchView: View {
     @State private var timer: Timer? // Timer to update the time
     @State var note: Bool = false
     @FocusState var focus: Focus?
-    
+
     var body: some View {
         VStack {
             ZStack {
-                
+
                 Circle()
                     .fill(LinearGradient(colors: [.gray, .gray], startPoint: .leading, endPoint: .trailing))
                     .frame(width: 170, height: 170)
                     .blur(radius: 2)
-                
+
                 // Dashed Circular Border
                 Circle()
                     .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [10, 5]))
                     .frame(width: 170, height: 170)
                     .foregroundColor(.orange)
-                
+
                 Text(time)
                     .font(.title)
                     .fontWeight(.bold)
@@ -43,7 +43,7 @@ struct StopwatchView: View {
                     .frame(width: 150, height: 50)
             }
             .padding(.bottom, 30)
-            
+
             HStack(spacing: 25) {
                 Button(action: {
                     showCustomAlert.toggle()
@@ -53,7 +53,7 @@ struct StopwatchView: View {
                         .background(Color.green.opacity(0.7))
                         .cornerRadius(10)
                 }
-                
+
                 Button(action: {
                     showCancel.toggle()
                 }) {
@@ -71,7 +71,7 @@ struct StopwatchView: View {
                         Text("What are you learning?")
                             .font(.headline)
                             .foregroundStyle(.black)
-                        
+
                         TextField("Subject", text: $subject)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding(10)
@@ -79,8 +79,7 @@ struct StopwatchView: View {
                             .cornerRadius(5)
                             .autocorrectionDisabled()
                             .focused($focus, equals: .subject)
-                        
-                        
+
                         HStack(spacing: 50) {
                             Button("Start") {
                                 if subject != "" {
@@ -94,7 +93,7 @@ struct StopwatchView: View {
                             .frame(width: 100, height: 50)
                             .background(Color.green.opacity(0.7))
                             .cornerRadius(10)
-                            
+
                             Button("Cancel") {
                                 showCustomAlert = false // Close the alert
                             }
@@ -109,7 +108,7 @@ struct StopwatchView: View {
                     .shadow(radius: 10)
                     .onAppear {
                         self.focus = .subject
-                        
+
                     }
                 }
                 if showCancel {
@@ -128,8 +127,7 @@ struct StopwatchView: View {
                                 .cornerRadius(5)
                                 .autocorrectionDisabled()
                         }
-                        
-                        
+
                         HStack(spacing: 50) {
                             Button("Save") {
                                 if noteText != "" {
@@ -140,7 +138,7 @@ struct StopwatchView: View {
                             .frame(width: 100, height: 50)
                             .background(Color.green.opacity(0.7))
                             .cornerRadius(10)
-                            
+
                             Button("Don't save") {
                                 vm.deleteStartedSession()
                                 showCancel = false
@@ -156,7 +154,7 @@ struct StopwatchView: View {
                     .shadow(radius: 10)
                 }
             }
-                
+
         )
         .onAppear {
             self.time = "00:00:00"
@@ -169,17 +167,17 @@ struct StopwatchView: View {
             }
         }
     }
-    
+
     private func startTimer() {
         // Invalidate the previous timer if it's already running
         stopTimer()
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             // Update the time variable with the current stopwatch time
             time = vm.fetchStopWatchTimes() ?? "00:00:00"
         }
     }
-    
+
     // Function to stop the timer
     private func stopTimer() {
         timer?.invalidate() // Stop the timer

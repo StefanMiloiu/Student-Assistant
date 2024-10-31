@@ -9,16 +9,14 @@
 import Foundation
 import CoreData
 
-
 extension Assignment {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Assignment> {
         return NSFetchRequest<Assignment>(entityName: "Assignment")
     }
 
-
 }
 
-extension Assignment : Identifiable {
+extension Assignment: Identifiable {
 
 }

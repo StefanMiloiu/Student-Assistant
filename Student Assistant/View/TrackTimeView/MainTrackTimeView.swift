@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MainTrackTimeView: View {
-    
+
     @State var pickerSelection: String = "Stopwatch"
-    
+
     var body: some View {
         VStack {
             TimeTrackPicker(pickerSelection: $pickerSelection)

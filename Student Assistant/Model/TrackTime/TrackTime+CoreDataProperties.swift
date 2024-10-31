@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension TrackTime {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<TrackTime> {
@@ -24,6 +23,6 @@ extension TrackTime {
 
 }
 
-extension TrackTime : Identifiable {
+extension TrackTime: Identifiable {
 
 }

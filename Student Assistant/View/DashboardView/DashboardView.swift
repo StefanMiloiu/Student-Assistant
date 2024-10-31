@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct DashboardView: View {
-    
+
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @EnvironmentObject var assignmentsVM: AssignmentListViewModel
     @State var showConfirmationAlert: Bool = false
-    
+
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
@@ -20,10 +20,10 @@ struct DashboardView: View {
                     VStack {
                         AssignmentsDashboard()
                             .padding(.horizontal, 10)
-                        
+
                     }
                     Spacer()
-                    
+
                 }
                 Spacer()
             }

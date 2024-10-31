@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct InProgressStatus: View {
-    
+
     @EnvironmentObject var vm: AssignmentListViewModel
     @Binding var showStatusButtons: Bool
     var assignment: Assignment
-    
+
     var notChangeable: Bool {
         return assignment.checkIfCompleted() || assignment.checkIfOverdue() || assignment.checkIfFailed()    }
-    
+
     var body: some View {
         Button(action: {
             if !notChangeable {

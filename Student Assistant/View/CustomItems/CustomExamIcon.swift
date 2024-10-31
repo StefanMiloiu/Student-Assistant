@@ -12,11 +12,11 @@ struct CustomExamIcon: View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.gray.opacity(0.6))
-            
+
             CustomNumberOfExams()
                 .padding(.top, 10)
                 .padding(.trailing, 70)
-            
+
             Image(systemName: "graduationcap.circle.fill")
                 .resizable()
                 .foregroundStyle(.white.opacity(1.0), .lightBlue)
@@ -24,22 +24,22 @@ struct CustomExamIcon: View {
                 .frame(width: 30)
                 .padding(10)
                 .padding(.leading, 80)
-            
+
             Text("Exams Plan")
                 .fontWeight(.heavy)
                 .font(.system(size: 20))
                 .padding(.top, 60)
                 .foregroundStyle(.black)
-                
+
         }
         .frame(width: 160, height: 110, alignment: .topTrailing)
     }
 }
 
 struct CustomNumberOfExams: View {
-    
+
     @EnvironmentObject var vm: ExamListViewModel
-    
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
@@ -54,7 +54,6 @@ struct CustomNumberOfExams: View {
         }
     }
 }
-
 
 #Preview {
     CustomExamIcon()

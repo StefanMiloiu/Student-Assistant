@@ -17,12 +17,12 @@ enum DisplayModes: String, CaseIterable {
 
 // MARK: - CompletedAssignmentsView
 struct CompletedAssignmentsView: View {
-    
+
     // MARK: - Properties
     @EnvironmentObject var vm: AssignmentListViewModel
     @State private var displayMode: DisplayModes = .sevenDays
     @State private var selectedStatus = "Completed"
-    
+
     // MARK: - Computed Properties
     var filteredAssignments: [Assignment] {
         switch displayMode {
@@ -34,18 +34,18 @@ struct CompletedAssignmentsView: View {
             return vm.assignments.filter { Calendar.current.isDateInLastYear($0.assignmentDate ?? Date()) }
         }
     }
-    
+
     var assignmentCountsByDate: [(Date, Int)] {
         var counts: [Date: Int] = [:]
         let calendar = Calendar.current
-        
+
         // Initialize counts based on display mode
         // Use the date range to initialize counts
             let dateRange = getDateRange(for: displayMode, using: calendar)
             for date in dateRange {
                 counts[date] = 0 // Initialize with 0
             }
-        
+
         // Count the assignments per day
         for assignment in filteredAssignments {
             if let date = assignment.assignmentDate {
@@ -53,11 +53,11 @@ struct CompletedAssignmentsView: View {
                 counts[day, default: 0] += 1
             }
         }
-        
+
         // Sort and return the counts by date
         return counts.sorted(by: { $0.key < $1.key })
     }
-    
+
     var body: some View {
         VStack {
             if filteredAssignments.isEmpty {
@@ -71,14 +71,14 @@ struct CompletedAssignmentsView: View {
             vm.fetchAssignments() // Fetch assignments when view appears
         }
     }
-    
+
     // MARK: - Empty State View
     private func emptyStateView() -> some View {
         VStack {
             Text("No completed assignments yet")
                 .font(.headline)
                 .padding()
-            
+
             Image(systemName: "newspaper")
                 .resizable()
                 .scaledToFit()
@@ -88,10 +88,10 @@ struct CompletedAssignmentsView: View {
         .background(Color.red.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 50))
     }
-    
+
     // MARK: - Assignment Chart
     private func assignmentChart() -> some View {
-        VStack{
+        VStack {
             Picker("Display Mode", selection: $displayMode) {
                 ForEach(DisplayModes.allCases, id: \.self) { mode in
                     Text(mode.rawValue).tag(mode)
@@ -99,7 +99,7 @@ struct CompletedAssignmentsView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
-            
+
             Chart {
                 ForEach(assignmentCountsByDate, id: \.0) { date, count in
                     if assignmentCountsByDate.count == 1 {
@@ -123,12 +123,12 @@ struct CompletedAssignmentsView: View {
             .padding(20)
         }
     }
-    
+
     // MARK: - Get Date Range
     private func getDateRange(for mode: DisplayModes, using calendar: Calendar) -> [Date] {
         let today = calendar.startOfDay(for: Date())
         var dateRange: [Date] = []
-        
+
         switch mode {
         case .sevenDays:
             dateRange = (0..<7).compactMap { calendar.date(byAdding: .day, value: -$0, to: today) }

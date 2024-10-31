@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct AssignmentsDashboard: View {
-    
+
     @EnvironmentObject var viewModel: AssignmentListViewModel
-    
+
     var body: some View {
         ZStack(alignment: .center) {
             Color.gray.opacity(0.1)
-            VStack{
+            VStack {
                 Text("Assignments")
                     .font(.title2)
                     .fontWeight(.semibold)
                 HStack { // Add spacing between elements
                     AssignmentsPieChart()
                         .frame(width: 100, height: 70) // Adjust the pie chart frame as needed
-                        
+
                     VStack(alignment: .leading) {
                         AssignmentsInfo(status: .inProgress)
                         AssignmentsInfo(status: .completed)
@@ -37,7 +37,6 @@ struct AssignmentsDashboard: View {
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
-
 
 #Preview {
     AssignmentsDashboard()

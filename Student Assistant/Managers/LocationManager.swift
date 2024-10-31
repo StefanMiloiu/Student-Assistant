@@ -11,7 +11,7 @@ import CoreLocation
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var location: CLLocationCoordinate2D?
     private let locationManager = CLLocationManager()
-    
+
     override init() {
         super.init()
         locationManager.delegate = self
@@ -19,7 +19,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.last?.coordinate
     }

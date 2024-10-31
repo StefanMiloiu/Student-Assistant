@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MainButtonForStatus: View {
-    
+
     @Binding var showStatusButtons: Bool
-    
+
     var body: some View {
         Button(action: {
             showStatusButtons.toggle()
@@ -27,4 +27,3 @@ struct MainButtonForStatus: View {
         }
     }
 }
-

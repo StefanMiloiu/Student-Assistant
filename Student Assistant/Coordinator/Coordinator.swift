@@ -27,7 +27,7 @@ enum Screen: String, Identifiable, Hashable {
 enum Sheet: String, Identifiable, Hashable {
     case examsList  /// Sheet displaying the list of exams
     case calendarInfo  /// Sheet displaying calendar information
-    
+
     var id: String { return self.rawValue }
 }
 
@@ -36,7 +36,7 @@ enum Sheet: String, Identifiable, Hashable {
 enum FullScreenCover: String, Identifiable, Hashable {
     case assignmentDetails  /// Full screen cover for assignment details
     case examDetails        /// Full screen cover for exam details
-    
+
     var id: String { return self.rawValue }
 }
 
@@ -46,7 +46,7 @@ protocol AppCoordinatorProtocol: ObservableObject {
     var path: NavigationPath { get set }
     var sheet: Sheet? { get set }
     var fullScreenCover: FullScreenCover? { get set }
-    
+
     func push(_ screen: Screen)
     func presentSheet(_ sheet: Sheet)
     func presentFullScreenCover(_ fullScreenCover: FullScreenCover)
@@ -62,10 +62,10 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
     @Published var path: NavigationPath = NavigationPath()   /// Stack-based navigation path
     @Published var sheet: Sheet?                             /// Currently presented sheet
     @Published var fullScreenCover: FullScreenCover?         /// Currently presented full-screen cover
-    
+
     @Published var selectedYear: Int?                        /// Selected year in the app's context
     @Published var selectedMonth: Int?                       /// Selected month in the app's context
-    
+
     // MARK: - Navigation Functions
     /// Pushes a new screen onto the navigation path.
     func push(_ screen: Screen) {
@@ -75,32 +75,32 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
     func presentSheet(_ sheet: Sheet) {
         self.sheet = sheet
     }
-    
+
     /// Presents a full-screen cover.
     func presentFullScreenCover(_ fullScreenCover: FullScreenCover) {
         self.fullScreenCover = fullScreenCover
     }
-    
+
     /// Pops the last screen from the navigation path.
     func pop() {
         path.removeLast()
     }
-    
+
     /// Pops all screens and returns to the root screen.
     func popToRoot() {
         path.removeLast(path.count)
     }
-    
+
     /// Dismisses the currently presented sheet.
     func dismissSheet() {
         self.sheet = nil
     }
-    
+
     /// Dismisses the currently presented full-screen cover.
     func dismissFullScreenOver() {
         self.fullScreenCover = nil
     }
-    
+
     // MARK: - Presentation Style Providers
     /// Builds a view for a specific screen.
     @ViewBuilder
@@ -122,7 +122,7 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
             ExamsCalendarView()   /// Exams calendar view
         }
     }
-    
+
     /// Builds a view for a specific sheet.
     @ViewBuilder
     func build(_ sheet: Sheet) -> some View {
@@ -136,7 +136,7 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
             )
         }
     }
-    
+
     /// Builds a view for a specific full-screen cover (currently empty).
     @ViewBuilder
     func build(_ fullScreenCover: FullScreenCover) -> some View {

@@ -12,11 +12,11 @@ struct CustomAssignmentIcon: View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.gray.opacity(0.6))
-            
+
             CustomNumberOfAssignments()
                 .padding(.top, 10)
                 .padding(.trailing, 70)
-            
+
             Image(systemName: "graduationcap.circle.fill")
                 .resizable()
                 .foregroundStyle(.white.opacity(1.0), .myRed)
@@ -24,23 +24,22 @@ struct CustomAssignmentIcon: View {
                 .frame(width: 30)
                 .padding(10)
                 .padding(.leading, 80)
-            
+
             Text("Assignments")
                 .fontWeight(.heavy)
                 .font(.system(size: 20))
                 .padding(.top, 60)
                 .foregroundStyle(.black)
-                
+
         }
         .frame(width: 160, height: 110, alignment: .topTrailing)
     }
 }
 
-
 struct CustomNumberOfAssignments: View {
-    
+
     @StateObject var vm = AssignmentListViewModel()
-    
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)

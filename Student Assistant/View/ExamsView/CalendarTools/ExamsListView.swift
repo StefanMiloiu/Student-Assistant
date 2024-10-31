@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExamsListView: View {
-    
+
     @EnvironmentObject var vm: ExamListViewModel
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @Binding var selectedYear: Int?
@@ -19,17 +19,17 @@ struct ExamsListView: View {
                 EditButton()
                     .frame(maxWidth: .infinity)
                     .frame(alignment: .center)
-            }else {
+            } else {
                 emptyStateView(message: "No exams found", imageName: "text.page.slash.fill", color: .red.opacity(0.1))
                     .padding(.horizontal, 25)
             }
-            
+
             List {
                 ForEach(vm.exams, id: \.examID) { exam in
                     Section {
                         Button(action: {
                             guard let examDate = exam.examDate else { return }
-                            
+
                             let newYear = examYearFormatter(date: examDate)
                             let newMonth = examMonthFormatter(date: examDate)
 
@@ -55,19 +55,19 @@ struct ExamsListView: View {
             }
         }
         .navigationBarItems(leading: EditButton())
-        
+
         .onAppear {
             vm.fetchExams() // Fetch exams when view appears
         }
     }
-    
+
     // MARK: - Empty State View
     private func emptyStateView(message: String, imageName: String, color: Color) -> some View {
         VStack {
             Text(message)
                 .font(.headline)
                 .padding()
-            
+
             Image(systemName: imageName)
                 .resizable()
                 .scaledToFit()
@@ -77,7 +77,7 @@ struct ExamsListView: View {
         .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 50))
     }
-    
+
     private func deleteExam(at offsets: IndexSet) {
         withAnimation {
             for index in offsets {
@@ -89,8 +89,6 @@ struct ExamsListView: View {
         }
     }
 }
-
-
 
 private let examDateFormatter: DateFormatter = {
     let formatter = DateFormatter()

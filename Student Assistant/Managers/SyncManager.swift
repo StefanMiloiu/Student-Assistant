@@ -7,17 +7,16 @@
 
 import Foundation
 
-import Foundation
 import CoreData
 import OSLog
 
 class SyncManager {
-    
+
     private let context: NSManagedObjectContext
     private let firebaseRepo: AssignmentRepoFirebase
     private let assignmentRepo: AssignmentRepo
     private let logger: Logger = Logger()
-    
+
     init(context: NSManagedObjectContext = DataManager.shared.persistentContainer.viewContext,
          firebaseRepo: AssignmentRepoFirebase = AssignmentRepoFirebase(),
          assignmentRepo: AssignmentRepo = AssignmentRepo()) {
@@ -25,16 +24,16 @@ class SyncManager {
         self.firebaseRepo = firebaseRepo
         self.assignmentRepo = assignmentRepo
     }
-    
+
     func syncAssignments(completion: @escaping (Bool) -> Void) {
         firebaseRepo.fetchDocumentsByEmail(email: UserDefaults().userName!) { [weak self] (result: Result<[AssignmentFirebase], Error>) in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let firebaseAssignments):
                 // Fetch all local assignments
                 let localAssignments = self.fetchAllLocalAssignments()
-                
+
                 // Create dictionaries keyed by assignmentID
                 var firebaseDict = [UUID: AssignmentFirebase]()
                 for assignment in firebaseAssignments {
@@ -42,20 +41,20 @@ class SyncManager {
                         firebaseDict[id] = assignment
                     }
                 }
-                
+
                 var localDict = [UUID: Assignment]()
                 for assignment in localAssignments {
                     if let id = assignment.assignmentID {
                         localDict[id] = assignment
                     }
                 }
-                
+
                 // Process assignments
                 self.processAssignments(localDict: localDict, firebaseDict: firebaseDict) {
                     self.assignmentRepo.saveContext()
                     completion(true)
                 }
-                
+
             case .failure(let error):
                 print("Error fetching assignments from Firebase: \(error)")
                 completion(false)
@@ -65,17 +64,17 @@ class SyncManager {
 
     private func processAssignments(localDict: [UUID: Assignment], firebaseDict: [UUID: AssignmentFirebase], completion: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
-        
+
         logger.info("Processing assignments")
         // Sets of assignment IDs
         let localAssignmentIDs = Set(localDict.keys)
         let firebaseAssignmentIDs = Set(firebaseDict.keys)
         let allAssignmentIDs = localAssignmentIDs.union(firebaseAssignmentIDs)
-        
+
         for assignmentID in allAssignmentIDs {
             let localAssignment = localDict[assignmentID]
             let firebaseAssignment = firebaseDict[assignmentID]
-            
+
             /// Check if there is the same assignment in both databases
             if let local = localAssignment, var remote = firebaseAssignment {
                 logger.info("Assignment \(assignmentID) exists in both databases")
@@ -141,18 +140,18 @@ class SyncManager {
                 }
             }
         }
-        
+
         dispatchGroup.notify(queue: .main) {
             completion()
         }
     }
-    
+
     func onLogInSync() {
         /// Sync for Assignments
         assignmentRepo.fetchObject().forEach { (assignment: Assignment) in
             assignmentRepo.deleteObject(object: assignment)
         }
-        
+
         firebaseRepo.fetchDocumentsByEmail(email: UserDefaults().userName ?? "No email found", completion: { [weak self] (result: Result<[AssignmentFirebase], Error>) in
             switch result {
             case .success(let assignments):
@@ -164,7 +163,6 @@ class SyncManager {
             }
         })
     }
-
 
     private func updateLocalAssignment(_ local: Assignment, with remote: AssignmentFirebase) {
         local.assignmentTitle = remote.assignmentTitle

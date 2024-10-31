@@ -18,9 +18,9 @@ struct CalendarInfoView: View {
                         .background(.gray)
                         .clipShape(Circle())
                         .frame(width: 70, height: 70)
-                    
+
                     Image(systemName: "arrowshape.right")
-                    
+
                     Text("14")
                         .frame(width: 50, height: 50)
                         .background(.gray)
@@ -29,18 +29,18 @@ struct CalendarInfoView: View {
                         .padding(.bottom)
                         .background(Color.red)
                         .clipShape(RoundedRectangle(cornerRadius: 25))
-                    
+
                     Text("Exam day marked with red")
                         .multilineTextAlignment(.center)
                 }
             } header: {
                 Text("Adding a new exam")
             }
-            
+
             Section {
-                
+
                 Text("Tap on the date to view exam details")
-                
+
                 HStack {
                     Text("14")
                         .frame(width: 50, height: 50)
@@ -50,13 +50,13 @@ struct CalendarInfoView: View {
                         .padding(.bottom)
                         .background(Color.red)
                         .clipShape(RoundedRectangle(cornerRadius: 25))
-                    
+
                     VStack {
                         Text("Exam Subject")
                             .font(.title)
                             .foregroundStyle(.black)
                         Spacer()
-                        
+
                         ScrollView {
                             Text("Exam Location")
                                 .foregroundStyle(.black)
@@ -66,15 +66,15 @@ struct CalendarInfoView: View {
                         .background(Color.white) // Background for the entire popup
                         .cornerRadius(20)
                         .shadow(radius: 5)
-                        
+
                         Spacer()
-                        
+
                         HStack {
                             Text("Date   \n\(Date(), formatter: formatter())")
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(.black)
                                 .fontWeight(.heavy)
-                            
+
                         }
                     }
                     .padding()
@@ -88,13 +88,13 @@ struct CalendarInfoView: View {
             }
         }
     }
-    
+
     func formatter() -> DateFormatter {
         let timeZone = TimeZone.current
         _ = timeZone.identifier
         return getFormattedCurrentDateTime(in: timeZone)
     }
-    
+
     func getFormattedCurrentDateTime(in timeZone: TimeZone) -> DateFormatter {
         _ = Date()
         let dateFormatter = DateFormatter()
@@ -102,7 +102,7 @@ struct CalendarInfoView: View {
         dateFormatter.timeZone = timeZone
         return dateFormatter
     }
-    
+
 }
 
 #Preview {

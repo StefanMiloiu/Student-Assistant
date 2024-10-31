@@ -9,11 +9,11 @@ enum Focus {
 
 // MARK: - AddAssignmentView
 struct AddAssignmentView: View {
-    
+
     // MARK: - Properties
     @EnvironmentObject var vm: AssignmentListViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+
     @State private var title: String = ""
     @State private var description: String = ""
     @State private var dueDate: Date = Date()

@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - AssignmentsView
 struct AssignmentsView: View {
-    
+
     // MARK: - Properties
     @EnvironmentObject var viewModel: AssignmentListViewModel
     @State private var selectedStatus: String = "In Progress"
@@ -27,7 +27,7 @@ struct AssignmentsView: View {
                         } label: {
                             Text("Assignments History")
                         }
-                        
+
                         Button(action: {
                             viewModel.syncAssignments()
                         }) {
@@ -73,7 +73,7 @@ struct AssignmentsView: View {
         }
         .tint(.red) // Set tint for the navigation view
     }
-    
+
     // MARK: - Add Button
     private var addButton: some View {
         NavigationLink(destination: AddAssignmentView()) {

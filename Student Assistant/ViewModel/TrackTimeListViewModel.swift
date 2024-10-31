@@ -13,20 +13,20 @@ import Foundation
  It conforms to the `ObservableObject` protocol to allow views to observe changes.
 */
 class TrackTimeListViewModel: ObservableObject {
-    
-    //MARK: - Properties
+
+    // MARK: - Properties
     /*
      Observed list of `TrackTime` items.
      This property is marked with `@Published`, so any updates to the list
      will notify the observing views.
     */
     @Published var times: [TrackTime] = []
-    
+
     /*
      Repository for `TrackTime` Core Data operations.
     */
     let trackTimeRepo: TrackTimeRepo
-    
+
     /*
      Initializes the `TrackTimeListViewModel` with a `TrackTimeRepo`.
      Uses dependency injection to resolve the repository instance from the shared `Injection` container.
@@ -35,9 +35,8 @@ class TrackTimeListViewModel: ObservableObject {
     init(trackTimeRepo: TrackTimeRepo = Injection.shared.container.resolve(TrackTimeRepo.self)!) {
         self.trackTimeRepo = trackTimeRepo
     }
-    
-    
-    //MARK: - Methods
+
+    // MARK: - Methods
     /*
      Fetches all `TrackTime` entries from the repository.
      Populates the `times` array and then sorts them in ascending order based on the end time.
@@ -46,7 +45,7 @@ class TrackTimeListViewModel: ObservableObject {
         self.times = trackTimeRepo.fetchObject()
         sortTimes()
     }
-    
+
     /*
      Sorts the `TrackTime` entries by their end time.
      The entries are sorted in ascending order, meaning older entries come first.
@@ -54,7 +53,7 @@ class TrackTimeListViewModel: ObservableObject {
     func sortTimes() {
         self.times.sort(by: { $0.trackTimeEnd ?? Date() < $1.trackTimeEnd ?? Date() })
     }
-    
+
     /*
      Starts tracking time for a given subject and start date.
      If the subject is empty, the function returns `false` indicating failure to start.
@@ -65,12 +64,12 @@ class TrackTimeListViewModel: ObservableObject {
     */
     func startTimeTrack(startDate: Date, subject: String) -> Bool {
         guard subject != "" else { return false }
-        
+
         trackTimeRepo.startTimeTrack(startDate: startDate, subject: subject)
         fetchTimes() // Refresh the list after adding a new entry
         return true
     }
-    
+
     /*
      Stops the ongoing time tracking session.
      Sets the end time and optionally adds notes to the tracked session.
@@ -82,7 +81,7 @@ class TrackTimeListViewModel: ObservableObject {
         trackTimeRepo.endTimeTrack(endDate: endDate, notes: notes)
         fetchTimes() // Refresh the list after updating the entry
     }
-    
+
     /*
      Fetches the currently active `TrackTime` object.
      - Returns: An optional `TrackTime` object, or `nil` if no session is active.
@@ -90,7 +89,7 @@ class TrackTimeListViewModel: ObservableObject {
     func fetchStartedTimes() -> TrackTime? {
         return trackTimeRepo.fetchStartedTrackTime()
     }
-    
+
     /*
      Fetches the time and trsnforms it into a String.
      - Returns: An optional `String` object, "10:10:10" or nil if no object found
@@ -106,7 +105,7 @@ class TrackTimeListViewModel: ObservableObject {
         }
         return nil
     }
-    
+
     /*
      Deletes started time traking session
      */
@@ -114,5 +113,5 @@ class TrackTimeListViewModel: ObservableObject {
         guard let time = fetchStartedTimes() else { return }
         trackTimeRepo.deleteObject(object: time)
     }
-    
+
 }

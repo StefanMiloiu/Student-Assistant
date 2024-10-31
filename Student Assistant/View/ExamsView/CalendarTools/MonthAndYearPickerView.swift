@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct MonthAndYearPickerView: View {
-    
+
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
-    
+
     private var calendar: Calendar {
         Calendar.current
     }
-    
+
     @Binding var selectedMonth: Int
     @Binding var selectedYear: Int
     @Binding var currentDate: Date
     @Binding var examTime: Date
-    
+
     var body: some View {
         VStack {
             Form {
@@ -55,20 +55,20 @@ struct MonthAndYearPickerView: View {
                 .onChange(of: appCoordinator.selectedYear) {
                     updateCurrentDataCoordinator()
                 }
-                
+
             }
             .scrollDisabled(true)
             .frame(width: 350, height: 200, alignment: .center)
             .clipShape(RoundedRectangle(cornerRadius: 20))
         }
     }
-    
+
     private func updateCurrentDate() {
         if let newDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth)) {
             currentDate = newDate
         }
     }
-    
+
     private func updateCurrentDataCoordinator() {
         if let newDate = calendar.date(from: DateComponents(year: appCoordinator.selectedYear, month: appCoordinator.selectedMonth)) {
             currentDate = newDate

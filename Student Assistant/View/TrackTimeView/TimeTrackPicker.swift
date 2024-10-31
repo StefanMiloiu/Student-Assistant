@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct TimeTrackPicker: View {
-    
+
     @Binding var pickerSelection: String
-    
+
     var body: some View {
         Picker("Pick", selection: $pickerSelection) {
             Text("Stopwatch")

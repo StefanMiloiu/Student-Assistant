@@ -8,7 +8,7 @@
 import Foundation
 
 extension UserDefaults {
-    
+
     /// Struct that contains keys for storing user-related data in `UserDefaults`.
     private struct Keys {
         static let userName = "userName"         /// Key for storing the user's name.

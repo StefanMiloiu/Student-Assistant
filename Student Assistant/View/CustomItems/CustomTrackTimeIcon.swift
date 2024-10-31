@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomTrackTimeIcon: View {
-    
+
     @ObservedObject var vm = TrackTimeListViewModel()
     @State var time: String?
     @State var timer: Timer?
@@ -19,13 +19,13 @@ struct CustomTrackTimeIcon: View {
                 .fill(LinearGradient(colors: [.gray, .gray], startPoint: .leading, endPoint: .trailing))
                 .frame(width: 150, height: 150)
                 .blur(radius: 2)
-            
+
             // Dashed Circular Border
             Circle()
                 .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [10, 5]))
                 .frame(width: 150, height: 150)
                 .foregroundColor(.orange)
-            
+
             // Content
             if time != nil {
                 VStack {
@@ -34,7 +34,7 @@ struct CustomTrackTimeIcon: View {
                         .scaledToFit()
                         .frame(width: 40, height: 40)
                         .foregroundColor(.white)
-                    
+
                     Text(time!)
                         .font(.title3)
                         .fontWeight(.bold)
@@ -47,7 +47,7 @@ struct CustomTrackTimeIcon: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                         .foregroundColor(.white)
-                    
+
                     Image(systemName: "timer.circle")
                         .resizable()
                         .scaledToFit()

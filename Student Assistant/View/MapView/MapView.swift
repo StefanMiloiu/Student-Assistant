@@ -6,16 +6,16 @@
 ////
 //
 //
-//import SwiftUI
-//import MapKit
+// import SwiftUI
+// import MapKit
 //
-//struct SavedPin: Identifiable {
+// struct SavedPin: Identifiable {
 //    let id = UUID()
 //    var coordinate: CLLocationCoordinate2D
-//}
+// }
 //
 //
-//struct MapView: View {
+// struct MapView: View {
 //    @StateObject private var locationManager = LocationManager()
 //    @State private var region = MKCoordinateRegion(
 //        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // Default to San Francisco
@@ -75,11 +75,11 @@
 //        }
 //        // Here, you could save pins to UserDefaults, CoreData, or any other storage option.
 //    }
-//}
+// }
 //
 //
-//struct MapView_Previews: PreviewProvider {
+// struct MapView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        MapView()
 //    }
-//}
+// }

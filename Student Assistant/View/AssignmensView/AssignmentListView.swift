@@ -13,14 +13,14 @@ struct AssignmentListView: View {
     @EnvironmentObject var viewModel: AssignmentListViewModel // The view model to manage assignments
     @Binding var selectedStatus: String // The currently selected status filter for assignments
     var filteredForDate: [Assignment]? // Optional filtered assignments based on a date range
-    
+
     // MARK: - Computed Property
     var filteredList: [Assignment] {
         // Filter the list based on the selected status and any date filtering
         if let filteredForDate, !filteredForDate.isEmpty {
             return filteredForDate.filter { $0.assignmentStatus == .completed } // Filter completed assignments if date is provided
         }
-        
+
         // Return assignments based on the selected status
         if selectedStatus == "Failed" {
             return viewModel.assignments.filter { $0.assignmentStatus == .failed }
@@ -30,7 +30,7 @@ struct AssignmentListView: View {
         // Default to completed assignments if no specific status is selected
         return viewModel.assignments.filter { $0.assignmentStatus == .completed }
     }
-    
+
     // MARK: - Body
     var body: some View {
         List {
@@ -59,7 +59,7 @@ struct AssignmentListView: View {
             .onDelete(perform: deleteAssignment) // Enable deletion of assignments
         }
     }
-    
+
     // MARK: - Delete Assignment Function
     // MARK: - Delete Assignment Function
     private func deleteAssignment(at offsets: IndexSet) {

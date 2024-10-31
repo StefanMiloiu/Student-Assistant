@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
-
+import ObiletCalendar
 // MARK: - ExamsCalendarView
 struct ExamsCalendarView: View {
-    
+
     // MARK: - Environment Objects
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl // App coordinator for navigation
     @EnvironmentObject var vm: ExamListViewModel // View model for managing exams
-    
+
     // MARK: - State Properties
     @State private var currentDate = Date() // Current date
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) // Selected month
@@ -22,11 +22,11 @@ struct ExamsCalendarView: View {
     @State private var selectedTime = Date() // Selected time for exams
     @State var isSelected: Bool = false // State for showing the Add Exam popup
     @State var isTapped: Bool = false // State for showing detailed exam view
-    
+
     private var calendar: Calendar {
         Calendar.current // Current calendar
     }
-    
+
     // MARK: - Body
     var body: some View {
         VStack {
@@ -35,7 +35,7 @@ struct ExamsCalendarView: View {
             Spacer()
             header // Month and year picker
             Spacer()
-            
+
             // Conditional views based on selection state
             if isSelected {
                 // Popup for adding an exam
@@ -60,19 +60,22 @@ struct ExamsCalendarView: View {
                     Color.gray.opacity(0.15)
                         .clipShape(RoundedRectangle(cornerRadius: 25))
                         .scaleEffect(y: 1)
-                    daysInMonth // Days in the selected month
+                    calendarView // Days in the selected month
                 }
             }
             Spacer()
         }
         .padding() // Padding for the entire view
     }
-    
+
     // MARK: - Header with Month and Year Pickers
     private var header: some View {
-        MonthAndYearPickerView(selectedMonth: $selectedMonth, selectedYear: $selectedYear, currentDate: $currentDate, examTime: $selectedTime)
+        MonthAndYearPickerView(selectedMonth: $selectedMonth,
+                               selectedYear: $selectedYear,
+                               currentDate: $currentDate,
+                               examTime: $selectedTime)
     }
-    
+
     // MARK: - Display Date Header
     private var displayDate: some View {
         HStack {
@@ -86,14 +89,14 @@ struct ExamsCalendarView: View {
                     .scaledToFit()
                     .frame(width: 30, height: 30) // Icon size
             }
-            
+
             Spacer()
             // Display current month and year
             Text("Exams \n \(String(selectedYear)) / \(selectedMonth)")
                 .font(.title)
                 .fontWeight(.heavy)
                 .multilineTextAlignment(.center)
-            
+
             Spacer()
             // Button to present calendar info
             Button(action: {
@@ -107,7 +110,7 @@ struct ExamsCalendarView: View {
             Spacer()
         }
     }
-    
+
     // MARK: - Days of the Week
     private var daysOfWeek: some View {
         HStack {
@@ -118,9 +121,9 @@ struct ExamsCalendarView: View {
             }
         }
     }
-    
+
     // MARK: - Days in the Month
-    private var daysInMonth: some View {
+    private var calendarView: some View {
         let daysInMonth = calendar.range(of: .day, in: .month, for: currentDate)! // Number of days in the month
         let firstDayOfMonth = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth))! // First day of the month
         let startingOffset = calendar.component(.weekday, from: firstDayOfMonth) - 1 // Starting offset for the month

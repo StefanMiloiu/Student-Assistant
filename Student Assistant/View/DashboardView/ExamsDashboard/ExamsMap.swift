@@ -16,7 +16,7 @@ struct ExamsMap: View {
 
         var body: some View {
             Map {
-                
+
             }
         }
 }

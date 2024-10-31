@@ -7,14 +7,14 @@
 import SwiftUI
 
 struct SignUpView: View {
-    
+
     @State var email: String = ""
     @State var password: String = ""
     @State var confirmPassword: String = ""
     @State var alertIsPresented: Bool = false
     @State var alertMessage: String = ""
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
-    
+
     var body: some View {
         VStack {
             ZStack {
@@ -26,15 +26,15 @@ struct SignUpView: View {
                     .padding()
             }
             .padding(.bottom, 75)
-            
+
             Text("Create your account to start your journey.")
                 .multilineTextAlignment(.center)
                 .font(.title3)
                 .foregroundStyle(.gray)
                 .padding(.horizontal, 50)
                 .padding(.bottom, 25)
-            
-            //MARK: - Email, Password, and Confirm Password Fields
+
+            // MARK: - Email, Password, and Confirm Password Fields
             TextField("Email", text: $email)
                 .textInputAutocapitalization(.never)
                 .padding()
@@ -43,7 +43,7 @@ struct SignUpView: View {
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 50)
                 .padding(.vertical, 10)
-            
+
             SecureField("Password", text: $password)
                 .textInputAutocapitalization(.never)
                 .padding()
@@ -52,7 +52,7 @@ struct SignUpView: View {
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 50)
                 .padding(.vertical, 10)
-            
+
             SecureField("Confirm Password", text: $confirmPassword)
                 .textInputAutocapitalization(.never)
                 .padding()
@@ -61,10 +61,10 @@ struct SignUpView: View {
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 50)
                 .padding(.vertical, 10)
-            
+
             Spacer()
-            
-            //MARK: - Sign Up Button
+
+            // MARK: - Sign Up Button
             Button {
                 if EmailValidation().isValidEmail(email) {
                     if password == confirmPassword {
@@ -94,8 +94,8 @@ struct SignUpView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 50)
             }
-            
-            //MARK: - Back to Log In Button and text
+
+            // MARK: - Back to Log In Button and text
             Text("Already have an account? ")
                 .padding(.horizontal, 50)
             Button {
@@ -106,7 +106,7 @@ struct SignUpView: View {
                     .buttonStyle(.borderless)
                     .tint(.blue)
             }
-            
+
         }
         .alert(isPresented: $alertIsPresented) {
             Alert(title: Text("Oops"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -118,5 +118,3 @@ struct SignUpView: View {
     SignUpView()
         .environmentObject(AppCoordinatorImpl())
 }
-
-
