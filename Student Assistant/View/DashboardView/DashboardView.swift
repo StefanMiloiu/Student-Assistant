@@ -17,9 +17,13 @@ struct DashboardView: View {
         NavigationView {
             VStack(alignment: .leading) {
                 HStack {
-                    AssignmentsDashboard()
-                        .padding(.horizontal, 10)
+                    VStack {
+                        AssignmentsDashboard()
+                            .padding(.horizontal, 10)
+                        
+                    }
                     Spacer()
+                    
                 }
                 Spacer()
             }

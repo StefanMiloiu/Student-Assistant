@@ -1,6 +1,74 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ \n %@ \n %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ \n %2$@ \n %3$@"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "14" : {
+
+    },
+    "Add a note?" : {
+
+    },
+    "Add New Assignment" : {
+
+    },
+    "Adding a new exam" : {
+
+    },
+    "Already have an account? " : {
+
+    },
+    "Assignment Count" : {
+
+    },
+    "Assignment must have a title and a description." : {
+
+    },
+    "Assignment Title" : {
+
+    },
+    "Assignments" : {
+
+    },
+    "Assignments History" : {
+
+    },
+    "Back" : {
+
+    },
+    "Back " : {
+
+    },
+    "Cancel" : {
+
+    },
     "Click Here" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -11,6 +79,85 @@
           }
         }
       }
+    },
+    "Completed Assignments" : {
+
+    },
+    "Confirm Password" : {
+
+    },
+    "Create Assignment" : {
+
+    },
+    "Create your account to start your journey." : {
+
+    },
+    "Dashboard" : {
+
+    },
+    "Date" : {
+
+    },
+    "Date   \n%@" : {
+
+    },
+    "Display Mode" : {
+
+    },
+    "Do you want to sign out?" : {
+
+    },
+    "Don't save" : {
+
+    },
+    "Due Date" : {
+
+    },
+    "Due Time" : {
+
+    },
+    "Email" : {
+
+    },
+    "Enter assignment description..." : {
+
+    },
+    "Enter your email" : {
+
+    },
+    "Error" : {
+
+    },
+    "Exam day marked with red" : {
+
+    },
+    "Exam Location" : {
+
+    },
+    "Exam Subject" : {
+
+    },
+    "Exam Time" : {
+
+    },
+    "Exams" : {
+
+    },
+    "Exams \n %@ / %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Exams \n %1$@ / %2$lld"
+          }
+        }
+      }
+    },
+    "Exams Plan" : {
+
+    },
+    "Failed" : {
+
     },
     "Forgot your password" : {
       "extractionState" : "manual",
@@ -23,6 +170,21 @@
         }
       }
     },
+    "Forgot your password?" : {
+
+    },
+    "In Progress" : {
+
+    },
+    "Invalid Crendentials" : {
+
+    },
+    "Location" : {
+
+    },
+    "Log In" : {
+
+    },
     "Login" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -33,6 +195,30 @@
           }
         }
       }
+    },
+    "Long press on the date to add an exam" : {
+
+    },
+    "Month" : {
+
+    },
+    "No Account? Create your account by " : {
+
+    },
+    "No completed assignments yet" : {
+
+    },
+    "Not created" : {
+
+    },
+    "Notes" : {
+
+    },
+    "OK" : {
+
+    },
+    "Oops" : {
+
     },
     "Password" : {
       "extractionState" : "manual",
@@ -45,6 +231,24 @@
         }
       }
     },
+    "Past studies" : {
+
+    },
+    "Pick" : {
+
+    },
+    "Picker for assignment status" : {
+
+    },
+    "Save" : {
+
+    },
+    "Select Assignment Status" : {
+
+    },
+    "Send Verification Email" : {
+
+    },
     "Sign in with Apple" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -56,6 +260,12 @@
         }
       }
     },
+    "Sign Up" : {
+
+    },
+    "Start" : {
+
+    },
     "Start your journey with us by connecting to your account" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -66,6 +276,42 @@
           }
         }
       }
+    },
+    "Start your journey with us by connecting to your account." : {
+
+    },
+    "Stop" : {
+
+    },
+    "Stopwatch" : {
+
+    },
+    "Studied : %@" : {
+
+    },
+    "Subject" : {
+
+    },
+    "Synchronize Assignments" : {
+
+    },
+    "Tap on the date to view exam details" : {
+
+    },
+    "Track Time" : {
+
+    },
+    "Track your \n study time" : {
+
+    },
+    "What are you learning?" : {
+
+    },
+    "Year" : {
+
+    },
+    "Yes" : {
+
     }
   },
   "version" : "1.0"
