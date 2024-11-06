@@ -13,14 +13,14 @@ struct AssignmentListView: View {
     @EnvironmentObject var viewModel: AssignmentListViewModel // The view model to manage assignments
     @Binding var selectedStatus: String // The currently selected status filter for assignments
     var filteredForDate: [Assignment]? // Optional filtered assignments based on a date range
-
+    
     // MARK: - Computed Property
     var filteredList: [Assignment] {
         // Filter the list based on the selected status and any date filtering
         if let filteredForDate, !filteredForDate.isEmpty {
             return filteredForDate.filter { $0.assignmentStatus == .completed } // Filter completed assignments if date is provided
         }
-
+        
         // Return assignments based on the selected status
         if selectedStatus == "Failed" {
             return viewModel.assignments.filter { $0.assignmentStatus == .failed }
@@ -30,7 +30,21 @@ struct AssignmentListView: View {
         // Default to completed assignments if no specific status is selected
         return viewModel.assignments.filter { $0.assignmentStatus == .completed }
     }
-
+    
+    // Computed property to get color based on status
+    private func getStatusColor(for status: Status) -> Color {
+            switch status {
+            case .pending:
+                return Color(red: 0.24, green: 0.67, blue: 0.97)
+            case .completed:
+                return Color.appCambridgeBlue
+            case .failed:
+                return Color(red: 1.0, green: 0.0, blue: 0.0, opacity: 0.66)
+            case .inProgress:
+                return Color(red: 0.97, green: 0.78, blue: 0.35)
+            }
+        }
+    
     // MARK: - Body
     var body: some View {
         List {
@@ -41,7 +55,7 @@ struct AssignmentListView: View {
                         HStack {
                             // Display the assignment status color
                             Circle()
-                                .fill(assignment.assignmentStatus.getColor()) // Color based on assignment status
+                                .fill(getStatusColor(for: assignment.assignmentStatus)) // Color based on assignment status
                                 .frame(width: 15, height: 15)
                             // Display the assignment title
                             Text(assignment.assignmentTitle ?? "No title")
@@ -58,9 +72,11 @@ struct AssignmentListView: View {
             }
             .onDelete(perform: deleteAssignment) // Enable deletion of assignments
         }
+        .onAppear {
+            viewModel.fetchAssignments()
+        }
     }
-
-    // MARK: - Delete Assignment Function
+    
     // MARK: - Delete Assignment Function
     private func deleteAssignment(at offsets: IndexSet) {
         offsets.forEach { index in

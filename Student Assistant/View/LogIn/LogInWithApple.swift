@@ -11,15 +11,29 @@ import AuthenticationServices
 struct LogInWithApple: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+
     var body: some View {
-        SignInWithAppleButton(
-            .signIn,
-            onRequest: { request in
-                request.requestedScopes = [.fullName, .email]
-            },
-            onCompletion: handleAuthorization
-        )
-        .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+        Group {
+            if colorScheme == .dark {
+                SignInWithAppleButton(
+                    .signIn,
+                    onRequest: { request in
+                        request.requestedScopes = [.fullName, .email]
+                    },
+                    onCompletion: handleAuthorization
+                )
+                .signInWithAppleButtonStyle(.white)
+            } else {
+                SignInWithAppleButton(
+                    .signIn,
+                    onRequest: { request in
+                        request.requestedScopes = [.fullName, .email]
+                    },
+                    onCompletion: handleAuthorization
+                )
+                .signInWithAppleButtonStyle(.black)
+            }
+        }
     }
 
     private func handleAuthorization(result: Result<ASAuthorization, Error>) {

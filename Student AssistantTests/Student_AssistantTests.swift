@@ -70,7 +70,7 @@ final class StudentAssistantTests: XCTestCase {
         }
 
         repo.fetchDocuments(from: "assignments") { (result: Result<[AssignmentFirebase], Error>) in
-            print("Result: \(result)")
+//            print("Result: \(result)")
         }
     }
 }

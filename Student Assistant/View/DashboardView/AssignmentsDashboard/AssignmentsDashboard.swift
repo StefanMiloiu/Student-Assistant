@@ -30,7 +30,7 @@ struct AssignmentsDashboard: View {
                 }
             }
         }
-        .onChange(of: viewModel.assignments) {
+        .onAppear {
             viewModel.fetchAssignments()
         }
         .frame(width: 250, height: 150)

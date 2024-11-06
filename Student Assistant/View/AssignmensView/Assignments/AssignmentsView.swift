@@ -12,6 +12,7 @@ struct AssignmentsView: View {
 
     // MARK: - Properties
     @EnvironmentObject var viewModel: AssignmentListViewModel
+    @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @State private var selectedStatus: String = "In Progress"
 
     var body: some View {
@@ -35,6 +36,10 @@ struct AssignmentsView: View {
                                 Text("Synchronize Assignments")
                                 Spacer()
                                 Image(systemName: "arrow.down.circle.dotted")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                                    .foregroundStyle(Color.appTiffanyBlue)
                             }
                             .frame(maxWidth: .infinity) // Make the HStack take up the full width
                             .multilineTextAlignment(.center) // Center text and icon within HStack
@@ -52,7 +57,7 @@ struct AssignmentsView: View {
                         }
 
                         if selectedStatus == "Failed" && viewModel.fetchFailedAssignments().isEmpty {
-                            emptyStateView(message: "No failed assignments", imageName: "newspaper", color: .green.opacity(0.1))
+                            emptyStateView(message: "No failed assignments", imageName: "newspaper", color: .appCambridgeBlue.opacity(0.1))
                         }
                     }
                     .listRowBackground(Color.clear) // Remove the background color
@@ -65,21 +70,23 @@ struct AssignmentsView: View {
                 }
             }
             .navigationTitle("Assignments")
-            .navigationBarItems(leading: EditButton())
+            .navigationBarItems(leading: EditButton().tint(.accentColor))
             .navigationBarItems(trailing: addButton)
             .onAppear {
                 viewModel.fetchAssignments() // Load assignments on appear
             }
         }
-        .tint(.red) // Set tint for the navigation view
+        .tint(.primary) // Set tint for the navigation view
     }
 
     // MARK: - Add Button
     private var addButton: some View {
-        NavigationLink(destination: AddAssignmentView()) {
+        Button {
+            appCoordinator.pushCustom(AddAssignmentView())
+        } label: {
             Image(systemName: "plus")
+                .tint(.accentColor) // Apply tint here
         }
-        .tint(.red) // Apply tint here
     }
 
     // MARK: - Empty State View

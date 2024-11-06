@@ -34,7 +34,7 @@ import SwiftUICore
         case .pending:
             return Color(red: 0.24, green: 0.67, blue: 0.97) // Color using RGB
         case .completed:
-            return Color(red: 0.34, green: 0.62, blue: 0.17) // Color using RGB
+            return Color.appCambridgeBlue /*Color(red: 0.34, green: 0.62, blue: 0.17) // Color using RGB*/
         case .failed:
             return Color(red: 1.0, green: 0.0, blue: 0.0, opacity: 0.66) // Semi-transparent red
         case .inProgress:
@@ -58,6 +58,7 @@ extension Assignment {
     @NSManaged public var isSynced: Bool
     @NSManaged public var lastSynced: Date?
     @NSManaged public var lastUpdated: Date?
+    @NSManaged public var isRemoved: Bool
 }
 
 extension Assignment: Identifiable {

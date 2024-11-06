@@ -9,16 +9,20 @@ import SwiftUI
 import MapKit
 
 struct ExamsMap: View {
-    @State private var region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), // San Francisco
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        )
-
-        var body: some View {
-            Map {
-
+    @EnvironmentObject var viewModel: ExamListViewModel
+    
+    var body: some View {
+        ZStack {
+            if let firstExam = viewModel.exams.first {
+                CustomExam_MapCell(exam: firstExam)
+            } else {
+                Text("No exam coming ☺️")
             }
         }
+        .onAppear {
+            viewModel.fetchExams()
+        }
+    }
 }
 
 #Preview {

@@ -10,24 +10,76 @@ import SwiftUI
 
 // MARK: - Screen Enum
 /// Represents different screens in the app that can be navigated to.
-enum Screen: String, Identifiable, Hashable {
-    case dashboard  /// Dashboard
-    case home       /// Home
-    case signUp     /// Sign Up
-    case logIn      /// LogIn screen
+enum Screen: Identifiable, Hashable {
+    
+    case dashboard      /// Dashboard
+    case home           /// Home
+    case signUp         /// Sign Up
+    case logIn          /// LogIn screen
     case forgotPassword /// Forgot Password screen
-    case assignments /// Assignments screen
-    case exams      /// Exams screen
-
-    var id: String { return self.rawValue }
+    case assignments    /// Assignments screen
+    case exams          /// Exams screen
+    case addExam
+    case custom(AnyView) // New case for custom views
+    
+    // Conformance to Identifiable
+    var id: String {
+        switch self {
+        case .custom(let view):
+            return String(describing: view)
+        default:
+            return String(describing: self)
+        }
+    }
+    
+    // Conformance to Equatable
+    static func == (lhs: Screen, rhs: Screen) -> Bool {
+        switch (lhs, rhs) {
+        case (.dashboard, .dashboard),
+             (.home, .home),
+             (.signUp, .signUp),
+             (.logIn, .logIn),
+             (.forgotPassword, .forgotPassword),
+             (.assignments, .assignments),
+             (.exams, .exams):
+            return true
+        case (.custom(let lhsView), .custom(let rhsView)):
+            return String(describing: lhsView) == String(describing: rhsView)
+        default:
+            return false
+        }
+    }
+    
+    // Conformance to Hashable
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .dashboard:
+            hasher.combine("dashboard")
+        case .home:
+            hasher.combine("home")
+        case .signUp:
+            hasher.combine("signUp")
+        case .logIn:
+            hasher.combine("logIn")
+        case .forgotPassword:
+            hasher.combine("forgotPassword")
+        case .assignments:
+            hasher.combine("assignments")
+        case .exams:
+            hasher.combine("exams")
+        case .custom(let view):
+            hasher.combine(String(describing: view))
+        case .addExam:
+            hasher.combine("addExam")
+        }
+    }
 }
 
 // MARK: - Sheet Enum
 /// Represents different sheets that can be presented modally.
 enum Sheet: String, Identifiable, Hashable {
-    case examsList  /// Sheet displaying the list of exams
     case calendarInfo  /// Sheet displaying calendar information
-
+    
     var id: String { return self.rawValue }
 }
 
@@ -36,7 +88,7 @@ enum Sheet: String, Identifiable, Hashable {
 enum FullScreenCover: String, Identifiable, Hashable {
     case assignmentDetails  /// Full screen cover for assignment details
     case examDetails        /// Full screen cover for exam details
-
+    
     var id: String { return self.rawValue }
 }
 
@@ -46,7 +98,7 @@ protocol AppCoordinatorProtocol: ObservableObject {
     var path: NavigationPath { get set }
     var sheet: Sheet? { get set }
     var fullScreenCover: FullScreenCover? { get set }
-
+    
     func push(_ screen: Screen)
     func presentSheet(_ sheet: Sheet)
     func presentFullScreenCover(_ fullScreenCover: FullScreenCover)
@@ -62,45 +114,50 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
     @Published var path: NavigationPath = NavigationPath()   /// Stack-based navigation path
     @Published var sheet: Sheet?                             /// Currently presented sheet
     @Published var fullScreenCover: FullScreenCover?         /// Currently presented full-screen cover
-
+    
     @Published var selectedYear: Int?                        /// Selected year in the app's context
     @Published var selectedMonth: Int?                       /// Selected month in the app's context
-
+    
     // MARK: - Navigation Functions
     /// Pushes a new screen onto the navigation path.
     func push(_ screen: Screen) {
         path.append(screen)
     }
+    
+    func pushCustom<V: View>(_ customView: V) {
+            path.append(Screen.custom(AnyView(customView)))
+        }
+    
     /// Presents a modal sheet.
     func presentSheet(_ sheet: Sheet) {
         self.sheet = sheet
     }
-
+    
     /// Presents a full-screen cover.
     func presentFullScreenCover(_ fullScreenCover: FullScreenCover) {
         self.fullScreenCover = fullScreenCover
     }
-
+    
     /// Pops the last screen from the navigation path.
     func pop() {
         path.removeLast()
     }
-
+    
     /// Pops all screens and returns to the root screen.
     func popToRoot() {
         path.removeLast(path.count)
     }
-
+    
     /// Dismisses the currently presented sheet.
     func dismissSheet() {
         self.sheet = nil
     }
-
+    
     /// Dismisses the currently presented full-screen cover.
     func dismissFullScreenOver() {
         self.fullScreenCover = nil
     }
-
+    
     // MARK: - Presentation Style Providers
     /// Builds a view for a specific screen.
     @ViewBuilder
@@ -119,24 +176,20 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
         case .assignments:
             AssignmentsView()     /// Assignments view
         case .exams:
-            ExamsCalendarView()   /// Exams calendar view
+            ExamsMainView()   /// Exams calendar view
+        case .addExam:
+            AddExamView()
+        case .custom(let customView):
+             customView
         }
     }
-
+    
     /// Builds a view for a specific sheet.
     @ViewBuilder
     func build(_ sheet: Sheet) -> some View {
-        switch sheet {
-        case .calendarInfo:
-            CalendarInfoView()    /// Calendar info view
-        case .examsList:
-            ExamsListView(
-                selectedYear: Binding(get: { self.selectedYear }, set: { self.selectedYear = $0 }),
-                selectedMonth: Binding(get: { self.selectedMonth }, set: { self.selectedMonth = $0 })
-            )
-        }
+       
     }
-
+    
     /// Builds a view for a specific full-screen cover (currently empty).
     @ViewBuilder
     func build(_ fullScreenCover: FullScreenCover) -> some View {

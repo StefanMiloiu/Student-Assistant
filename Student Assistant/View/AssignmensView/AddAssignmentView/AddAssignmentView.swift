@@ -9,25 +9,24 @@ enum Focus {
 
 // MARK: - AddAssignmentView
 struct AddAssignmentView: View {
-
+    
     // MARK: - Properties
     @EnvironmentObject var vm: AssignmentListViewModel
+    @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @Environment(\.presentationMode) var presentationMode
-
-    @State private var title: String = ""
-    @State private var description: String = ""
-    @State private var dueDate: Date = Date()
-    @State private var dueHour: Date = Date()
+    
+    @State var title: String = ""
+    @State var description: String = ""
+    @State var dueDate: Date = Date()
+    @State var dueHour: Date = Date()
     @State private var showAlert: Bool = false
+    @State var isModified: Bool = false
+    var assignment: Assignment? = nil
     @FocusState private var focusField: Focus?
-
+    
+    
     var body: some View {
         VStack(spacing: 10) {
-            // Title
-            Text("Add New Assignment")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-
             // Form for entering assignment details
             Form {
                 // MARK: - Title Section
@@ -36,7 +35,7 @@ struct AddAssignmentView: View {
                         .autocorrectionDisabled()
                         .focused($focusField, equals: .title)
                 }
-
+                
                 // MARK: - Description Section
                 Section {
                     ZStack(alignment: .topLeading) {
@@ -45,7 +44,7 @@ struct AddAssignmentView: View {
                             .frame(minHeight: 140)
                             .cornerRadius(8)
                             .focused($focusField, equals: .description)
-
+                        
                         // Placeholder for description
                         if description.isEmpty {
                             Text("Enter assignment description...")
@@ -54,65 +53,82 @@ struct AddAssignmentView: View {
                         }
                     }
                 }
-
+                
                 // MARK: - Due Date and Time Section
                 Section {
                     VStack {
                         DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
                             .datePickerStyle(DefaultDatePickerStyle())
-                            .tint(.myRed.opacity(0.6))
-
+                            .tint(.appTiffanyBlue.opacity(0.6))
+                        
                         DatePicker("Due Time", selection: $dueHour, displayedComponents: .hourAndMinute)
-                            .tint(.myRed)
+                            .tint(.appTiffanyBlue)
                     }
                 }
             }
             .onAppear {
                 // Set initial focus
                 focusField = .title
+                if assignment != nil {
+                    isModified.toggle()
+                }
             }
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Not created"), message: Text("Assignment must have a title and a description."))
             }
-
+            
             // MARK: - Create Assignment Button
             Button(action: createAssignment) {
-                Text("Create Assignment")
+                Text("\(isModified ? "Modify" : "Create Assignment")")
                     .font(.body)
                     .fontWeight(.heavy)
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .foregroundColor(.white)
-                    .background(Color.myRed)
+                    .background(Color.appTiffanyBlue)
                     .cornerRadius(10)
                     .padding(.horizontal)
             }
         }
+        .navigationTitle("\(isModified ? "Modify Assignment" : "Add New Assignment")")
+        .navigationBarTitleDisplayMode(.inline)
         .onTapGesture {
             dismissKeyboard() // Dismiss keyboard on tap outside
         }
     }
-
+    
     // MARK: - Functions
     /// Create a new assignment and dismiss the view
     private func createAssignment() {
         let calendar = Calendar.current
         let finalDate = calendar.date(bySettingHour: calendar.component(.hour, from: dueHour),
-                                       minute: calendar.component(.minute, from: dueHour),
-                                       second: 0,
-                                       of: dueDate) ?? Date()
-
-        if vm.addAssignment(title: title, description: description, dueDate: finalDate) {
-            // Reset fields after creating assignment
-            title = ""
-            description = ""
-            dueDate = Date()
-            dueHour = Date()
-            presentationMode.wrappedValue.dismiss() // Dismiss the view
+                                      minute: calendar.component(.minute, from: dueHour),
+                                      second: 0,
+                                      of: dueDate) ?? Date()
+        if let assignment {
+            if vm.updateAssignment(assignment, title: title, description: description, dueDate: finalDate) {
+                title = ""
+                description = ""
+                dueDate = Date()
+                dueHour = Date()
+                appCoordinator.pop()
+            } else {
+                showAlert.toggle() // Show alert if assignment creation fails
+            }
         } else {
-            showAlert.toggle() // Show alert if assignment creation fails
+            print("Add assignment")
+            if vm.addAssignment(title: title, description: description, dueDate: finalDate) {
+                // Reset fields after creating assignment
+                title = ""
+                description = ""
+                dueDate = Date()
+                dueHour = Date()
+                appCoordinator.pop()
+            } else {
+                showAlert.toggle() // Show alert if assignment creation fails
+            }
         }
     }
-
+    
     /// Function to dismiss the keyboard
     private func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

@@ -12,18 +12,20 @@ struct MainTrackTimeView: View {
     @State var pickerSelection: String = "Stopwatch"
 
     var body: some View {
-        VStack {
-            TimeTrackPicker(pickerSelection: $pickerSelection)
-                .padding()
-            if pickerSelection == "Stopwatch" {
-                StopwatchView()
-            } else {
-                TimeTrackHistory()
+        NavigationView {
+            VStack {
+                TimeTrackPicker(pickerSelection: $pickerSelection)
+                    .padding()
+                if pickerSelection == "Stopwatch" {
+                    StopwatchView()
+                } else {
+                    TimeTrackHistory()
+                }
             }
+            .frame(width: 350, height: 350, alignment: .center)
+            .background(.gray.opacity(0.75))
+            .clipShape(RoundedRectangle(cornerRadius: 30))
         }
-        .frame(width: 350, height: 350, alignment: .center)
-        .background(.gray.opacity(0.75))
-        .clipShape(RoundedRectangle(cornerRadius: 30))
     }
 }
 

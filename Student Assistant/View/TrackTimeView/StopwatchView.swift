@@ -50,7 +50,7 @@ struct StopwatchView: View {
                 }) {
                     Text("Start")
                         .frame(width: 100, height: 50)
-                        .background(Color.green.opacity(0.7))
+                        .background(Color.appTiffanyBlue.opacity(0.7))
                         .cornerRadius(10)
                 }
 
@@ -91,7 +91,7 @@ struct StopwatchView: View {
                                 }
                             }
                             .frame(width: 100, height: 50)
-                            .background(Color.green.opacity(0.7))
+                            .background(Color.appTiffanyBlue.opacity(0.7))
                             .cornerRadius(10)
 
                             Button("Cancel") {
@@ -136,7 +136,7 @@ struct StopwatchView: View {
                                 }
                             }
                             .frame(width: 100, height: 50)
-                            .background(Color.green.opacity(0.7))
+                            .background(Color.appTiffanyBlue.opacity(0.7))
                             .cornerRadius(10)
 
                             Button("Don't save") {

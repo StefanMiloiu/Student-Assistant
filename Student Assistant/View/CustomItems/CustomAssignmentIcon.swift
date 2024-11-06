@@ -38,7 +38,7 @@ struct CustomAssignmentIcon: View {
 
 struct CustomNumberOfAssignments: View {
 
-    @StateObject var vm = AssignmentListViewModel()
+    @EnvironmentObject var vm: AssignmentListViewModel
 
     var body: some View {
         ZStack {

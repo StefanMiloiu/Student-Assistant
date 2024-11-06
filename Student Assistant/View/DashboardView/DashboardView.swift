@@ -18,11 +18,26 @@ struct DashboardView: View {
             VStack(alignment: .leading) {
                 HStack {
                     VStack {
-                        AssignmentsDashboard()
+                        HStack {
+                            AssignmentsDashboard()
+                                .padding(.leading, 10)
+                            
+                            ZStack(alignment: .center) {
+                                Color.gray.opacity(0.1)
+                                VStack {
+                                    Text("Upcoming Exam")
+                                 Image(systemName: "arrow.turn.right.down")
+                                }
+                            }
+                            .frame(width: 125, height: 150)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .padding(.trailing, 10)
+                        }
+                        .padding(.top)
+                        ExamsMap()
                             .padding(.horizontal, 10)
-
+                            .allowsHitTesting(false)
                     }
-                    Spacer()
 
                 }
                 Spacer()
@@ -49,13 +64,16 @@ struct DashboardView: View {
                         showConfirmationAlert.toggle()
                     } label: {
                         Image(systemName: "door.right.hand.open")
+                            .tint(.primary)
                     }
                 }
             }
             .navigationTitle("Dashboard") // Optional: Set the title of the navigation bar
             .onAppear {
                 assignmentsVM.fetchAssignments()
+                assignmentsVM.syncAssignments()
             }
+            .tint(.accentColor)
         }
     }
 }
@@ -63,4 +81,5 @@ struct DashboardView: View {
 #Preview {
     DashboardView()
         .environmentObject(AssignmentListViewModel())
+        .environmentObject(ExamListViewModel())
 }

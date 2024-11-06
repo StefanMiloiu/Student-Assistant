@@ -105,12 +105,22 @@ struct AssignmentRepo: DataManagerProtocol {
     /// - Parameters:
     ///   - assignment: The `Assignment` object whose status needs to be updated.
     ///   - status: The new `Status` to set.
-    func updateStatus(assignment: Assignment, status: Status) {
+    func updateStatus(assignment: Assignment, status: Status) -> Assignment{
         assignment.assignmentStatus = status
         assignment.isSynced = false // Mark as unsynced on status change
         assignment.lastUpdated = Date() // Update lastUpdated to reflect the modification time
-
         saveContext() // Save the context after updating the status
+        return assignment
+    }
+    
+    func updateAssignment(_ assignment: Assignment, title: String, description: String, dueDate: Date) -> Assignment {
+        let contextAssignment = fetchAssignmentByID(assignmentID: assignment.assignmentID!)
+        contextAssignment?.assignmentDate = dueDate
+        contextAssignment?.assignmentTitle = title
+        contextAssignment?.assignmentDescription = description
+        contextAssignment?.assignmentDate = dueDate
+        saveContext()
+        return assignment
     }
 
     // MARK: - Verify Overdue Assignments
@@ -120,7 +130,7 @@ struct AssignmentRepo: DataManagerProtocol {
         for assignment in assignments {
             if assignment.assignmentStatus == .pending || assignment.assignmentStatus == .inProgress,
                let assignmentDate = assignment.assignmentDate, assignmentDate < Date() {
-                updateStatus(assignment: assignment, status: .failed)
+                let _ = updateStatus(assignment: assignment, status: .failed)
             }
         }
     }

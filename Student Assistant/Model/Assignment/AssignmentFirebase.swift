@@ -8,18 +8,19 @@
 import Foundation
 
 struct AssignmentFirebase: Codable {
-    init(assignmentID: UUID? = nil, assignmentEmail: String? = nil, assignmentTitle: String? = nil, assignmentDescription: String? = nil,
-         assignmentGotDate: Date? = nil, assignmentDate: Date? = nil, assignmentStatus: Status, lastUpdated: Date? = nil, lastSynced: Date? = nil, isSynced: Bool? = nil) {
-        self.assignmentID = assignmentID
-        self.assignmentEmail = assignmentEmail
-        self.assignmentTitle = assignmentTitle
-        self.assignmentDescription = assignmentDescription
-        self.assignmentGotDate = assignmentGotDate
-        self.assignmentDate = assignmentDate
-        self.assignmentStatus = assignmentStatus
-        self.lastUpdated = lastUpdated
-        self.lastSynced = lastSynced
-        self.isSynced = isSynced
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.assignmentID = try container.decodeIfPresent(UUID.self, forKey: .assignmentID)
+        self.assignmentEmail = try container.decodeIfPresent(String.self, forKey: .assignmentEmail)
+        self.assignmentTitle = try container.decodeIfPresent(String.self, forKey: .assignmentTitle)
+        self.assignmentDescription = try container.decodeIfPresent(String.self, forKey: .assignmentDescription)
+        self.assignmentGotDate = try container.decodeIfPresent(Date.self, forKey: .assignmentGotDate)
+        self.assignmentDate = try container.decodeIfPresent(Date.self, forKey: .assignmentDate)
+        self.assignmentStatus = try container.decode(Status.self, forKey: .assignmentStatus)
+        self.lastUpdated = try container.decodeIfPresent(Date.self, forKey: .lastUpdated)
+        self.lastSynced = try container.decodeIfPresent(Date.self, forKey: .lastSynced)
+        self.isSynced = try container.decodeIfPresent(Bool.self, forKey: .isSynced)
+        self.isRemoved = try container.decodeIfPresent(Bool.self, forKey: .isRemoved)
     }
 
     init(from assignment: Assignment) throws {
@@ -33,6 +34,7 @@ struct AssignmentFirebase: Codable {
         self.lastUpdated = assignment.lastUpdated
         self.lastSynced = assignment.lastSynced
         self.isSynced = assignment.isSynced
+        self.isRemoved = assignment.isRemoved
     }
 
     public var assignmentID: UUID?
@@ -45,6 +47,7 @@ struct AssignmentFirebase: Codable {
     public var lastUpdated: Date?
     public var lastSynced: Date?
     public var isSynced: Bool?
+    public var isRemoved: Bool?
 
     // MARK: - Overdue Check
     /// Checks if the assignment is overdue.

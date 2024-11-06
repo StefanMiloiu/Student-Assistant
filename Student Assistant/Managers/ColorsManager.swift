@@ -18,7 +18,7 @@ enum ColorsManager {
     var color: Color {
         switch self {
         case .green:
-            return Color.green
+            return Color.appTiffanyBlue
         case .red:
             return Color.red
         case .blue:

@@ -49,7 +49,7 @@ struct LogInView: View {
             SecureField("Password", text: $password)
                 .textInputAutocapitalization(.never)
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 2)) // Custom border
+                .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 2))
                 .padding(.bottom, 10)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 50)
@@ -61,7 +61,8 @@ struct LogInView: View {
                     appCoordinator.push(.forgotPassword)
                 }) {
                     Text("Click Here")
-                        .tint(.blue)
+                        .tint(.appJordyBlue)
+                        .fontWeight(.medium)
                 }
             }
 
@@ -88,7 +89,7 @@ struct LogInView: View {
                 Text("Login")
                     .padding(.vertical, 10)
                     .frame(maxWidth: .infinity)
-                    .background(.gray.opacity(0.2))
+                    .background(.appJordyBlue.opacity(0.99))
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 50)
             }
@@ -102,7 +103,8 @@ struct LogInView: View {
                 Text("Sign Up")
                     .padding(.horizontal, 50)
                     .buttonStyle(.borderless)
-                    .tint(.blue)
+                    .tint(.appJordyBlue)
+                    .fontWeight(.medium)
             }
 
         }
@@ -115,4 +117,5 @@ struct LogInView: View {
 #Preview {
     LogInView()
         .environmentObject(AppCoordinatorImpl())
+        .environmentObject(AssignmentListViewModel())
 }

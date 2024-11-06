@@ -21,7 +21,7 @@ struct ForgotPasswordView: View {
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
                 .padding()
-                .background(Color.secondary.opacity(0.5))
+                .background(.appJordyBlue.opacity(0.5))
                 .cornerRadius(10)
                 .padding()
 
@@ -45,7 +45,8 @@ struct ForgotPasswordView: View {
                 }
             }) {
                 Text("Send Verification Email")
-                    .tint(.blue)
+                    .tint(.appJordyBlue)
+                    .fontWeight(.medium)
             }
             Spacer()
         }

@@ -12,6 +12,8 @@ struct MainView: View {
 
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl  // Access to the app's navigation coordinator
     @State var selectedTimer: Bool = false  // State variable to track if the timer view is selected
+    @State private var selectedTab = 0
+
 
     // MARK: - Navigation Views
 
@@ -77,6 +79,7 @@ struct MainView: View {
                 .tabItem {
                     Label("Assignments", systemImage: "note.text")
                 }
+                
 
             examsView
                 .tabItem {
@@ -88,7 +91,8 @@ struct MainView: View {
                     Label("Track Time", systemImage: "clock")
                 }
         }
-        .navigationBarTitleDisplayMode(.inline)  // Title display mode
+        .tint(.appJordyBlue)
+        .navigationBarTitleDisplayMode(.inline)
 
     }
 }

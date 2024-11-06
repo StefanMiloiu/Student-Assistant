@@ -28,12 +28,12 @@ struct AssignmentsPieChart: View {
         }.count
         let failedCount = viewModel.assignments.filter { $0.assignmentStatus == .failed }.count
 
-        if completedCount == 0 || inProgressCount == 0 || failedCount == 0 {
+        if completedCount == 0 && inProgressCount == 0 && failedCount == 0 {
             return [(status: "", count: 1, color: .gray)]
         }
 
         return [
-               (status: "Completed", count: Double(completedCount), color: .green),
+            (status: "Completed", count: Double(completedCount), color: .appCambridgeBlue),
                (status: "In Progress", count: Double(inProgressCount), color: .yellow),
                (status: "Failed", count: Double(failedCount), color: .red)
            ]

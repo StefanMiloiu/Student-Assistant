@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "%@" : {
 
     },
@@ -30,16 +27,19 @@
     "%lld" : {
 
     },
-    "14" : {
+    "📍" : {
 
     },
     "Add a note?" : {
 
     },
-    "Add New Assignment" : {
+    "Add Exam Location" : {
 
     },
-    "Adding a new exam" : {
+    "Add new exam" : {
+
+    },
+    "Add the location" : {
 
     },
     "Already have an account? " : {
@@ -58,9 +58,6 @@
 
     },
     "Assignments History" : {
-
-    },
-    "Back" : {
 
     },
     "Back " : {
@@ -86,9 +83,6 @@
     "Confirm Password" : {
 
     },
-    "Create Assignment" : {
-
-    },
     "Create your account to start your journey." : {
 
     },
@@ -96,9 +90,6 @@
 
     },
     "Date" : {
-
-    },
-    "Date   \n%@" : {
 
     },
     "Display Mode" : {
@@ -110,10 +101,16 @@
     "Don't save" : {
 
     },
+    "Done" : {
+
+    },
     "Due Date" : {
 
     },
     "Due Time" : {
+
+    },
+    "Edit" : {
 
     },
     "Email" : {
@@ -128,13 +125,7 @@
     "Error" : {
 
     },
-    "Exam day marked with red" : {
-
-    },
-    "Exam Location" : {
-
-    },
-    "Exam Subject" : {
+    "Exam Details" : {
 
     },
     "Exam Time" : {
@@ -142,16 +133,6 @@
     },
     "Exams" : {
 
-    },
-    "Exams \n %@ / %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Exams \n %1$@ / %2$lld"
-          }
-        }
-      }
     },
     "Exams Plan" : {
 
@@ -173,13 +154,19 @@
     "Forgot your password?" : {
 
     },
+    "Get Directions" : {
+
+    },
     "In Progress" : {
 
     },
     "Invalid Crendentials" : {
 
     },
-    "Location" : {
+    "Location (room)" : {
+
+    },
+    "Location: %@" : {
 
     },
     "Log In" : {
@@ -196,16 +183,13 @@
         }
       }
     },
-    "Long press on the date to add an exam" : {
-
-    },
-    "Month" : {
-
-    },
     "No Account? Create your account by " : {
 
     },
     "No completed assignments yet" : {
+
+    },
+    "No exam coming ☺️" : {
 
     },
     "Not created" : {
@@ -243,7 +227,13 @@
     "Save" : {
 
     },
+    "Scheduled for %@" : {
+
+    },
     "Select Assignment Status" : {
+
+    },
+    "Select Date" : {
 
     },
     "Send Verification Email" : {
@@ -295,19 +285,16 @@
     "Synchronize Assignments" : {
 
     },
-    "Tap on the date to view exam details" : {
-
-    },
     "Track Time" : {
 
     },
     "Track your \n study time" : {
 
     },
-    "What are you learning?" : {
+    "Upcoming Exam" : {
 
     },
-    "Year" : {
+    "What are you learning?" : {
 
     },
     "Yes" : {

@@ -54,7 +54,7 @@ struct ExamRepo: DataManagerProtocol {
     ///   - date: The date of the exam.
     ///   - location: The location of the exam.
     /// - Returns: A boolean value indicating whether the exam was successfully added.
-    func addExam(subject: String, date: Date, location: String) -> Bool {
+    func addExam(subject: String, date: Date, location: String, latitude: Double, longitude: Double) -> Bool {
         let context = dataManager.getContext()
         let exam = Exam(context: context)
 
@@ -63,6 +63,8 @@ struct ExamRepo: DataManagerProtocol {
         exam.examDate = date
         exam.examLocation = location
         exam.examSubject = subject
+        exam.examLatitude = latitude
+        exam.examLongitude = longitude
 
         saveContext() // Save the context after adding the exam
         return true

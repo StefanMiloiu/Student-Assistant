@@ -9,13 +9,14 @@ import SwiftUI
 
 // MARK: - DetailedAssignmentsView
 struct DetailedAssignmentsView: View {
-
+    
     // MARK: - Properties
     var assignment: Assignment // The assignment object passed as a parameter
     @EnvironmentObject var vm: AssignmentListViewModel // The view model for managing assignments
+    @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @State var showStatusButtons: Bool = false // State to toggle the visibility of status buttons
     @State var progress: Float = 0.45
-
+    
     // MARK: - Body
     var body: some View {
         VStack(spacing: 20) {
@@ -25,7 +26,7 @@ struct DetailedAssignmentsView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.bottom, 30)
-
+            
             // HStack for showing the assignment dates and status
             HStack {
                 // Display completion or due date, along with time
@@ -42,7 +43,7 @@ struct DetailedAssignmentsView: View {
             .font(.subheadline)
             .multilineTextAlignment(.center) // Center-align text
             .padding(.horizontal, 40)
-
+            
             // Scrollable view for the assignment description
             ScrollView {
                 Text(assignment.assignmentDescription ?? "Could not get assignment description") // Display assignment description
@@ -52,15 +53,30 @@ struct DetailedAssignmentsView: View {
             }
             .padding(.horizontal, 40)
             Spacer()
-
+            
             // Button to change the status of the assignment
             MainButtonForStatus(showStatusButtons: $showStatusButtons)
-
+            
             ProgressView(value: progress)
-
+            
             // Show status buttons if toggled on
             if showStatusButtons {
                 StatusButtonsView(assignment: assignment, showStatusButtons: $showStatusButtons) // View for changing the assignment status
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(action: {
+                    appCoordinator.pushCustom(AddAssignmentView(title: assignment.assignmentTitle ?? "Title",
+                                                                description: assignment.assignmentDescription ?? "Description",
+                                                                dueDate: assignment.assignmentDate ?? Date(),
+                                                                dueHour: assignment.assignmentDate ?? Date(),
+                                                                assignment: assignment))
+                }) {
+                    if assignment.assignmentStatus == .inProgress || assignment.assignmentStatus == .pending {
+                        Text("Edit")
+                    }
+                }
             }
         }
         .onAppear {

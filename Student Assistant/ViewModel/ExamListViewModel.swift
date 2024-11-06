@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 // MARK: - Observable object ExamListViewModel
 class ExamListViewModel: ObservableObject {
@@ -30,10 +31,12 @@ class ExamListViewModel: ObservableObject {
     }
 
     // Function to add a new exam
-    func addExam(subject: String, date: Date, location: String) -> Bool {
+    func addExam(subject: String, date: Date, location: String, locationCoordinates: CLLocationCoordinate2D) -> Bool {
         guard !subject.isEmpty,
               !location.isEmpty else { return false }
-        _ = examRepo.addExam(subject: subject, date: date, location: location)
+        let latitude = locationCoordinates.latitude
+        let longitude = locationCoordinates.longitude
+        _ = examRepo.addExam(subject: subject, date: date, location: location, latitude: latitude, longitude: longitude)
         self.fetchExams()
         return true
     }
@@ -87,6 +90,7 @@ class ExamListViewModel: ObservableObject {
 
     func deleteExam(_ exam: Exam) {
         examRepo.deleteObject(object: exam)
+        fetchExams()
     }
 
     func deletePastExams() {

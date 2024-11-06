@@ -90,7 +90,7 @@ struct SignUpView: View {
                 Text("Sign Up")
                     .padding(.vertical, 10)
                     .frame(maxWidth: .infinity)
-                    .background(.gray.opacity(0.2))
+                    .background(.appJordyBlue.opacity(0.99))
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal, 50)
             }
@@ -104,7 +104,7 @@ struct SignUpView: View {
                 Text("Log In")
                     .padding(.horizontal, 50)
                     .buttonStyle(.borderless)
-                    .tint(.blue)
+                    .tint(.appJordyBlue)
             }
 
         }

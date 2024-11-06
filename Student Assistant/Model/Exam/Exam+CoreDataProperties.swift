@@ -19,6 +19,8 @@ extension Exam {
     @NSManaged public var examID: UUID?
     @NSManaged public var examDate: Date?
     @NSManaged public var examLocation: String?
+    @NSManaged public var examLongitude: Double
+    @NSManaged public var examLatitude: Double
 
 }
 

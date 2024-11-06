@@ -28,7 +28,7 @@ struct CompletedStatus: View {
                 .foregroundStyle(.white)
                 .frame(width: 60, height: 40)
                 .aspectRatio(contentMode: .fit)
-                .background(!notChangeable ? Color.green.opacity(0.7) : Color.gray.opacity(0.7))
+                .background(!notChangeable ? Color.appCambridgeBlue.opacity(0.7) : Color.gray.opacity(0.7))
                 .clipShape(RoundedRectangle(cornerRadius: 6))
         }    }
 }

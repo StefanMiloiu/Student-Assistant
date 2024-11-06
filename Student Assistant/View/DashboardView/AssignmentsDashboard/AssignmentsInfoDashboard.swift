@@ -24,7 +24,7 @@ struct AssignmentsInfo: View {
 
     private func color(for status: Status) -> Color {
         switch status {
-        case .completed: return .green
+        case .completed: return .appCambridgeBlue
         case .failed: return .red
         default: return .yellow
         }

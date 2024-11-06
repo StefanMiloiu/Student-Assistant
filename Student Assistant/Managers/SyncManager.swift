@@ -79,14 +79,12 @@ class SyncManager {
             if let local = localAssignment, var remote = firebaseAssignment {
                 logger.info("Assignment \(assignmentID) exists in both databases")
                 // Assignment exists both locally and in Firebase
-                if local.lastUpdated! < remote.lastUpdated! {
-                    logger.info("Assignment \(String(describing: remote)) is newer in local database")
+                if local.lastUpdated ?? Date() < remote.lastUpdated ?? Date() {
                     // Update local assignment
                     remote.lastSynced = Date()
                     remote.isSynced = true
                     updateLocalAssignment(local, with: remote)
-                } else if local.lastUpdated! > remote.lastUpdated! {
-                    logger.info("Assignment \(String(describing: local)) is newer in Firebase database")
+                } else if local.lastUpdated ?? Date() > remote.lastUpdated ?? Date() {
                     // Update Firebase assignment
                     local.lastSynced = Date()
                     local.isSynced = true
@@ -122,8 +120,8 @@ class SyncManager {
                 logger.info("Assignment \(assignmentID) exists only in the cloud database")
                 // Assignment exists only in Firebase
                 // Could be new or deleted locally
-                if remote.lastUpdated != nil {
-                    if localDict[assignmentID] != nil && remote.assignmentEmail == UserDefaults().userName {
+                if remote.lastUpdated != nil  {
+                    if remote.isRemoved != nil && remote.isRemoved == false {
                         // New assignment in Firebase; create locally
                         logger.info("Entered createLocalAssignment")
                         remote.lastSynced = Date()
