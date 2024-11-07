@@ -68,14 +68,12 @@ struct ExamsMainView: View {
                         }
                     }
                 }
-                
                 .padding(.top, 20)
             }
         }
         .tint(.appCambridgeBlue)
         .onAppear {
             viewModel.fetchExams()
-            print(viewModel.exams.count)
         }
     }
     

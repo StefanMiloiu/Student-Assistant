@@ -43,7 +43,7 @@ struct DetailedExamsView: View {
                     Map(position: $cameraPosition) {
                         Marker("\(exam.examSubject ?? "Exam")", coordinate: coordinates)
                     }
-                    .frame(height: 400)
+                    .frame(height: 500)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .cornerRadius(12)
                     .padding(.horizontal, 10)

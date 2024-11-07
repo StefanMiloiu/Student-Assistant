@@ -29,6 +29,7 @@ struct StudentAssistantApp: App {
         WindowGroup {
             ContentView()
                 .onAppear {
+                    NotificationsManager.requestNotificationPermission()
                     examViewModel.syncExams()
                     assignmentsViewModel.syncAssignments()
                 }

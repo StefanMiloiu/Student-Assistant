@@ -66,6 +66,7 @@ struct AssignmentRepo: DataManagerProtocol {
         assignment.isSynced = false
         assignment.lastUpdated = Date() // Setting lastUpdated to the current date
         assignment.lastSynced = nil // Not synced yet
+        NotificationsManager.scheduleNotification(for: assignment)
 
         saveContext() // Save the context after adding the assignment
     }
@@ -109,16 +110,24 @@ struct AssignmentRepo: DataManagerProtocol {
         assignment.assignmentStatus = status
         assignment.isSynced = false // Mark as unsynced on status change
         assignment.lastUpdated = Date() // Update lastUpdated to reflect the modification time
+        
+        if status == .failed || status == .completed {
+            NotificationsManager.cancelNotification(for: assignment.assignmentID!.uuidString)
+        }
         saveContext() // Save the context after updating the status
         return assignment
     }
     
     func updateAssignment(_ assignment: Assignment, title: String, description: String, dueDate: Date) -> Assignment {
         let contextAssignment = fetchAssignmentByID(assignmentID: assignment.assignmentID!)
-        contextAssignment?.assignmentDate = dueDate
         contextAssignment?.assignmentTitle = title
         contextAssignment?.assignmentDescription = description
         contextAssignment?.assignmentDate = dueDate
+        
+        NotificationsManager.cancelNotification(for: assignment.assignmentID!.uuidString)
+        if assignment.assignmentStatus == .pending || assignment.assignmentStatus == .inProgress {
+            NotificationsManager.scheduleNotification(for: assignment)
+        }
         saveContext()
         return assignment
     }

@@ -104,6 +104,9 @@
     "Done" : {
 
     },
+    "Due %@" : {
+
+    },
     "Due Date" : {
 
     },
@@ -187,6 +190,9 @@
       }
     },
     "No Account? Create your account by " : {
+
+    },
+    "No assignment to complete" : {
 
     },
     "No completed assignments yet" : {

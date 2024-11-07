@@ -33,7 +33,7 @@ struct AssignmentsDashboard: View {
         .onAppear {
             viewModel.fetchAssignments()
         }
-        .frame(width: 250, height: 150)
+        .frame(height: 150)
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
