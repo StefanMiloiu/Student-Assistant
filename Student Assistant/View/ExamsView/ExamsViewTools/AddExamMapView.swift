@@ -184,13 +184,30 @@ struct AddExamMapView: View {
     }
     
     func addExamLocation() {
+        var calendar = Calendar.current
+        var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
+        
+        let timeComponents = calendar.dateComponents([.hour, .minute], from: examTime)
+        dateComponents.hour = timeComponents.hour
+        dateComponents.minute = timeComponents.minute
+        dateComponents.hour = timeComponents.hour
+        dateComponents.minute = timeComponents.minute
+        
+        // Combine the date and time into `currentDate`
+        if let combinedDate = calendar.date(from: dateComponents) {
+            currentDate = combinedDate
+        }
+        
+        // Add the exam to the view model
         let response = viewModel.addExam(subject: examSubject,
                                          date: currentDate,
                                          location: examLocation,
                                          locationCoordinates: searchLocation!)
         if response {
-            print("Ok")
+            print("Exam added successfully")
         }
+        
+        // Pop the current view
         appCoordinator.pop()
         appCoordinator.pop()
     }

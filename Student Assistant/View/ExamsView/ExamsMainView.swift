@@ -16,40 +16,66 @@ struct ExamsMainView: View {
     
     var body: some View  {
         NavigationView {
-            List {
-                    ForEach(viewModel.exams, id: \.self) { exam in
+            if !viewModel.exams.isEmpty {
+                List {
+                    ForEach(viewModel.exams, id: \.id) { exam in
                         Button {
                             appCoordinator.pushCustom(DetailedExamsView(exam: exam, animation: animation))
                         } label: {
                             
-                                CustomExam_MapCell(exam: exam)
-                                    .frame(height: 225) // Ensure consistent height
-                                    .allowsHitTesting(false)
-                                    .tint(Color.appJordyBlue)
+                            CustomExam_MapCell(exam: exam)
+                                .frame(height: 225) // Ensure consistent height
+                                .allowsHitTesting(false)
+                                .tint(Color.appJordyBlue)
                         }
                         .frame(height: 225) // Match height of CustomExam_MapCell
                         .listRowInsets(EdgeInsets()) // Remove default padding for rows
                         .listRowSeparator(.hidden)
                     }
                     .onDelete(perform: deleteExam)
-            }
-            .padding(.top, 20)
-            .navigationTitle("Exams")
-            .scrollContentBackground(.hidden)
-            .listRowSpacing(20)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        appCoordinator.push(.addExam)
-                    } label: {
-                        Image(systemName: "plus")
+                }
+                .scrollContentBackground(.hidden)
+                .padding(.top, 20)
+                .navigationTitle("Exams")
+                .listRowSpacing(20)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            appCoordinator.push(.addExam)
+                        } label: {
+                            Image(systemName: "plus")
+                                .tint(.primary)
+                        }
+                    }
+                    if !viewModel.exams.isEmpty {
+                        ToolbarItem(placement: .topBarLeading) {
+                            EditButton()
+                                .tint(.primary)
+                        }
+                    }
+                }
+                
+            } else {
+                ContentUnavailableView("No exams added yet",
+                                       systemImage: "calendar.badge.exclamationmark",
+                                       description: Text("If you want to add an exam, tap the plus button in the toolbar.")
+                )
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            appCoordinator.push(.addExam)
+                        } label: {
+                            Image(systemName: "plus")
+                                .tint(.primary)
+                        }
+                    }
+                    ToolbarItem(placement: .topBarLeading) {
+                        EditButton()
                             .tint(.primary)
                     }
                 }
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
-                        .tint(.primary)
-                }
+                
+                .padding(.top, 20)
             }
         }
         .tint(.appCambridgeBlue)
@@ -63,7 +89,9 @@ struct ExamsMainView: View {
     private func deleteExam(at offsets: IndexSet) {
         offsets.forEach { index in
             let exam = viewModel.exams[index]
-            viewModel.deleteExam(exam)
+            DispatchQueue.main.async {
+                viewModel.deleteExam(exam)
+            }
         }
     }
 }

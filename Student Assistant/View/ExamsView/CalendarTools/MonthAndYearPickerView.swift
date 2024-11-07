@@ -36,7 +36,7 @@ struct MonthAndYearPickerView: View {
     
     private func updateSelectedDateComponents(from date: Date) {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         selectedYear = components.year ?? selectedYear
         selectedMonth = components.month ?? selectedMonth
         selectedDay = components.day ?? selectedDay

@@ -157,6 +157,9 @@
     "Get Directions" : {
 
     },
+    "If you want to add an exam, tap the plus button in the toolbar." : {
+
+    },
     "In Progress" : {
 
     },
@@ -189,7 +192,10 @@
     "No completed assignments yet" : {
 
     },
-    "No exam coming ☺️" : {
+    "No exams added yet" : {
+
+    },
+    "No exams coming up 📄" : {
 
     },
     "Not created" : {

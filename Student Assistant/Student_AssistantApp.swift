@@ -22,6 +22,8 @@ struct StudentAssistantApp: App {
     @StateObject var appCoordinator: AppCoordinatorImpl = AppCoordinatorImpl()
     @StateObject var examViewModel: ExamListViewModel = ExamListViewModel()
     @StateObject var assignmentsViewModel: AssignmentListViewModel = AssignmentListViewModel()
+    @StateObject var locationManager = LocationManager()
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
@@ -29,6 +31,7 @@ struct StudentAssistantApp: App {
                 .environmentObject(examViewModel)
                 .environmentObject(appCoordinator)
                 .environmentObject(assignmentsViewModel)
+                .environmentObject(locationManager)
         }
     }
 }
