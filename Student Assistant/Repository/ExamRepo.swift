@@ -17,7 +17,7 @@ struct ExamRepo: DataManagerProtocol {
     // MARK: - Initializer
     /// Initializes the repository with a data manager. Defaults to the resolved `DataManager` instance from the dependency injection container.
     /// - Parameter dataManager: A `DataManagerProtocol` instance. Defaults to the injected `DataManager`.
-    init(dataManager: DataManagerProtocol = Injection.shared.container.resolve(DataManager.self)!) {
+    init(dataManager: DataManagerProtocol = DataManager.shared) {
         self.dataManager = dataManager
     }
 
@@ -33,6 +33,19 @@ struct ExamRepo: DataManagerProtocol {
     func fetchObject<Exam>() -> [Exam] where Exam: NSManagedObject {
         deletePastExams() // Clean up past exams before fetching
         return dataManager.fetchObject()
+    }
+    
+    func fetchExamByID(id: UUID) -> Exam? {
+        let context = dataManager.getContext()
+        let request: NSFetchRequest<Exam> = Exam.fetchRequest()
+        request.predicate = NSPredicate(format: "examID == %@", id as CVarArg)
+        
+        do {
+            return try context.fetch(request).first! // Fetch the first matching assignment, if any
+        } catch {
+            print("Error fetching assignment by ID: \(error)")
+            return nil
+        }
     }
 
     // MARK: - Delete Exam
@@ -65,6 +78,10 @@ struct ExamRepo: DataManagerProtocol {
         exam.examSubject = subject
         exam.examLatitude = latitude
         exam.examLongitude = longitude
+        exam.lastSynced = nil
+        exam.lastUpdated = Date()
+        exam.isSynced = false
+        exam.isRemoved = false
 
         saveContext() // Save the context after adding the exam
         return true

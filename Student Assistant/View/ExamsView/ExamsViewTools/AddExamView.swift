@@ -11,6 +11,7 @@ import MapKit
 struct AddExamView: View {
     
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    @State var showAlert: Bool = false
     
     @State private var examSubject: String = ""
     @State private var examLocation: String = ""
@@ -51,6 +52,10 @@ struct AddExamView: View {
                 
                 
                 Button {
+                    guard examSubject != "" && examLocation != "" else {
+                        showAlert.toggle()
+                        return
+                    }
                     appCoordinator.pushCustom(
                         AddExamMapView(examSubject: $examSubject,
                                        examLocation: $examLocation,
@@ -64,6 +69,9 @@ struct AddExamView: View {
                         .foregroundColor(.white)
                         .background(Color.appCambridgeBlue)
                         .cornerRadius(10)
+                }
+                .alert(isPresented: $showAlert ) {
+                    Alert(title: Text("Uppps!"), message: Text("Please enter a subject and location."), dismissButton: .default(Text("OK")))
                 }
                 .listRowBackground(Color.clear)
 

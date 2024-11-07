@@ -74,7 +74,7 @@ class FirebaseDataManager: FirebaseDataManagerProtocol {
     ///   - completion: Closure returning either an array of matching documents or an error.
     func fetchDocumentsByEmail<T: Decodable>(from collection: String, email: String, completion: @escaping (Result<[T], Error>) -> Void) {
         db.collection(collection)
-            .whereField("assignmentEmail", isEqualTo: email)
+            .whereField(collection == "assignments" ? "assignmentEmail" : "examEmail", isEqualTo: email)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(error))

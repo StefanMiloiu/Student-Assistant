@@ -21,6 +21,10 @@ extension Exam {
     @NSManaged public var examLocation: String?
     @NSManaged public var examLongitude: Double
     @NSManaged public var examLatitude: Double
+    @NSManaged public var isSynced: Bool
+    @NSManaged public var lastSynced: Date?
+    @NSManaged public var lastUpdated: Date?
+    @NSManaged public var isRemoved: Bool
 
 }
 

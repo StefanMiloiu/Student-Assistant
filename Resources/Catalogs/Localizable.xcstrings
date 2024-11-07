@@ -221,6 +221,9 @@
         }
       }
     },
+    "Past Date" : {
+
+    },
     "Past studies" : {
 
     },
@@ -228,6 +231,12 @@
 
     },
     "Picker for assignment status" : {
+
+    },
+    "Please enter a subject and location." : {
+
+    },
+    "Please select a date in the future." : {
 
     },
     "Save" : {
@@ -298,6 +307,9 @@
 
     },
     "Upcoming Exam" : {
+
+    },
+    "Uppps!" : {
 
     },
     "What are you learning?" : {

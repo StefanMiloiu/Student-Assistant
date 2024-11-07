@@ -71,7 +71,7 @@ struct DashboardView: View {
             .navigationTitle("Dashboard") // Optional: Set the title of the navigation bar
             .onAppear {
                 assignmentsVM.fetchAssignments()
-                assignmentsVM.syncAssignments()
+                
             }
             .tint(.accentColor)
         }

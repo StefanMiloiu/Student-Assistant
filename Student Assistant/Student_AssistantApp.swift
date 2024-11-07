@@ -28,6 +28,10 @@ struct StudentAssistantApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    examViewModel.syncExams()
+                    assignmentsViewModel.syncAssignments()
+                }
                 .environmentObject(examViewModel)
                 .environmentObject(appCoordinator)
                 .environmentObject(assignmentsViewModel)

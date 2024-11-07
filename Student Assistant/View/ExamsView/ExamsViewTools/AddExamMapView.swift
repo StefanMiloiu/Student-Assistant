@@ -184,7 +184,7 @@ struct AddExamMapView: View {
     }
     
     func addExamLocation() {
-        var calendar = Calendar.current
+        let calendar = Calendar.current
         var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
         
         let timeComponents = calendar.dateComponents([.hour, .minute], from: examTime)

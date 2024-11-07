@@ -16,7 +16,8 @@ struct MonthAndYearPickerView: View {
     @Binding var selectedDay: Int
     @Binding var currentDate: Date
     @Binding var examTime: Date
-
+    @State var showAlert: Bool = false
+    
     var body: some View {
         VStack {
             Section {
@@ -24,7 +25,14 @@ struct MonthAndYearPickerView: View {
                     .datePickerStyle(.graphical)
                     .onChange(of: currentDate) {
                         updateSelectedDateComponents(from: currentDate)
+                        if currentDate < Date().advanced(by: -1) {
+                            currentDate = Date()
+                            showAlert = true
+                        }
                     }
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Past Date"), message: Text("Please select a date in the future."))
             }
             .padding()
             .clipShape(RoundedRectangle(cornerRadius: 20))

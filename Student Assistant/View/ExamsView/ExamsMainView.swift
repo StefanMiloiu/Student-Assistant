@@ -47,11 +47,9 @@ struct ExamsMainView: View {
                                 .tint(.primary)
                         }
                     }
-                    if !viewModel.exams.isEmpty {
-                        ToolbarItem(placement: .topBarLeading) {
-                            EditButton()
-                                .tint(.primary)
-                        }
+                    ToolbarItem(placement: .topBarLeading) {
+                        EditButton()
+                            .tint(.primary)
                     }
                 }
                 
@@ -68,10 +66,6 @@ struct ExamsMainView: View {
                             Image(systemName: "plus")
                                 .tint(.primary)
                         }
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        EditButton()
-                            .tint(.primary)
                     }
                 }
                 
