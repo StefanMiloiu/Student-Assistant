@@ -35,14 +35,7 @@ struct DashboardView: View {
                                     ProgressView(value: Date.getPercentageDone(nextAssignment!))
                                         .padding(.horizontal, 10)
                                         .tint(nextAssignment!.assignmentStatus.getColor())
-                                    
-                                    let customFormatter: DateFormatter = {
-                                        let formatter = DateFormatter()
-                                        formatter.dateFormat = "yyyy-MM-dd 'at' HH:mm"  // Example format: "2024-11-07 at 14:30"
-                                        return formatter
-                                    }()
-                                    
-                                    Text("Due \(customFormatter.string(from: nextAssignment!.assignmentDate ?? Date()))")
+                                    Text("Must be  completed in \(timeRemaining(until: nextAssignment!.assignmentDate ?? Date()))")
                                         .fontWeight(.semibold)
                                 }
                             }
@@ -86,6 +79,7 @@ struct DashboardView: View {
                         ExamsMap()
                             .padding(.horizontal, 10)
                             .allowsHitTesting(false)
+                            .tint(.appJordyBlue)
                     }
                 }
                 Spacer()
@@ -124,6 +118,21 @@ struct DashboardView: View {
             .tint(.accentColor)
         }
     }
+    
+    func timeRemaining(until dueDate: Date) -> String {
+            let now = Date()
+            let interval = dueDate.timeIntervalSince(now)
+            
+            guard interval > 0 else { return "0 days and 0 hours" }
+            
+            let days = Int(interval) / (60 * 60 * 24)
+            let hours = (Int(interval) % (60 * 60 * 24)) / (60 * 60)
+            
+            if days == 0 && hours == 0 {
+                return "less than 1 hour"
+            }
+            return "\(days) days and \(hours) hours"
+        }
 }
 
 #Preview {

@@ -30,42 +30,9 @@ struct MainView: View {
     var dashboardView: some View {
         appCoordinator.build(.dashboard)
     }
-
-    /// A view for tracking time.
-    var trackTimeView: some View {
-        VStack {
-            if !selectedTimer {
-                Button(action: {
-                    selectedTimer.toggle()  // Toggle timer view
-                }) {
-                    CustomTrackTimeIcon()  // Custom icon for tracking time
-                        .transition(.opacity)  // Use opacity transition
-                }
-            } else {
-                MainTrackTimeView()  // Main view for tracking time
-                    .transition(.opacity)  // Use opacity transition
-            }
-
-            // Back Button
-            Button(action: {
-                withAnimation {
-                    selectedTimer.toggle()  // Toggle timer view
-                }
-            }) {
-                if selectedTimer {
-                    HStack {
-                        Text("Back ")  // Back text
-                        Image(systemName: "arrowshape.turn.up.backward")  // Back icon
-                    }
-                    .foregroundStyle(.white)
-                    .font(.headline)
-                    .padding()
-                    .background(Color.gray.opacity(0.6))  // Background color
-                    .cornerRadius(10)  // Rounded corners
-                }
-            }
-            .padding(.bottom, 115)  // Bottom padding
-        }
+    
+    var smartAssistantView: some View {
+        appCoordinator.build(.smartAssistantMainView)
     }
 
     /// The main body of the view.
@@ -74,6 +41,16 @@ struct MainView: View {
             dashboardView
                 .tabItem {
                     Label("Dashboard", systemImage: "house")
+                }
+            
+            smartAssistantView
+                .tabItem {
+                    Label {
+                        Text("Assistant")
+                    } icon: {
+                        Image(systemName: "graduationcap")
+                    }
+
                 }
             assignmentsView
                 .tabItem {
@@ -84,11 +61,6 @@ struct MainView: View {
             examsView
                 .tabItem {
                     Label("Exams", systemImage: "calendar")
-                }
-
-            trackTimeView
-                .tabItem {
-                    Label("Track Time", systemImage: "clock")
                 }
         }
         .tint(.appJordyBlue)

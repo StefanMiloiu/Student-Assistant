@@ -27,11 +27,11 @@ struct CompletedAssignmentsView: View {
     var filteredAssignments: [Assignment] {
         switch displayMode {
         case .sevenDays:
-            return vm.assignments.filter { Calendar.current.isDateInLastWeek($0.assignmentDate ?? Date()) }
+            return vm.fetchCompletedAssignments().filter { Calendar.current.isDateInLastWeek($0.assignmentDate ?? Date()) }
         case .oneMonth:
-            return vm.assignments.filter { Calendar.current.isDateInLastMonth($0.assignmentDate ?? Date()) }
+            return vm.fetchCompletedAssignments().filter { Calendar.current.isDateInLastMonth($0.assignmentDate ?? Date()) }
         case .oneYear:
-            return vm.assignments.filter { Calendar.current.isDateInLastYear($0.assignmentDate ?? Date()) }
+            return vm.fetchCompletedAssignments().filter { Calendar.current.isDateInLastYear($0.assignmentDate ?? Date()) }
         }
     }
 
@@ -68,7 +68,7 @@ struct CompletedAssignmentsView: View {
             }
         }
         .onChange(of: vm.assignments) {
-            vm.fetchAssignments() // Fetch assignments when view appears
+            vm.assignments = vm.fetchCompletedAssignments() // Fetch assignments when view appears
         }
     }
 

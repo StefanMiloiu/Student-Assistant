@@ -13,6 +13,7 @@
 		8E9658582CC9120B00D99398 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658572CC9120B00D99398 /* FirebaseDatabase */; };
 		8E96585A2CC9120B00D99398 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8E9658592CC9120B00D99398 /* FirebaseFirestore */; };
 		8E96585C2CC9120B00D99398 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8E96585B2CC9120B00D99398 /* FirebaseFirestoreCombine-Community */; };
+		8EC2E6852CE0AD2100AC3C8A /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC2E6842CE0AD2100AC3C8A /* OpenAI */; };
 		8ED245572CBAAD4A0007E37C /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 8ED245562CBAAD4A0007E37C /* Swinject */; };
 		8EED9E422CBC39540055A0E8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 8EED9E412CBC39540055A0E8 /* SwiftUIIntrospect */; };
 		8EED9E462CBC39540055A0E8 /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 8EED9E452CBC39540055A0E8 /* SwiftUIIntrospect-Static */; };
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EC2E6852CE0AD2100AC3C8A /* OpenAI in Frameworks */,
 				8ED245572CBAAD4A0007E37C /* Swinject in Frameworks */,
 				8EED9E422CBC39540055A0E8 /* SwiftUIIntrospect in Frameworks */,
 				8EED9E462CBC39540055A0E8 /* SwiftUIIntrospect-Static in Frameworks */,
@@ -157,6 +159,7 @@
 				8E9658572CC9120B00D99398 /* FirebaseDatabase */,
 				8E9658592CC9120B00D99398 /* FirebaseFirestore */,
 				8E96585B2CC9120B00D99398 /* FirebaseFirestoreCombine-Community */,
+				8EC2E6842CE0AD2100AC3C8A /* OpenAI */,
 			);
 			productName = "Student Assistant";
 			productReference = 8ED245182CBAA3C00007E37C /* Student Assistant.app */;
@@ -246,6 +249,7 @@
 				8EED9E402CBC39540055A0E8 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				8E8D33DD2CD3BCAE0045C494 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				8EC2E6832CE0AD2100AC3C8A /* XCRemoteSwiftPackageReference "OpenAI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8ED245192CBAA3C00007E37C /* Products */;
@@ -664,6 +668,14 @@
 				minimumVersion = 11.4.0;
 			};
 		};
+		8EC2E6832CE0AD2100AC3C8A /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		8ED245552CBAAD4A0007E37C /* XCRemoteSwiftPackageReference "Swinject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Swinject/Swinject.git";
@@ -712,6 +724,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8E9658502CC9120B00D99398 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseFirestoreCombine-Community";
+		};
+		8EC2E6842CE0AD2100AC3C8A /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EC2E6832CE0AD2100AC3C8A /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
 		};
 		8ED245562CBAAD4A0007E37C /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;

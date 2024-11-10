@@ -60,7 +60,7 @@
     "Assignments History" : {
 
     },
-    "Back " : {
+    "Assistant" : {
 
     },
     "Cancel" : {
@@ -102,9 +102,6 @@
 
     },
     "Done" : {
-
-    },
-    "Due %@" : {
 
     },
     "Due Date" : {
@@ -188,6 +185,9 @@
           }
         }
       }
+    },
+    "Must be  completed in %@" : {
+
     },
     "No Account? Create your account by " : {
 
@@ -274,6 +274,9 @@
     "Sign Up" : {
 
     },
+    "Smart Assistant" : {
+
+    },
     "Start" : {
 
     },
@@ -304,9 +307,6 @@
 
     },
     "Synchronize Assignments" : {
-
-    },
-    "Track Time" : {
 
     },
     "Track your \n study time" : {

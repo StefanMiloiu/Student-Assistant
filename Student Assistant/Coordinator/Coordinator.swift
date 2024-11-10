@@ -21,6 +21,7 @@ enum Screen: Identifiable, Hashable {
     case exams          /// Exams screen
     case addExam
     case custom(AnyView) // New case for custom views
+    case smartAssistantMainView
     
     // Conformance to Identifiable
     var id: String {
@@ -71,6 +72,8 @@ enum Screen: Identifiable, Hashable {
             hasher.combine(String(describing: view))
         case .addExam:
             hasher.combine("addExam")
+        case .smartAssistantMainView:
+            hasher.combine("smartAssistantMainView")
         }
     }
 }
@@ -181,6 +184,8 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
             AddExamView()
         case .custom(let customView):
              customView
+        case .smartAssistantMainView:
+            MainAssistantView()
         }
     }
     

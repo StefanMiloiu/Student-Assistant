@@ -67,6 +67,7 @@ struct AssignmentRepo: DataManagerProtocol {
         assignment.lastUpdated = Date() // Setting lastUpdated to the current date
         assignment.lastSynced = nil // Not synced yet
         NotificationsManager.scheduleNotification(for: assignment)
+        NotificationsManager.scheduleNotificationDueDate(for: assignment)
 
         saveContext() // Save the context after adding the assignment
     }
@@ -127,6 +128,7 @@ struct AssignmentRepo: DataManagerProtocol {
         NotificationsManager.cancelNotification(for: assignment.assignmentID!.uuidString)
         if assignment.assignmentStatus == .pending || assignment.assignmentStatus == .inProgress {
             NotificationsManager.scheduleNotification(for: assignment)
+            NotificationsManager.scheduleNotificationDueDate(for: assignment)
         }
         saveContext()
         return assignment

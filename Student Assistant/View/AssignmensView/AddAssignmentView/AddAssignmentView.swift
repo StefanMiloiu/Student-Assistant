@@ -88,7 +88,9 @@ struct AddAssignmentView: View {
                     .cornerRadius(10)
                     .padding(.horizontal)
             }
+            .padding(.bottom, 5)
         }
+        .background(.gray.opacity(0.1))
         .navigationTitle("\(isModified ? "Modify Assignment" : "Add New Assignment")")
         .navigationBarTitleDisplayMode(.inline)
         .onTapGesture {

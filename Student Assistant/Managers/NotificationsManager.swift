@@ -43,6 +43,26 @@ final class NotificationsManager {
         }
     }
     
+    static func scheduleNotificationDueDate(for assignment: Assignment) {
+        let content = UNMutableNotificationContent()
+        content.title = "Assignment Failed"
+        content.body = "Your assignment \(assignment.assignmentTitle ?? "Title") was not submitted on time."
+        content.sound = .default
+        if let dueDate = assignment.assignmentDate {
+            let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate), repeats: false)
+            
+            // Use the assignment's unique identifier to manage this notification
+            let request = UNNotificationRequest(identifier: assignment.assignmentID!.uuidString, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error scheduling notification: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+    }
+    
     static func cancelNotification(for assignmentID: String) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [assignmentID])
     }
