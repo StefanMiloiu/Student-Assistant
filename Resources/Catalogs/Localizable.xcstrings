@@ -63,7 +63,13 @@
     "Assistant" : {
 
     },
+    "Back" : {
+
+    },
     "Cancel" : {
+
+    },
+    "Chat Assistant" : {
 
     },
     "Click Here" : {
@@ -154,6 +160,9 @@
     "Forgot your password?" : {
 
     },
+    "Generating flashcards..." : {
+
+    },
     "Get Directions" : {
 
     },
@@ -187,6 +196,9 @@
       }
     },
     "Must be  completed in %@" : {
+
+    },
+    "Next" : {
 
     },
     "No Account? Create your account by " : {
@@ -257,6 +269,9 @@
     "Select Date" : {
 
     },
+    "Send" : {
+
+    },
     "Send Verification Email" : {
 
     },
@@ -309,7 +324,13 @@
     "Synchronize Assignments" : {
 
     },
+    "Tell us about your flashcards, we'll make them smart!" : {
+
+    },
     "Track your \n study time" : {
+
+    },
+    "Type your message..." : {
 
     },
     "Upcoming Exam" : {
@@ -322,6 +343,9 @@
 
     },
     "Yes" : {
+
+    },
+    "Your flashcards about %@ will be ready soon!" : {
 
     }
   },

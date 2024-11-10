@@ -23,6 +23,7 @@ struct StudentAssistantApp: App {
     @StateObject var examViewModel: ExamListViewModel = ExamListViewModel()
     @StateObject var assignmentsViewModel: AssignmentListViewModel = AssignmentListViewModel()
     @StateObject var locationManager = LocationManager()
+    @StateObject var chatViewModel = ChatViewModel()
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
@@ -37,6 +38,7 @@ struct StudentAssistantApp: App {
                 .environmentObject(appCoordinator)
                 .environmentObject(assignmentsViewModel)
                 .environmentObject(locationManager)
+                .environmentObject(chatViewModel)
         }
     }
 }

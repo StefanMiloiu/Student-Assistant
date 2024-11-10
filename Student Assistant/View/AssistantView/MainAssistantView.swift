@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct MainAssistantView: View {
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -14,40 +15,52 @@ struct MainAssistantView: View {
                 // 2x2 Grid of buttons
                 VStack(spacing: 20) {
                     HStack(spacing: 20) {
-                        AssistantButton(label: "Chat", systemImage: "paperplane")
+                        AssistantButton(label: SmartAssistanCases.chat, systemImage: "paperplane")
                             .padding(.leading)
-                        AssistantButton(label: "Smart Flashcards", systemImage: "menucard")
+                        AssistantButton(label: SmartAssistanCases.smartFlashcard, systemImage: "menucard")
                             .padding(.trailing)
                     }
                     
                     HStack(spacing: 20) {
-                        AssistantButton(label: "Exams", systemImage: "calendar")
+                        AssistantButton(label: SmartAssistanCases.exams, systemImage: "calendar")
                             .padding(.leading)
-                        AssistantButton(label: "Assignments", systemImage: "checkmark.circle")
+                        AssistantButton(label: SmartAssistanCases.assignments, systemImage: "checkmark.circle")
                             .padding(.trailing)
                     }
                 }
                 Spacer()
             }
             .navigationTitle("Smart Assistant")
+            .tint(.primary)
         }
     }
 }
 
 // Custom view for each button with styling
 struct AssistantButton: View {
-    let label: String
+    @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    
+    let label: SmartAssistanCases
     let systemImage: String
     
     var body: some View {
         Button(action: {
-            print("\(label) tapped")
+            switch label {
+            case .chat:
+                appCoordinator.pushCustom(ChatAssistantView())
+            case .smartFlashcard:
+                appCoordinator.pushCustom(SmartFlaschardsMainView())
+            case .exams:
+                appCoordinator.pushCustom(ChatAssistantView())
+            case .assignments:
+                appCoordinator.pushCustom(ChatAssistantView())
+            }
         }) {
             VStack {
                 Image(systemName: systemImage)
                     .font(.system(size: 30))
                     .foregroundColor(.appJordyBlue)
-                Text(label)
+                Text(label.rawValue)
                     .font(.body)
                     .foregroundColor(.primary)
             }
@@ -58,6 +71,13 @@ struct AssistantButton: View {
             .shadow(radius: 2)
         }
     }
+}
+
+enum SmartAssistanCases: String {
+    case chat = "Chat"
+    case smartFlashcard = "Smart Flashcard"
+    case exams = "Exams"
+    case assignments = "Assignments"
 }
 
 #Preview {
