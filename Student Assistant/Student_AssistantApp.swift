@@ -33,6 +33,10 @@ struct StudentAssistantApp: App {
                     NotificationsManager.requestNotificationPermission()
                     examViewModel.syncExams()
                     assignmentsViewModel.syncAssignments()
+                    
+                }
+                .task {
+                    await chatViewModel.getStudyRecommendations()
                 }
                 .environmentObject(examViewModel)
                 .environmentObject(appCoordinator)

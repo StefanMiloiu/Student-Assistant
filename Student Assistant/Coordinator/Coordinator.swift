@@ -37,12 +37,12 @@ enum Screen: Identifiable, Hashable {
     static func == (lhs: Screen, rhs: Screen) -> Bool {
         switch (lhs, rhs) {
         case (.dashboard, .dashboard),
-             (.home, .home),
-             (.signUp, .signUp),
-             (.logIn, .logIn),
-             (.forgotPassword, .forgotPassword),
-             (.assignments, .assignments),
-             (.exams, .exams):
+            (.home, .home),
+            (.signUp, .signUp),
+            (.logIn, .logIn),
+            (.forgotPassword, .forgotPassword),
+            (.assignments, .assignments),
+            (.exams, .exams):
             return true
         case (.custom(let lhsView), .custom(let rhsView)):
             return String(describing: lhsView) == String(describing: rhsView)
@@ -80,10 +80,26 @@ enum Screen: Identifiable, Hashable {
 
 // MARK: - Sheet Enum
 /// Represents different sheets that can be presented modally.
-enum Sheet: String, Identifiable, Hashable {
-    case calendarInfo  /// Sheet displaying calendar information
+enum Sheet: Identifiable, Hashable {
+    case custom(AnyView)
     
-    var id: String { return self.rawValue }
+    var id: String {
+        switch self {
+        case .custom:
+            return "custom"
+        }
+    }
+    
+    static func == (lhs: Sheet, rhs: Sheet) -> Bool {
+        switch (lhs, rhs) {
+        case (.custom, .custom):
+            return true
+        }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 // MARK: - FullScreenCover Enum
@@ -128,8 +144,12 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
     }
     
     func pushCustom<V: View>(_ customView: V) {
-            path.append(Screen.custom(AnyView(customView)))
-        }
+        path.append(Screen.custom(AnyView(customView)))
+    }
+    
+    func presentCustomSheet<V: View>(_ customView: V) {
+        self.sheet = Sheet.custom(AnyView(customView))
+    }
     
     /// Presents a modal sheet.
     func presentSheet(_ sheet: Sheet) {
@@ -183,7 +203,7 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
         case .addExam:
             AddExamView()
         case .custom(let customView):
-             customView
+            customView
         case .smartAssistantMainView:
             MainAssistantView()
         }
@@ -192,7 +212,10 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
     /// Builds a view for a specific sheet.
     @ViewBuilder
     func build(_ sheet: Sheet) -> some View {
-       
+        switch sheet {
+        case .custom(let customView):
+            customView
+        }
     }
     
     /// Builds a view for a specific full-screen cover (currently empty).

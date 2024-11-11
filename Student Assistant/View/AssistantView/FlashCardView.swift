@@ -37,7 +37,6 @@ struct FlashCardView: View {
                     .padding(.top, -14)
                     .transition(.slide)
             }
-            
         }
     }
 }

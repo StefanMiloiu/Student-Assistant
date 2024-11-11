@@ -79,8 +79,8 @@ struct SmartFlashcardsView: View {
             }
         }
         .onAppear {
-            if viewModel.flashcards == nil || ((viewModel.flashcards?.isEmpty) != nil) {
-                let _ = viewModel.generateFlashcards(content)
+            Task {
+                await viewModel.generateFlashcards(content)
             }
         }
     }

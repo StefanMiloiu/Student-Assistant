@@ -22,23 +22,25 @@ struct DashboardView: View {
                     Color.gray.opacity(0.1)
                     VStack {
                         if nextAssignment != nil {
+                            Text("Assignment")
+                                .lineLimit(1)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal, 10)
                             Text("\(String(describing: nextAssignment!.assignmentTitle ?? "Title"))")
                                 .lineLimit(1)
                                 .padding(.horizontal, 10)
                                 .fontWeight(.semibold)
-                            Text("\(String(describing: nextAssignment!.assignmentDescription ?? "Description"))")
-                                .lineLimit(1)
-                                .padding(.horizontal, 10)
                             ZStack {
                                 Color.gray.opacity(0.1)
                                 VStack {
+                                    Text("Must be  completed in \(timeRemaining(until: nextAssignment!.assignmentDate ?? Date()))")
+                                        .fontWeight(.semibold)
                                     ProgressView(value: Date.getPercentageDone(nextAssignment!))
                                         .padding(.horizontal, 10)
                                         .tint(nextAssignment!.assignmentStatus.getColor())
-                                    Text("Must be  completed in \(timeRemaining(until: nextAssignment!.assignmentDate ?? Date()))")
-                                        .fontWeight(.semibold)
                                 }
                             }
+                            
                             .frame(height: 50)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                         } else {
@@ -64,10 +66,10 @@ struct DashboardView: View {
                                 VStack {
                                     Text("Upcoming Exam")
                                         .multilineTextAlignment(.center)
-                                        .font(.title2)
+                                        .font(.title3)
                                         .fontWeight(.semibold)
                                     Image(systemName: "arrow.turn.right.down")
-                                        .font(.title2)
+                                        .font(.title3)
                                         .fontWeight(.semibold)
                                 }
                             }

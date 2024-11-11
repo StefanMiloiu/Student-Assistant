@@ -45,6 +45,12 @@
     "Already have an account? " : {
 
     },
+    "Ask me anything!\n I will try my best to help you..." : {
+
+    },
+    "Assignment" : {
+
+    },
     "Assignment Count" : {
 
     },
@@ -125,6 +131,9 @@
     "Enter assignment description..." : {
 
     },
+    "Enter flashcards description... " : {
+
+    },
     "Enter your email" : {
 
     },
@@ -158,6 +167,9 @@
       }
     },
     "Forgot your password?" : {
+
+    },
+    "Generate" : {
 
     },
     "Generating flashcards..." : {
@@ -324,7 +336,7 @@
     "Synchronize Assignments" : {
 
     },
-    "Tell us about your flashcards, we'll make them smart!" : {
+    "To navigate to the exam location, tap the button below." : {
 
     },
     "Track your \n study time" : {
@@ -340,6 +352,9 @@
 
     },
     "What are you learning?" : {
+
+    },
+    "What's up?" : {
 
     },
     "Yes" : {

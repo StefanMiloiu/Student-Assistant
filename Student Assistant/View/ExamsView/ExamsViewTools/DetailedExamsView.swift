@@ -20,52 +20,60 @@ struct DetailedExamsView: View {
     var animation: Namespace.ID // Pass the same Namespace
     
     var body: some View {
-        VStack(spacing: 20) {
-            
-            Text(exam.examSubject ?? "Subject")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-            
-            Text("Scheduled for \(formattedDate(exam.examDate))")
-                .font(.title3)
-                .foregroundColor(.secondary)
-            
-            if let location = exam.examLocation {
-                Text("Location: \(location)")
-                    .font(.title3)
-                    .padding(.top)
+        ZStack {
+            // Map in the background
+            if let coordinates {
+                Map(position: $cameraPosition) {
+                    Marker("\(exam.examSubject ?? "Exam")", coordinate: coordinates)
+                }
+                .frame(height: 500)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .cornerRadius(12)
+                .padding(.horizontal, 10)
+                .padding(.top, -50)
             }
             
-            Divider()
-            if let coordinates {
+            // VStack with text on top of the map
+            VStack(spacing: 20) {
                 VStack {
-                    Map(position: $cameraPosition) {
-                        Marker("\(exam.examSubject ?? "Exam")", coordinate: coordinates)
+                    Text(exam.examSubject ?? "Subject")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                    
+                    Text("Scheduled for \(formattedDate(exam.examDate))")
+                        .font(.title3)
+                        .foregroundColor(.secondary)
+                    
+                    if let location = exam.examLocation {
+                        Text("Location: \(location)")
+                            .font(.title3)
+                            .padding(.top)
                     }
-                    .frame(height: 500)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .cornerRadius(12)
-                    .padding(.horizontal, 10)
-                    
-                    Spacer()
-                    
-                    Button(action: openInMaps) {
-                        Text("Get Directions")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.appCambridgeBlue)
-                            .cornerRadius(8)
-                    }
-                    .padding(.horizontal)
-                    
-                    Spacer()
                 }
+                .frame(height: 200)
+                .background(Color.appCambridgeBlue.opacity(1))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .padding(.horizontal, 35)
+                .padding(.top)
+                
+                Spacer()
+                Text("To navigate to the exam location, tap the button below.")
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+                    .font(.footnote)
+                Button(action: openInMaps) {
+                    Text("Get Directions")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.appCambridgeBlue)
+                        .cornerRadius(8)
+                }
+                .padding(.horizontal)
             }
         }
-        .padding(.top, 20)
         .onAppear {
             coordinates = CLLocationCoordinate2D(latitude: exam.examLatitude, longitude: exam.examLongitude)
             if let coordinates {
@@ -78,12 +86,12 @@ struct DetailedExamsView: View {
     }
     
     private func openInMaps() {
-            guard let coordinates = coordinates else { return }
-            let url = URL(string: "maps://?daddr=\(coordinates.latitude),\(coordinates.longitude)&dirflg=d")!
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
+        guard let coordinates = coordinates else { return }
+        let url = URL(string: "maps://?daddr=\(coordinates.latitude),\(coordinates.longitude)&dirflg=d")!
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+    }
     
     private func formattedDate(_ date: Date?) -> String {
         guard let date = date else { return "Unknown date" }
@@ -93,8 +101,3 @@ struct DetailedExamsView: View {
         return formatter.string(from: date)
     }
 }
-
-//#Preview {
-//    DetailedExamsView(exam: Exam.sample, animation: Namespace().wrappedValue)
-//        .environmentObject(ExamListViewModel())
-//}

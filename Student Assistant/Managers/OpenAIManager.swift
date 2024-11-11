@@ -28,14 +28,13 @@ struct OpenAIManager {
     func sendMessage(_ message: String) async -> String? {
         let query = ChatQuery(
             messages: [.init(role: .user, content: message)!],
-            model: .gpt4_o,
+            model: .gpt4_o_mini,
             maxTokens: 500
         )
         
         do {
             let result = try await openAI.chats(query: query)
             if let responseContent = result.choices.first?.message.content {
-                print("Response: \(responseContent)")
                 return responseContent.string
             } else {
                 print("No response content available.")
@@ -96,7 +95,7 @@ struct OpenAIManager {
     /// Function to generate flashcards based on provided content
     func generateStudyCards(from content: String) async -> [Flashcard]? {
         let prompt = """
-        Generate study flashcards from the following content. Each flashcard should have a question and an answer that could help with memorization and understanding.
+        Generate concise study flashcards from the following content. Each flashcard should have a question and an answer that could help with memorization and understanding. Everything that is in the content try to make flashcard. Use the language that is in the content.
         
         Content:
         \(content)
@@ -108,8 +107,8 @@ struct OpenAIManager {
         
         let query = ChatQuery(
             messages: [.init(role: .user, content: prompt)!],
-            model: .gpt4,
-            maxTokens: 1000
+            model: .gpt4_o_mini,
+            maxTokens: 500
         )
         
         do {
@@ -144,5 +143,38 @@ struct OpenAIManager {
         }
         
         return flashcards
+    }
+    
+    func getStudyRecomandations() async -> String? {
+        // Define possible topics for the advice
+        let currentLanguage = Locale.preferredLanguages.first ?? "en"
+        print("Current language: \(currentLanguage)")
+        let topics = [
+            "Study Tips: Provide a concise and effective study tip for better learning and retention. Without showing the steps, just give the general idea. Separate tips with a new line. The language should be in \(currentLanguage)",
+            "Lifestyle Tips: Suggest a practical lifestyle tip to maintain a healthy and balanced life. Without showing the steps, just give the general idea. Separate tips with a new line. The language should be in \(currentLanguage)",
+            "Life Advice: Give a piece of general advice for personal growth, happiness, and resilience. Without showing the steps, just give the general idea. Separate tips with a new line. The language should be in \(currentLanguage)"
+        ]
+        
+        // Select a random topic
+        let prompt = topics.randomElement() ?? topics[0] + "Your response should not be longer than 75-90 words."
+        let query = ChatQuery(
+            messages: [.init(role: .user, content: prompt)!],
+            model: .gpt4_o_mini,
+            maxTokens: 100
+        )
+        
+        do {
+            let result = try await openAI.chats(query: query)
+            if let responseContent = result.choices.first?.message.content {
+                print(responseContent)
+                return responseContent.string
+            } else {
+                print("No response content available.")
+                return nil
+            }
+        } catch {
+            print("Error: \(error.localizedDescription)")
+            return nil
+        }
     }
 }
