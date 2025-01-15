@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GenerateFlashcardSheet: View {
     
+    var isInteractive: Bool = false
     @Binding var content: String
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     
@@ -37,9 +38,15 @@ struct GenerateFlashcardSheet: View {
                 .padding(.top, 25)
                 Button {
                     appCoordinator.dismissSheet()
-                    appCoordinator.pushCustom(
-                        SmartFlashcardsView(content: content)
-                    )
+                    if isInteractive {
+                        appCoordinator.pushCustom(
+                            SmartInteractiveFlashcardsView(content: content)
+                        )
+                    } else {
+                        appCoordinator.pushCustom(
+                            SmartFlashcardsView(content: content)
+                        )
+                    }
                     content = ""
                 } label: {
                     Text("Generate")

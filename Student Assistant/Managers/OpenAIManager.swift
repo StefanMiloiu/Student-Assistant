@@ -125,6 +125,45 @@ struct OpenAIManager {
         }
     }
     
+    func generateInteractiveStudyCards(from content: String) async -> [FlashcardInteractive]? {
+        let prompt = """
+            Generate interactive study flashcards from the content below. Each flashcard should have:
+            - A question relevant to the content.
+            - One correct answer.
+            - Two incorrect answers that seem plausible.
+            - The response should be in the language that is the content in.
+
+            Format:
+            - Question: [Your question]
+              Answer: [Correct answer]
+              WrongAnswer: [First incorrect answer]
+              WrongAnswer: [Second incorrect answer]
+
+            Content:
+            \(content)
+            """
+        
+        let query = ChatQuery(
+            messages: [.init(role: .user, content: prompt)!],
+            model: .gpt4_o_mini,
+            maxTokens: 2000
+        )
+        
+        do {
+            let result = try await openAI.chats(query: query)
+            guard let responseText = result.choices.first?.message.content else {
+                return nil
+            }
+            
+            // Parse responseText into flashcards
+            print(responseText.string ?? "Could not get string for chat response")
+            return parseInteractiveFlashcards(from: responseText.string ?? "Could not get string for chat response")
+        } catch {
+            print("Error generating flashcards: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     private func parseFlashcards(from response: String) -> [Flashcard] {
         var flashcards: [Flashcard] = []
         
@@ -138,6 +177,44 @@ struct OpenAIManager {
             } else if line.starts(with: "  Answer:"), let question = currentQuestion {
                 let answer = line.replacingOccurrences(of: "  Answer: ", with: "").trimmingCharacters(in: .whitespaces)
                 flashcards.append(Flashcard(question: question, answer: answer))
+                currentQuestion = nil
+            }
+        }
+        
+        return flashcards
+    }
+    
+    private func parseInteractiveFlashcards(from response: String) -> [FlashcardInteractive] {
+        var flashcards: [FlashcardInteractive] = []
+        
+        // Split response text by lines
+        let components = response.components(separatedBy: "\n")
+        var currentQuestion: String?
+        var correctAnswer: String?
+        var wrongAnswers: [String] = []
+
+        for line in components {
+            if line.starts(with: "- Question:") {
+                currentQuestion = line.replacingOccurrences(of: "- Question: ", with: "").trimmingCharacters(in: .whitespaces)
+                correctAnswer = nil
+                wrongAnswers.removeAll()
+            } else if line.starts(with: "  Answer:") {
+                correctAnswer = line.replacingOccurrences(of: "  Answer: ", with: "").trimmingCharacters(in: .whitespaces)
+            } else if line.starts(with: "  WrongAnswer:") {
+                let wrongAnswer = line.replacingOccurrences(of: "  WrongAnswer: ", with: "").trimmingCharacters(in: .whitespaces)
+                wrongAnswers.append(wrongAnswer)
+            }
+            
+            // Check if we have a complete set to form a flashcard
+            if let question = currentQuestion, let answerOne = correctAnswer, wrongAnswers.count == 2 {
+                flashcards.append(
+                    FlashcardInteractive(
+                        question: question,
+                        answerOne: answerOne,
+                        answerTwo: wrongAnswers[0],
+                        answerThree: wrongAnswers[1]
+                    )
+                )
                 currentQuestion = nil
             }
         }

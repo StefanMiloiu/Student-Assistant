@@ -13,7 +13,7 @@ struct MainAssistantView: View {
         NavigationView {
             VStack(spacing: 20) {
                 // 2x2 Grid of buttons
-                VStack(spacing: 20) {
+                VStack(spacing: 10) {
                         AssistantButton(label: SmartAssistanCases.chat, systemImage: "paperplane")
                             .padding(.horizontal)
                     

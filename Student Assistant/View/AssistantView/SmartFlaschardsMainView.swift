@@ -17,9 +17,12 @@ struct SmartFlaschardsMainView: View {
             if showAddRectangle {
                 
             } else {
-                Text("Generate flashcards")
                 HStack {
-                    Spacer()
+                    Text("Generate \nFlashcards")
+                        .foregroundStyle(.appJordyBlue)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 25)
+                    
                     Button {
                         appCoordinator.presentCustomSheet(
                             GenerateFlashcardSheet(content: $content)

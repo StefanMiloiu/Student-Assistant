@@ -165,6 +165,9 @@
     "Failed" : {
 
     },
+    "Finish" : {
+
+    },
     "Forgot your password" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -180,6 +183,12 @@
 
     },
     "Generate" : {
+
+    },
+    "Generate \nFlashcards" : {
+
+    },
+    "Generate \nInteractive flashcards" : {
 
     },
     "Generating flashcards..." : {
@@ -221,6 +230,9 @@
 
     },
     "Next" : {
+
+    },
+    "Next Question" : {
 
     },
     "No Account? Create your account by " : {
@@ -294,6 +306,9 @@
     "Select Date" : {
 
     },
+    "Select the correct answer:" : {
+
+    },
     "Send" : {
 
     },
@@ -355,6 +370,9 @@
     "To get help by our smart assistant please click the button that the owl indicates to. Also please be specific if you want the best results." : {
 
     },
+    "To get help by our smart assistant please click the button that the wolf indicates to. Also please be specific if you want the best results." : {
+
+    },
     "To navigate to the exam location, tap the button below." : {
 
     },
@@ -380,6 +398,9 @@
 
     },
     "Your flashcards about %@ will be ready soon!" : {
+
+    },
+    "Your interactive flashcards about %@ will be ready soon!" : {
 
     }
   },

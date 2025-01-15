@@ -10,6 +10,7 @@ import Foundation
 class ChatViewModel: ObservableObject {
     @Published var messages: [ChatMessage] = []
     @Published var flashcards: [Flashcard]? = nil
+    @Published var interactiveFlashcards: [FlashcardInteractive]? = nil
     @Published var recomandations: String? = nil
     private let openAIManager = OpenAIManager()
     
@@ -59,6 +60,14 @@ class ChatViewModel: ObservableObject {
         if let flashcards = await openAIManager.generateStudyCards(from: content) {
             await MainActor.run {
                 self.flashcards = flashcards
+            }
+        }
+    }
+    
+    func generateInteractiveFlashcards(_ content: String) async {
+        if let flashcards = await openAIManager.generateInteractiveStudyCards(from: content) {
+            await MainActor.run {
+                self.interactiveFlashcards = flashcards
             }
         }
     }

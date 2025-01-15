@@ -17,12 +17,17 @@ struct SmartInteractiveFlashcards: View {
             if showAddRectangle {
                 
             } else {
-                Text("Generate interactive flashcards")
+                
                 HStack {
-                    Spacer()
+                    Text("Generate \nInteractive flashcards")
+                        .foregroundStyle(.appJordyBlue)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 25)
+
+                    
                     Button {
                         appCoordinator.presentCustomSheet(
-                            GenerateFlashcardSheet(content: $content)
+                            GenerateFlashcardSheet(isInteractive: true, content: $content)
                         )
                     } label: {
                         Image(systemName: "plus")
@@ -43,13 +48,13 @@ struct SmartInteractiveFlashcards: View {
                 
             }
             
-            Image("Owl")
+            Image("Wolf")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding(.horizontal, 25)
             
-            Text("To get help by our smart assistant please click the button that the owl indicates to. Also please be specific if you want the best results.")
+            Text("To get help by our smart assistant please click the button that the wolf indicates to. Also please be specific if you want the best results.")
                 .font(.subheadline)
                 .foregroundStyle(.gray)
                 .padding()
