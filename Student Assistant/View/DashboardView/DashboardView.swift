@@ -40,7 +40,6 @@ struct DashboardView: View {
                                         .tint(nextAssignment!.assignmentStatus.getColor())
                                 }
                             }
-                            
                             .frame(height: 50)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                         } else {
@@ -122,19 +121,24 @@ struct DashboardView: View {
     }
     
     func timeRemaining(until dueDate: Date) -> String {
-            let now = Date()
-            let interval = dueDate.timeIntervalSince(now)
-            
-            guard interval > 0 else { return "0 days and 0 hours" }
-            
-            let days = Int(interval) / (60 * 60 * 24)
-            let hours = (Int(interval) % (60 * 60 * 24)) / (60 * 60)
-            
-            if days == 0 && hours == 0 {
-                return "less than 1 hour"
-            }
-            return "\(days) days and \(hours) hours"
+        let now = Date()
+        let interval = dueDate.timeIntervalSince(now)
+        
+        guard interval > 0 else { return "0 days and 0 hours" }
+        
+        let days = Int(interval) / (60 * 60 * 24)
+        let hours = (Int(interval) % (60 * 60 * 24)) / (60 * 60)
+        
+        if days == 0 && hours == 0 {
+            return "less than 1 hour"
         }
+        
+        if days == 0 && hours > 0 {
+            return "less than \(hours) hours"
+        }
+        
+        return "\(days) days and \(hours) hours"
+    }
 }
 
 #Preview {

@@ -136,6 +136,7 @@ class ExamListViewModel: ObservableObject {
     func deleteExam(_ exam: Exam) {
         var examToBeSaved = ExamFirebase(from: exam)
         examToBeSaved.isRemoved = true
+        print(examToBeSaved)
         ExamRepoFirebase().fetchAndSaveDocumentWithID(data: examToBeSaved,
                                                       byField: "examID",
                                                       ID: examToBeSaved.examID?.uuidString ?? "Invali ID" ) { [weak self] Result in

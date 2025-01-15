@@ -57,7 +57,7 @@ struct AddAssignmentView: View {
                 // MARK: - Due Date and Time Section
                 Section {
                     VStack {
-                        DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
+                        DatePicker("Due Date", selection: $dueDate, in: Date()..., displayedComponents: .date)
                             .datePickerStyle(DefaultDatePickerStyle())
                             .tint(.appTiffanyBlue.opacity(0.6))
                         

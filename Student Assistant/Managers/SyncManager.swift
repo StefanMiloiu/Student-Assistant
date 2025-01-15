@@ -78,6 +78,7 @@ class SyncManager {
     
     //MARK: - Assignments
     func syncAssignments(completion: @escaping (Bool) -> Void) {
+        guard UserDefaults().userName != nil else { return }
         firebaseRepo.fetchDocumentsByEmail(email: UserDefaults().userName!) { [weak self] (result: Result<[AssignmentFirebase], Error>) in
             guard let self = self else { return }
             
@@ -323,6 +324,14 @@ class SyncManager {
             
             if let local = localExam, var remote = firebaseExam {
                 logger.info("Exam \(examID) exists in both databases")
+                if local.examDate ?? Date() < Date() {
+                    deleteLocalExam(examID)
+                    dispatchGroup.enter()
+                    print("Entered delete exam firebase")
+                    deleteExamFromFirebase(examID) {
+                        dispatchGroup.leave()
+                    }
+                }
                 if local.lastUpdated ?? Date() < remote.lastUpdated ?? Date() {
                     remote.lastSynced = Date()
                     remote.isSynced = true
@@ -352,14 +361,14 @@ class SyncManager {
             } else if var remote = firebaseExam {
                 logger.info("Exam \(examID) exists only in the cloud database")
                 if remote.lastUpdated != nil {
-                    if remote.isRemoved == false {
-                        print("Entered")
+                    if remote.isRemoved != nil && remote.isRemoved == false {
+                        print("Entered create exam local")
                         remote.lastSynced = Date()
                         remote.isSynced = true
                         createLocalExam(from: remote)
                     } else {
                         dispatchGroup.enter()
-                        print("Entered")
+                        print("Entered delete exam firebase")
                         deleteExamFromFirebase(examID) {
                             dispatchGroup.leave()
                         }

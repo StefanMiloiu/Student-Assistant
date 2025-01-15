@@ -1,13 +1,13 @@
 //
-//  SmartFlaschardsMainView.swift
+//  SmartInteractiveFlashcards.swift
 //  Student Assistant
 //
-//  Created by Stefan Miloiu on 10.11.2024.
+//  Created by Stefan Miloiu on 15.01.2025.
 //
 
 import SwiftUI
 
-struct SmartFlaschardsMainView: View {
+struct SmartInteractiveFlashcards: View {
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
     @State var content: String = ""
     @State var showAddRectangle: Bool = false
@@ -17,7 +17,7 @@ struct SmartFlaschardsMainView: View {
             if showAddRectangle {
                 
             } else {
-                Text("Generate flashcards")
+                Text("Generate interactive flashcards")
                 HStack {
                     Spacer()
                     Button {
@@ -62,5 +62,5 @@ struct SmartFlaschardsMainView: View {
 }
 
 #Preview {
-    SmartFlaschardsMainView()
+    SmartInteractiveFlashcards()
 }

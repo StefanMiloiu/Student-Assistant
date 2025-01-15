@@ -28,6 +28,9 @@ class ChatViewModel: ObservableObject {
         
         // Create the full prompt with conversation history and data summary
         let prompt = """
+                Here is todays date:
+                \(Date.now)
+                
                 Here is my schedule information:
                 \(dataSummary)
                 
@@ -53,9 +56,6 @@ class ChatViewModel: ObservableObject {
     }
     
     func generateFlashcards(_ content: String) async {
-        DispatchQueue.main.async {
-            self.flashcards = nil
-        }
         if let flashcards = await openAIManager.generateStudyCards(from: content) {
             await MainActor.run {
                 self.flashcards = flashcards

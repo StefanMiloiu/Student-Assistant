@@ -14,17 +14,14 @@ struct MainAssistantView: View {
             VStack(spacing: 20) {
                 // 2x2 Grid of buttons
                 VStack(spacing: 20) {
-                    HStack(spacing: 20) {
                         AssistantButton(label: SmartAssistanCases.chat, systemImage: "paperplane")
-                            .padding(.leading)
-                        AssistantButton(label: SmartAssistanCases.smartFlashcard, systemImage: "menucard")
-                            .padding(.trailing)
-                    }
+                            .padding(.horizontal)
                     
-                    HStack(spacing: 20) {
-                        AssistantButton(label: SmartAssistanCases.exams, systemImage: "calendar")
+                    HStack {
+                        AssistantButton(label: SmartAssistanCases.smartFlashcard, systemImage: "menucard")
                             .padding(.leading)
-                        AssistantButton(label: SmartAssistanCases.assignments, systemImage: "checkmark.circle")
+                    
+                        AssistantButton(label: SmartAssistanCases.flashCardsInteractive, systemImage: "newspaper")
                             .padding(.trailing)
                     }
                 }
@@ -64,10 +61,8 @@ struct AssistantButton: View {
                     appCoordinator.pushCustom(ChatAssistantView())
                 case .smartFlashcard:
                     appCoordinator.pushCustom(SmartFlaschardsMainView())
-                case .exams:
-                    appCoordinator.pushCustom(ChatAssistantView())
-                case .assignments:
-                    appCoordinator.pushCustom(ChatAssistantView())
+                case .flashCardsInteractive:
+                    appCoordinator.pushCustom(SmartInteractiveFlashcards())
                 }
             }) {
                 VStack {
@@ -91,8 +86,8 @@ struct AssistantButton: View {
 enum SmartAssistanCases: String {
     case chat = "Chat"
     case smartFlashcard = "Smart Flashcard"
-    case exams = "Exams"
-    case assignments = "Assignments"
+    case flashCardsInteractive = "Interactive Flashcards"
+    
 }
 
 #Preview {

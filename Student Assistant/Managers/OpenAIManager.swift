@@ -66,7 +66,7 @@ struct OpenAIManager {
         }
         
         summary += "\nAssignments:\n"
-        for assignment in assignments {
+        for assignment in assignments.filter({$0.assignmentStatus == .inProgress || $0.assignmentStatus == .pending}) {
             summary += """
             - Title: \(assignment.assignmentTitle ?? "No Title")
               Due Date: \(assignment.assignmentDate?.description ?? "No Date")
@@ -148,19 +148,19 @@ struct OpenAIManager {
     func getStudyRecomandations() async -> String? {
         // Define possible topics for the advice
         let currentLanguage = Locale.preferredLanguages.first ?? "en"
-        print("Current language: \(currentLanguage)")
         let topics = [
-            "Study Tips: Provide a concise and effective study tip for better learning and retention. Without showing the steps, just give the general idea. Separate tips with a new line. The language should be in \(currentLanguage)",
-            "Lifestyle Tips: Suggest a practical lifestyle tip to maintain a healthy and balanced life. Without showing the steps, just give the general idea. Separate tips with a new line. The language should be in \(currentLanguage)",
-            "Life Advice: Give a piece of general advice for personal growth, happiness, and resilience. Without showing the steps, just give the general idea. Separate tips with a new line. The language should be in \(currentLanguage)"
-        ]
+                "Study Tips: Provide a few short, unnumbered tips for effective learning and retention. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).",
+                "Lifestyle Tips: Suggest a few short, unnumbered lifestyle tips to maintain a healthy and balanced life. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).",
+                "Life Advice: Give a few pieces of general advice for personal growth and resilience. Write each piece as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage)."
+            ]
         
         // Select a random topic
-        let prompt = topics.randomElement() ?? topics[0] + "Your response should not be longer than 75-90 words."
+        let prompt = topics.randomElement() ?? topics[0] + " Each tip should be short and complete, without extra formatting. Limit the entire response to 100-150 tokens."
         let query = ChatQuery(
             messages: [.init(role: .user, content: prompt)!],
             model: .gpt4_o_mini,
-            maxTokens: 100
+            maxTokens: 150,
+            temperature: 0.3
         )
         
         do {

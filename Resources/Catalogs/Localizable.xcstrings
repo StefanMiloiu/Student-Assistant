@@ -27,6 +27,16 @@
     "%lld" : {
 
     },
+    "%lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld"
+          }
+        }
+      }
+    },
     "📍" : {
 
     },
@@ -131,7 +141,7 @@
     "Enter assignment description..." : {
 
     },
-    "Enter flashcards description... " : {
+    "Enter flashcards description..." : {
 
     },
     "Enter your email" : {
@@ -269,6 +279,9 @@
     "Please select a date in the future." : {
 
     },
+    "Progress" : {
+
+    },
     "Save" : {
 
     },
@@ -304,6 +317,9 @@
     "Smart Assistant" : {
 
     },
+    "Smart Flaschards" : {
+
+    },
     "Start" : {
 
     },
@@ -334,6 +350,9 @@
 
     },
     "Synchronize Assignments" : {
+
+    },
+    "To get help by our smart assistant please click the button that the owl indicates to. Also please be specific if you want the best results." : {
 
     },
     "To navigate to the exam location, tap the button below." : {

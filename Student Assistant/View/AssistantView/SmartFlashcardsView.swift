@@ -12,17 +12,30 @@ struct SmartFlashcardsView: View {
     @State var showAnswer: Bool = false
     @State var currentIndex = 0
     let content: String
+    var progress: Double {
+        if let flashcards = viewModel.flashcards, !flashcards.isEmpty {
+            return Double(currentIndex + 1) / Double(flashcards.count)
+        }
+        return 0.0
+    }
     
     var body: some View {
         VStack {
             if viewModel.flashcards != nil,
                viewModel.flashcards!.count > 0 {
+                ProgressView(value: progress) {
+                    Text("Progress")
+                } currentValueLabel: {
+                    Text("\(currentIndex + 1) of \(viewModel.flashcards!.count)")
+                }
+                .padding()
                 FlashCardView(flashcard: viewModel.flashcards![currentIndex], showAnswer: $showAnswer)
                 HStack {
                     Button(action: {
                         withAnimation {
                             if currentIndex > 0 {
                                 currentIndex -= 1
+                                showAnswer = false
                             }
                         }
                     }) {
@@ -52,6 +65,7 @@ struct SmartFlashcardsView: View {
                         withAnimation {
                             if viewModel.flashcards!.count - 1 > currentIndex {
                                 currentIndex += 1
+                                showAnswer = false
                             }
                         }
                     }) {
