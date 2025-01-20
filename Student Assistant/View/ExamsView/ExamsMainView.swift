@@ -54,10 +54,35 @@ struct ExamsMainView: View {
                 }
                 
             } else {
-                ContentUnavailableView("No exams added yet",
-                                       systemImage: "calendar.badge.exclamationmark",
-                                       description: Text("If you want to add an exam, tap the plus button in the toolbar.")
-                )
+                ZStack {
+                    ZStack {
+                        Image("ColoredBoardImage")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .padding()
+                        HStack {
+                            Spacer()
+                            Image("ArrowImage")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                .padding()
+                                .offset(y: -150) // Move the view 50 points upward (adjust as needed)
+                        }
+                    }
+                    ContentUnavailableView("No exams added yet",
+                                           systemImage: "calendar.badge.exclamationmark",
+                                           description: Text("If you want to add an exam,\n tap the plus button.")
+                    )
+                    .foregroundStyle(.black)
+                    .padding(.bottom)
+                    .offset(y: -25) // Move the view 50 points upward (adjust as needed)
+
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {

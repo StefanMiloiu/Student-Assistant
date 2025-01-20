@@ -28,7 +28,6 @@ final class NotificationsManager {
         // Calculate trigger date (24 hours before due date)
         if let dueDate = assignment.assignmentDate,
            let triggerDate = Calendar.current.date(byAdding: .hour, value: -24, to: dueDate) {
-            print(triggerDate)
             
             let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: triggerDate), repeats: false)
             

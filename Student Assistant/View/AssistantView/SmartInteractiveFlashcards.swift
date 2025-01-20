@@ -57,7 +57,8 @@ struct SmartInteractiveFlashcards: View {
             Text("To get help by our smart assistant please click the button that the wolf indicates to. Also please be specific if you want the best results.")
                 .font(.subheadline)
                 .foregroundStyle(.gray)
-                .padding()
+                .padding(.vertical)
+                .padding(.horizontal, 25)
             
             
         }

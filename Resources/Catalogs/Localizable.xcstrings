@@ -73,7 +73,7 @@
     "Assignments" : {
 
     },
-    "Assignments History" : {
+    "Assignments History (%lld)" : {
 
     },
     "Assistant" : {
@@ -197,7 +197,7 @@
     "Get Directions" : {
 
     },
-    "If you want to add an exam, tap the plus button in the toolbar." : {
+    "If you want to add an exam,\n tap the plus button." : {
 
     },
     "In Progress" : {
@@ -292,6 +292,9 @@
 
     },
     "Progress" : {
+
+    },
+    "Recomandations" : {
 
     },
     "Save" : {

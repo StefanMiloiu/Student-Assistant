@@ -15,7 +15,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
     
     
     func checkLocationAuthorization() {
-        
         manager.delegate = self
         manager.startUpdatingLocation()
         

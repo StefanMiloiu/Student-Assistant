@@ -26,7 +26,7 @@ struct AssignmentsView: View {
                                 .navigationTitle("Completed Assignments")
                                 .navigationBarTitleDisplayMode(.inline)
                         } label: {
-                            Text("Assignments History")
+                            Text("Assignments History (\(viewModel.fetchCompletedAssignments().count))")
                         }
 
                         Button(action: {
@@ -53,11 +53,11 @@ struct AssignmentsView: View {
 
                         // MARK: - No Assignments Message
                         if (viewModel.assignments.isEmpty || viewModel.fetchCurrentAssignments().isEmpty) && selectedStatus == "In Progress" {
-                            emptyStateView(message: "No assignments in progress", imageName: "newspaper", color: .red.opacity(0.1))
+                            emptyStateView(message: "No assignments in progress", imageName: "AssignmentsImage", color: .red.opacity(0.1))
                         }
 
                         if selectedStatus == "Failed" && viewModel.fetchFailedAssignments().isEmpty {
-                            emptyStateView(message: "No failed assignments", imageName: "newspaper", color: .appCambridgeBlue.opacity(0.1))
+                            emptyStateView(message: "No failed assignments", imageName: "AssignmentsImage", color: .appCambridgeBlue.opacity(0.1))
                         }
                     }
                     .listRowBackground(Color.clear) // Remove the background color
@@ -93,15 +93,19 @@ struct AssignmentsView: View {
     private func emptyStateView(message: String, imageName: String, color: Color) -> some View {
         VStack {
             Text(message)
+                .foregroundStyle(.appTiffanyBlue)
                 .font(.headline)
-                .padding()
+                .padding(.horizontal)
 
-            Image(systemName: imageName)
+            Image(imageName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 50)
+                .frame(width: 275, height: 275, alignment: .center)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 50))
+                .padding(.horizontal, 25)
         }
-        .frame(width: 350, height: 300, alignment: .center)
+        .frame(width: 350, height: 350, alignment: .center)
         .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 50))
         .padding(.horizontal, 50)

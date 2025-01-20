@@ -156,7 +156,6 @@ struct OpenAIManager {
             }
             
             // Parse responseText into flashcards
-            print(responseText.string ?? "Could not get string for chat response")
             return parseInteractiveFlashcards(from: responseText.string ?? "Could not get string for chat response")
         } catch {
             print("Error generating flashcards: \(error.localizedDescription)")
@@ -226,11 +225,10 @@ struct OpenAIManager {
         // Define possible topics for the advice
         let currentLanguage = Locale.preferredLanguages.first ?? "en"
         let topics = [
-                "Study Tips: Provide a few short, unnumbered tips for effective learning and retention. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).",
-                "Lifestyle Tips: Suggest a few short, unnumbered lifestyle tips to maintain a healthy and balanced life. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).",
-                "Life Advice: Give a few pieces of general advice for personal growth and resilience. Write each piece as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage)."
+                "Study Tips: Provide a few short, unnumbered tips for effective learning and retention. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).No more than 30 words.",
+                "Lifestyle Tips: Suggest a few short, unnumbered lifestyle tips to maintain a healthy and balanced life. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).No more than 30 words.",
+                "Life Advice: Give a few pieces of general advice for personal growth and resilience. Write each piece as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage). No more than 30 words."
             ]
-        
         // Select a random topic
         let prompt = topics.randomElement() ?? topics[0] + " Each tip should be short and complete, without extra formatting. Limit the entire response to 100-150 tokens."
         let query = ChatQuery(
@@ -243,7 +241,6 @@ struct OpenAIManager {
         do {
             let result = try await openAI.chats(query: query)
             if let responseContent = result.choices.first?.message.content {
-                print(responseContent)
                 return responseContent.string
             } else {
                 print("No response content available.")

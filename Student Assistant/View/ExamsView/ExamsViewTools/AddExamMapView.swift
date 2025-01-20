@@ -11,10 +11,12 @@ struct AddExamMapView: View {
     
     @EnvironmentObject var viewModel: ExamListViewModel
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    @StateObject private var searchCompleter = SearchCompleter()
     @State private var cameraPosition: MapCameraPosition = .region(MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 46.78, longitude: 23.559444),
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     ))
+    @State private var locationManager = LocationManager()
     @State private var searchQuery: String = ""
     @State private var searchResults: [MKMapItem] = []
     @State private var searchLocation: CLLocationCoordinate2D? = nil
@@ -59,19 +61,23 @@ struct AddExamMapView: View {
         }
         .navigationTitle("Add Exam Location")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchQuery,isPresented: $isSearchFocused, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always))
         .searchSuggestions {
-            if !searchResults.isEmpty {
-                ForEach(searchResults, id: \.self) { item in
+            if !searchCompleter.suggestions.isEmpty {
+                ForEach(searchCompleter.suggestions, id: \.self) { suggestion in
                     Button(action: {
-                        selectSearchResult(item)
+                        handleSearchCompletion(suggestion)
                     }) {
-                        Text(item.name ?? "Unknown Place")
+                        Text(suggestion.title) // Display suggestion title
+                            .font(.body)
                             .foregroundColor(.primary)
                     }
                     .padding(.vertical, 4)
                 }
             }
+        }
+        .onChange(of: searchQuery) {
+            searchCompleter.updateQuery(searchQuery)
         }
         .onChange(of: searchQuery) {
             if searchQuery != "" {
@@ -86,6 +92,32 @@ struct AddExamMapView: View {
                 Button(action: addExamLocation) {
                     Text("Done")
                 }
+            }
+        }
+        .onAppear {
+            let location = locationManager.lastKnownLocation
+            cameraPosition = .region(MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: location?.latitude ?? 46.78, longitude: location?.longitude ?? 3.559444),
+                span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+            ))
+        }
+    }
+    
+    private func handleSearchCompletion(_ completion: MKLocalSearchCompletion) {
+        let searchRequest = MKLocalSearch.Request(completion: completion)
+        let search = MKLocalSearch(request: searchRequest)
+        search.start { response, error in
+            if let error = error {
+                print("Error with search completion: \(error.localizedDescription)")
+                return
+            }
+            if let mapItem = response?.mapItems.first {
+                let coordinate = mapItem.placemark.coordinate
+                searchLocation = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                cameraPosition = .region(MKCoordinateRegion(
+                    center: searchLocation!,
+                    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                ))
             }
         }
     }
@@ -120,11 +152,18 @@ struct AddExamMapView: View {
         }
         
         let searchRequest = MKLocalSearch.Request()
-        searchRequest.naturalLanguageQuery = query
+        searchRequest.naturalLanguageQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         
         // Set the region to the current camera position's region to get local results
         if let region = cameraPosition.region {
-            searchRequest.region = region
+            let expandedRegion = MKCoordinateRegion(
+                center: region.center,
+                span: MKCoordinateSpan(
+                    latitudeDelta: region.span.latitudeDelta * 2,
+                    longitudeDelta: region.span.longitudeDelta * 2
+                )
+            )
+            searchRequest.region = expandedRegion
         }
         _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
         let search = MKLocalSearch(request: searchRequest)

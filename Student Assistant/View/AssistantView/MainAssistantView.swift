@@ -26,6 +26,13 @@ struct MainAssistantView: View {
                     }
                 }
                 .padding(.bottom, 30)
+                HStack {
+                    Text("Recomandations")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.leading)
+                    Spacer()
+                }
                 
                 if viewModel.recomandations != nil  && !viewModel.recomandations!.isEmpty  {
                     ScrollView {
@@ -37,7 +44,7 @@ struct MainAssistantView: View {
                     .frame(maxWidth: .infinity)
                     .background(.appJordyBlue.opacity(0.6))
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .padding()
+                    .padding(.horizontal)
                 }
                 Spacer()
             }

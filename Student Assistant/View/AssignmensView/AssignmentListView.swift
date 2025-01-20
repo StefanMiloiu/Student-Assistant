@@ -96,5 +96,5 @@ private let dateFormatter: DateFormatter = {
 
 // MARK: - Preview
 #Preview {
-    AssignmentListView(selectedStatus: .constant("In Progress"))
+    AssignmentListView(selectedStatus: .constant("In Progress"), filteredForDate: nil)
 }

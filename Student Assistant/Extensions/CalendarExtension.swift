@@ -16,8 +16,10 @@ extension Calendar {
     /// - Parameter date: The date to check.
     /// - Returns: `true` if the date is within the last 7 days, otherwise `false`.
     func isDateInLastWeek(_ date: Date) -> Bool {
-        guard let lastWeek = self.date(byAdding: .day, value: -7, to: Date()) else { return false }
-        return date >= lastWeek && date <= Date()
+        let currentDate = self.startOfDay(for: Date())
+        let lastWeek = self.date(byAdding: .day, value: -7, to: currentDate)!
+        let targetDate = self.startOfDay(for: date)
+        return targetDate >= lastWeek && targetDate <= currentDate
     }
 
     // MARK: - Last Month Check
@@ -25,8 +27,10 @@ extension Calendar {
     /// - Parameter date: The date to check.
     /// - Returns: `true` if the date is within the last month, otherwise `false`.
     func isDateInLastMonth(_ date: Date) -> Bool {
-        guard let lastMonth = self.date(byAdding: .month, value: -1, to: Date()) else { return false }
-        return date >= lastMonth && date <= Date()
+        let currentDate = self.startOfDay(for: Date())
+        let lastMonth = self.date(byAdding: .month, value: -1, to: currentDate)!
+        let targetDate = self.startOfDay(for: date)
+        return targetDate >= lastMonth && targetDate <= currentDate
     }
 
     // MARK: - Last Year Check
@@ -34,7 +38,9 @@ extension Calendar {
     /// - Parameter date: The date to check.
     /// - Returns: `true` if the date is within the last year, otherwise `false`.
     func isDateInLastYear(_ date: Date) -> Bool {
-        guard let lastYear = self.date(byAdding: .year, value: -1, to: Date()) else { return false }
-        return date >= lastYear && date <= Date()
+        let currentDate = self.startOfDay(for: Date())
+        let lastYear = self.date(byAdding: .year, value: -1, to: currentDate)!
+        let targetDate = self.startOfDay(for: date)
+        return targetDate >= lastYear && targetDate <= currentDate
     }
 }
