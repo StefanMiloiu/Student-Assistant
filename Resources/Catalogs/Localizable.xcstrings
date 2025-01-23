@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "%@" : {
 
     },
@@ -105,6 +108,9 @@
     "Confirm Password" : {
 
     },
+    "Could not extract text." : {
+
+    },
     "Create your account to start your journey." : {
 
     },
@@ -191,6 +197,9 @@
     "Generate \nInteractive flashcards" : {
 
     },
+    "Generate Quiz" : {
+
+    },
     "Generating flashcards..." : {
 
     },
@@ -256,6 +265,9 @@
     "Notes" : {
 
     },
+    "OCR & AI Assistant" : {
+
+    },
     "OK" : {
 
     },
@@ -279,7 +291,16 @@
     "Past studies" : {
 
     },
+    "PDF Preview" : {
+
+    },
     "Pick" : {
+
+    },
+    "Pick Image" : {
+
+    },
+    "Pick PDF" : {
 
     },
     "Picker for assignment status" : {
@@ -289,6 +310,12 @@
 
     },
     "Please select a date in the future." : {
+
+    },
+    "Please select an image or PDF file to proceed." : {
+
+    },
+    "Processing..." : {
 
     },
     "Progress" : {
@@ -365,6 +392,9 @@
 
     },
     "Subject" : {
+
+    },
+    "Summarize Text" : {
 
     },
     "Synchronize Assignments" : {

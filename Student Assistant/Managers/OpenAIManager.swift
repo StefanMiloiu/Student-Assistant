@@ -132,13 +132,13 @@ struct OpenAIManager {
             - One correct answer.
             - Two incorrect answers that seem plausible.
             - The response should be in the language that is the content in.
-
+            
             Format:
             - Question: [Your question]
               Answer: [Correct answer]
               WrongAnswer: [First incorrect answer]
               WrongAnswer: [Second incorrect answer]
-
+            
             Content:
             \(content)
             """
@@ -191,7 +191,7 @@ struct OpenAIManager {
         var currentQuestion: String?
         var correctAnswer: String?
         var wrongAnswers: [String] = []
-
+        
         for line in components {
             if line.starts(with: "- Question:") {
                 currentQuestion = line.replacingOccurrences(of: "- Question: ", with: "").trimmingCharacters(in: .whitespaces)
@@ -225,10 +225,10 @@ struct OpenAIManager {
         // Define possible topics for the advice
         let currentLanguage = Locale.preferredLanguages.first ?? "en"
         let topics = [
-                "Study Tips: Provide a few short, unnumbered tips for effective learning and retention. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).No more than 30 words.",
-                "Lifestyle Tips: Suggest a few short, unnumbered lifestyle tips to maintain a healthy and balanced life. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).No more than 30 words.",
-                "Life Advice: Give a few pieces of general advice for personal growth and resilience. Write each piece as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage). No more than 30 words."
-            ]
+            "Study Tips: Provide a few short, unnumbered tips for effective learning and retention. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).No more than 30 words.",
+            "Lifestyle Tips: Suggest a few short, unnumbered lifestyle tips to maintain a healthy and balanced life. Write each tip as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage).No more than 30 words.",
+            "Life Advice: Give a few pieces of general advice for personal growth and resilience. Write each piece as a standalone sentence, separated by a single newline, without using any bullet points, dashes, or extra formatting. The language should be in \(currentLanguage). No more than 30 words."
+        ]
         // Select a random topic
         let prompt = topics.randomElement() ?? topics[0] + " Each tip should be short and complete, without extra formatting. Limit the entire response to 100-150 tokens."
         let query = ChatQuery(
@@ -250,5 +250,58 @@ struct OpenAIManager {
             print("Error: \(error.localizedDescription)")
             return nil
         }
+    }
+    
+    // MARK: - Summarize Text
+    func summarizeText(_ text: String) async -> String {
+        let prompt = """
+        Summarize the following text into a concise summary. Use the language that is in the text.
+        The text should be shorter and the information compressed:
+        "\(text)"
+        """
+        let query = ChatQuery(
+            messages: [.init(role: .user, content: prompt)!],
+            model: .gpt4_o_mini,
+            maxTokens: 1000
+        )
+        
+        do {
+            let result = try await openAI.chats(query: query)
+            if let responseContent = result.choices.first?.message.content {
+                return responseContent.string ?? ""
+            }
+        } catch {
+            print("OpenAI error: \(error.localizedDescription)")
+        }
+        
+        // Return empty string if something went wrong
+        return ""
+    }
+    
+    // MARK: - Generate Quiz
+    func generateQuiz(for text: String) async -> String {
+        let prompt = """
+        Create 5 multiple-choice questions in the content language (with options) based on this content:
+        "\(text)"
+        After all it, i want to have the answers.
+        """
+        let query = ChatQuery(
+            messages: [.init(role: .user, content: prompt)!],
+            model: .gpt4_o_mini,
+            maxTokens: 700
+        )
+        
+        do {
+            let result = try await openAI.chats(query: query)
+            if let responseContent = result.choices.first?.message.content {
+                // For simplicity, just return the raw string in an array.
+                return responseContent.string ?? ""
+            }
+        } catch {
+            print("OpenAI error: \(error.localizedDescription)")
+        }
+        
+        // Return empty array if something went wrong
+        return ""
     }
 }

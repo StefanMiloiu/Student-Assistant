@@ -22,6 +22,7 @@ enum Screen: Identifiable, Hashable {
     case addExam
     case custom(AnyView) // New case for custom views
     case smartAssistantMainView
+    case OCRAndAIView
     
     // Conformance to Identifiable
     var id: String {
@@ -74,6 +75,8 @@ enum Screen: Identifiable, Hashable {
             hasher.combine("addExam")
         case .smartAssistantMainView:
             hasher.combine("smartAssistantMainView")
+        case .OCRAndAIView:
+            hasher.combine("ocrAndAIView")
         }
     }
 }
@@ -206,6 +209,8 @@ class AppCoordinatorImpl: AppCoordinatorProtocol, ObservableObject {
             customView
         case .smartAssistantMainView:
             MainAssistantView()
+        case .OCRAndAIView:
+            OCRAndAIView()
         }
     }
     
