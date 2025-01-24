@@ -81,19 +81,15 @@ struct OCRManager {
             
             // 1. Încercare extragere text nativ
             if let pageText = page.string, !pageText.isEmpty {
-                print("Extracted text from page \(pageIndex): \(pageText)")
                 allText += pageText + "\n"
             } else {
-                print("No embedded text found on page \(pageIndex). Falling back to OCR.")
                 // 2. OCR fallback
                 if let pageImage = renderPDFPageToImage(page: page) {
-                    print("Rendered page \(pageIndex) to image successfully.")
                     let recognizedText: String = await withCheckedContinuation { continuation in
                         performImageOCR(on: pageImage) { ocrText in
                             continuation.resume(returning: ocrText)
                         }
                     }
-                    print("Recognized text from page \(pageIndex): \(recognizedText)")
                     allText += recognizedText + "\n"
                 } else {
                     print("Failed to render page \(pageIndex) to image.")

@@ -83,6 +83,24 @@ struct DashboardView: View {
                             .tint(.appJordyBlue)
                     }
                 }
+                ZStack {
+                    ZStack(alignment: .bottom) {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.appJordyBlue)
+                            .frame(maxWidth: .infinity, maxHeight: 75)
+                            .padding(.horizontal, 10)
+                        
+                        Rectangle()
+                            .fill(.appJordyBlue)
+                            .frame(width: 40, height: 40)
+                            .rotationEffect(.degrees(45)) // Rotate 45 degrees
+                            .offset(x: 0, y: 20)         // Move it down by 20 points
+                    }
+                    Text("Summarize or generate quiz\nbased on pdfs or images")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .fontWeight(.bold)
+                }
                 Spacer()
             }
             .alert(isPresented: $showConfirmationAlert) {
