@@ -93,22 +93,25 @@ struct OpenAIManager {
     }
     
     /// Function to generate flashcards based on provided content
-    func generateStudyCards(from content: String) async -> [Flashcard]? {
+    func generateStudyCards(from content: String, nrOfCards: Int = 5) async -> [Flashcard]? {
         let prompt = """
-        Generate concise study flashcards from the following content. Each flashcard should have a question and an answer that could help with memorization and understanding. Everything that is in the content try to make flashcard. Use the language that is in the content.
-        
+        Generate \(nrOfCards) concise flashcards based on the following content. Each flashcard should include:
+        - A question relevant to the content.
+        - A short, accurate answer.
+
         Content:
         \(content)
-        
+
         Format:
-        - Question: [Write a question based on the content]
-          Answer: [Write a concise answer based on the content]
+        - Question: [Question]
+          Answer: [Answer]
         """
         
+        let maxTokens = nrOfCards * 110
         let query = ChatQuery(
             messages: [.init(role: .user, content: prompt)!],
-            model: .gpt4_o_mini,
-            maxTokens: 500
+            model: .gpt3_5Turbo_0125,
+            maxTokens: maxTokens
         )
         
         do {
@@ -125,7 +128,7 @@ struct OpenAIManager {
         }
     }
     
-    func generateInteractiveStudyCards(from content: String) async -> [FlashcardInteractive]? {
+    func generateInteractiveStudyCards(from content: String, nrOfCards: Int = 5) async -> [FlashcardInteractive]? {
         let prompt = """
             Generate interactive study flashcards from the content below. Each flashcard should have:
             - A question relevant to the content.
@@ -133,7 +136,7 @@ struct OpenAIManager {
             - Two incorrect answers that seem plausible.
             - The response should be in the language that is the content in.
             
-            Format:
+            Create \(nrOfCards) flashcards with this Format:
             - Question: [Your question]
               Answer: [Correct answer]
               WrongAnswer: [First incorrect answer]
@@ -143,10 +146,11 @@ struct OpenAIManager {
             \(content)
             """
         
+        let maxTokens = nrOfCards * 125
         let query = ChatQuery(
             messages: [.init(role: .user, content: prompt)!],
-            model: .gpt4_o_mini,
-            maxTokens: 2000
+            model: .gpt3_5Turbo_0125,
+            maxTokens: maxTokens
         )
         
         do {
@@ -255,14 +259,15 @@ struct OpenAIManager {
     // MARK: - Summarize Text
     func summarizeText(_ text: String) async -> String {
         let prompt = """
-        Summarize the following text into a concise summary. Use the language that is in the text.
-        The text should be shorter and the information compressed:
+        Summarize the following text into a summary.
+        Use the language that is in the text.
+        DON'T use special characters like '#,*,-' only if necessary.
         "\(text)"
         """
         let query = ChatQuery(
             messages: [.init(role: .user, content: prompt)!],
             model: .gpt4_o_mini,
-            maxTokens: 1000
+            maxTokens: 2500
         )
         
         do {
@@ -283,12 +288,13 @@ struct OpenAIManager {
         let prompt = """
         Create 5 multiple-choice questions in the content language (with options) based on this content:
         "\(text)"
-        After all it, i want to have the answers.
+        After all of it, i want to have the answers.
         """
+        
         let query = ChatQuery(
             messages: [.init(role: .user, content: prompt)!],
             model: .gpt4_o_mini,
-            maxTokens: 700
+            maxTokens: 2500
         )
         
         do {
@@ -300,8 +306,6 @@ struct OpenAIManager {
         } catch {
             print("OpenAI error: \(error.localizedDescription)")
         }
-        
-        // Return empty array if something went wrong
         return ""
     }
 }

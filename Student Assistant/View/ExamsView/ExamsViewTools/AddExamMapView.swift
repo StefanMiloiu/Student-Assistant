@@ -11,28 +11,40 @@ struct AddExamMapView: View {
     
     @EnvironmentObject var viewModel: ExamListViewModel
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
-    @StateObject private var searchCompleter = SearchCompleter()
-    @State private var cameraPosition: MapCameraPosition = .region(MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 46.78, longitude: 23.559444),
-        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-    ))
-    @State private var locationManager = LocationManager()
-    @State private var searchQuery: String = ""
-    @State private var searchResults: [MKMapItem] = []
-    @State private var searchLocation: CLLocationCoordinate2D? = nil
-    @State private var isSearchFocused: Bool = false
     
+    /// Handles live suggestions
+    @StateObject private var searchCompleter = SearchCompleter()
+
+    /// Manages the map’s camera
+    @State private var cameraPosition: MapCameraPosition = .region(
+        MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 46.78, longitude: 23.559444),
+            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        )
+    )
+    
+    @State private var locationManager = LocationManager()
+    
+    /// Search bar text
+    @State private var searchQuery: String = ""
+    
+    /// Chosen location coordinate
+    @State private var searchLocation: CLLocationCoordinate2D? = nil
+    
+    /// Whether the system's search UI is active (iOS16+)
+    @State private var isSearchActive = false
+    
+    /// Bound exam details
     @Binding var examSubject: String
     @Binding var examLocation: String
     @Binding var examTime: Date
     @Binding var currentDate: Date
     
     var body: some View {
-        
         VStack {
-            // Map view
+            // Main map
             Map(position: $cameraPosition) {
-                if let searchLocation = searchLocation {
+                if let searchLocation {
                     Annotation(examSubject, coordinate: searchLocation) {
                         ZStack {
                             Circle()
@@ -61,189 +73,167 @@ struct AddExamMapView: View {
         }
         .navigationTitle("Add Exam Location")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always))
+        
+        // Use only the completer’s suggestions
+        .searchable(
+            text: $searchQuery,
+            isPresented: $isSearchActive,
+            placement: .navigationBarDrawer(displayMode: .automatic)
+        )
         .searchSuggestions {
+            // Show suggestions from the completer
             if !searchCompleter.suggestions.isEmpty {
                 ForEach(searchCompleter.suggestions, id: \.self) { suggestion in
-                    Button(action: {
+                    // Display both title and subtitle to differentiate duplicates
+                    Button {
                         handleSearchCompletion(suggestion)
-                    }) {
-                        Text(suggestion.title) // Display suggestion title
-                            .font(.body)
+                    } label: {
+                        Text("\(suggestion.title), \(suggestion.subtitle)")
                             .foregroundColor(.primary)
                     }
                     .padding(.vertical, 4)
                 }
             }
         }
+        // Update the completer whenever searchQuery changes
         .onChange(of: searchQuery) {
             searchCompleter.updateQuery(searchQuery)
         }
-        .onChange(of: searchQuery) {
-            if searchQuery != "" {
-                fetchSuggestions(query: searchQuery)
-            }
-        }
+        // If user hits Return, do a direct search
         .onSubmit(of: .search) {
-            performSearch(query: searchQuery)
+            performSearch(searchQuery)
+            isSearchActive = false
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: addExamLocation) {
-                    Text("Done")
+                Button("Done") {
+                    addExamLocation()
                 }
             }
         }
         .onAppear {
+            // Check location authorization
+            locationManager.checkLocationAuthorization()
+            
+            // If we have a known user location, center the map there
             let location = locationManager.lastKnownLocation
+            let center = CLLocationCoordinate2D(
+                latitude: location?.latitude ?? 46.78,
+                longitude: location?.longitude ?? 23.559444
+            )
             cameraPosition = .region(MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: location?.latitude ?? 46.78, longitude: location?.longitude ?? 3.559444),
+                center: center,
                 span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
             ))
+            
+            // Optionally localize the completer results
+            if let region = cameraPosition.region {
+                searchCompleter.setRegion(region)
+            }
         }
     }
     
+    // MARK: - Completion Handling
+    
     private func handleSearchCompletion(_ completion: MKLocalSearchCompletion) {
-        let searchRequest = MKLocalSearch.Request(completion: completion)
-        let search = MKLocalSearch(request: searchRequest)
+        // If user taps a suggestion, do a final search to get coordinates
+        let request = MKLocalSearch.Request(completion: completion)
+        let search = MKLocalSearch(request: request)
         search.start { response, error in
             if let error = error {
                 print("Error with search completion: \(error.localizedDescription)")
                 return
             }
-            if let mapItem = response?.mapItems.first {
-                let coordinate = mapItem.placemark.coordinate
-                searchLocation = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-                cameraPosition = .region(MKCoordinateRegion(
-                    center: searchLocation!,
-                    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-                ))
-            }
-        }
-    }
-    
-    /// Set a pin at the long-pressed location
-    private func setMapPin(at location: CGPoint) {
-        // Approximate translation of CGPoint to coordinates based on the camera position's region
-        let mapRegion = cameraPosition.region
-        let mapWidth = UIScreen.main.bounds.width
-        let mapHeight = UIScreen.main.bounds.height
-        
-        if let mapRegion {
-            let latDelta = mapRegion.span.latitudeDelta / 2
-            let lonDelta = mapRegion.span.longitudeDelta / 2
+            guard let mapItem = response?.mapItems.first else { return }
             
-            let latitude = mapRegion.center.latitude + (latDelta * (1 - 2 * location.y / mapHeight))
-            let longitude = mapRegion.center.longitude + (lonDelta * (2 * location.x / mapWidth - 1))
-            
-            searchLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            cameraPosition = .region(MKCoordinateRegion(
-                center: searchLocation!,
-                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-            ))
-        }
-    }
-    
-    /// Fetch suggestions within a specific area without placing a pin
-    private func fetchSuggestions(query: String) {
-        guard !query.isEmpty else {
-            searchResults = []
-            return
-        }
-        
-        let searchRequest = MKLocalSearch.Request()
-        searchRequest.naturalLanguageQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        // Set the region to the current camera position's region to get local results
-        if let region = cameraPosition.region {
-            let expandedRegion = MKCoordinateRegion(
-                center: region.center,
-                span: MKCoordinateSpan(
-                    latitudeDelta: region.span.latitudeDelta * 2,
-                    longitudeDelta: region.span.longitudeDelta * 2
-                )
-            )
-            searchRequest.region = expandedRegion
-        }
-        _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
-        let search = MKLocalSearch(request: searchRequest)
-            search.start { response, error in
-                if let error = error {
-                    print("Error fetching suggestions: \(error.localizedDescription)")
-                    return
-                }
-                
-                guard let response = response else {
-                    print("No suggestions found")
-                    return
-                }
-                
-                // Update search results for suggestions
-                searchResults = response.mapItems
-            }
-        }
-    }
-    
-    /// Select a search result and place a pin on the map
-    private func selectSearchResult(_ item: MKMapItem) {
-        if let coordinate = item.placemark.location?.coordinate {
+            let coordinate = mapItem.placemark.coordinate
             searchLocation = coordinate
             cameraPosition = .region(MKCoordinateRegion(
                 center: coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             ))
-            searchResults = [] // Clear suggestions immediately
-            searchQuery = ""
-            isSearchFocused = false // Dismiss search focus
+            
+            isSearchActive = false
         }
     }
     
-    /// Perform search on submit to find and center the map on the first result
-    private func performSearch(query: String) {
+    // MARK: - Manual Search if user hits Return
+    private func performSearch(_ query: String) {
         guard !query.isEmpty else { return }
         
-        let searchRequest = MKLocalSearch.Request()
-        searchRequest.naturalLanguageQuery = query
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
         
-        let search = MKLocalSearch(request: searchRequest)
+        // Localize to camera region if desired
+        if let region = cameraPosition.region {
+            request.region = region
+        }
+        
+        let search = MKLocalSearch(request: request)
         search.start { response, error in
             if let error = error {
-                print("Error during search: \(error.localizedDescription)")
+                print("Error on manual search: \(error.localizedDescription)")
                 return
             }
-            
             guard let response = response, let firstResult = response.mapItems.first else {
-                print("No results found")
+                print("No results found for query: \(query)")
                 return
             }
             
-            // Update the pin location and map region
-            selectSearchResult(firstResult)
+            let coord = firstResult.placemark.coordinate
+            searchLocation = coord
+            cameraPosition = .region(MKCoordinateRegion(
+                center: coord,
+                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+            ))
         }
     }
     
-    func addExamLocation() {
+    // MARK: - Long Press -> Pin
+    private func setMapPin(at location: CGPoint) {
+        guard let mapRegion = cameraPosition.region else { return }
+        
+        let screenWidth = UIScreen.main.bounds.width
+        let screenHeight = UIScreen.main.bounds.height
+        
+        let latDelta = mapRegion.span.latitudeDelta / 2
+        let lonDelta = mapRegion.span.longitudeDelta / 2
+        
+        let latitude = mapRegion.center.latitude + (latDelta * (1 - 2 * location.y / screenHeight))
+        let longitude = mapRegion.center.longitude + (lonDelta * (2 * location.x / screenWidth - 1))
+        
+        searchLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        cameraPosition = .region(MKCoordinateRegion(
+            center: searchLocation!,
+            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        ))
+    }
+    
+    // MARK: - Add Exam
+    private func addExamLocation() {
         let calendar = Calendar.current
         var dateComponents = calendar.dateComponents([.year, .month, .day], from: currentDate)
         
         let timeComponents = calendar.dateComponents([.hour, .minute], from: examTime)
         dateComponents.hour = timeComponents.hour
         dateComponents.minute = timeComponents.minute
-        dateComponents.hour = timeComponents.hour
-        dateComponents.minute = timeComponents.minute
         
-        // Combine the date and time into `currentDate`
+        // Combine date and time into currentDate
         if let combinedDate = calendar.date(from: dateComponents) {
             currentDate = combinedDate
         }
         
         // Add the exam to the view model
-        let response = viewModel.addExam(subject: examSubject,
-                                         date: currentDate,
-                                         location: examLocation,
-                                         locationCoordinates: searchLocation!)
-        if response {
-            print("Exam added successfully")
+        if let coordinate = searchLocation {
+            let success = viewModel.addExam(
+                subject: examSubject,
+                date: currentDate,
+                location: examLocation,
+                locationCoordinates: coordinate
+            )
+            if success {
+                print("Exam added successfully")
+            }
         }
         
         // Pop the current view
@@ -253,5 +243,10 @@ struct AddExamMapView: View {
 }
 
 //#Preview {
-//    AddExamMapView
+//    AddExamMapView(
+//        examSubject: .constant("Math"),
+//        examLocation: .constant("Some Location"),
+//        examTime: .constant(Date()),
+//        currentDate: .constant(Date())
+//    )
 //}

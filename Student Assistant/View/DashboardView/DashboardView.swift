@@ -87,7 +87,7 @@ struct DashboardView: View {
                     ZStack(alignment: .bottom) {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(.appJordyBlue)
-                            .frame(maxWidth: .infinity, maxHeight: 75)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .padding(.horizontal, 10)
                         
                         Rectangle()
@@ -96,11 +96,31 @@ struct DashboardView: View {
                             .rotationEffect(.degrees(45)) // Rotate 45 degrees
                             .offset(x: 0, y: 20)         // Move it down by 20 points
                     }
-                    Text("Summarize or generate quiz\nbased on pdfs or images")
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.white)
-                        .fontWeight(.bold)
+                    HStack {
+                        Text("Next gen AI tools\n From PDF's or Images")
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Divider()
+                            .frame(width: 2) // Width of the vertical bar
+                            .background(Color.white.opacity(0.7)) // Bar color and opacity
+                            .padding(.vertical, 10) // Optional padding for top and bottom
+                        VStack {
+                            Text("Summary")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.white)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            Text("Quizzes")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.white)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
+                    }
                 }
+                .padding(.bottom)
                 Spacer()
             }
             .alert(isPresented: $showConfirmationAlert) {

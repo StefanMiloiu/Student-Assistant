@@ -5,7 +5,6 @@
 //  Created by Stefan Miloiu on 19.01.2025.
 //
 
-
 import Combine
 import Foundation
 import MapKit
@@ -18,7 +17,8 @@ class SearchCompleter: NSObject, ObservableObject, MKLocalSearchCompleterDelegat
     override init() {
         super.init()
         completer.delegate = self
-        completer.resultTypes = .address // Specify the types of results you want (e.g., .pointOfInterest, .query, etc.)
+        // .address, .query, .pointOfInterest ...
+        completer.resultTypes = .address
     }
     
     func updateQuery(_ query: String) {
@@ -32,6 +32,13 @@ class SearchCompleter: NSObject, ObservableObject, MKLocalSearchCompleterDelegat
                 self?.completer.queryFragment = debouncedQuery
             }
     }
+    
+    /// Optionally localize the suggestions around a region
+    func setRegion(_ region: MKCoordinateRegion) {
+        completer.region = region
+    }
+    
+    // MARK: - MKLocalSearchCompleterDelegate
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         DispatchQueue.main.async {

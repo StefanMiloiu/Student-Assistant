@@ -12,6 +12,8 @@ struct GenerateFlashcardSheet: View {
     var isInteractive: Bool = false
     @Binding var content: String
     @EnvironmentObject var appCoordinator: AppCoordinatorImpl
+    @State var selectedNrOfFlashcards: Int = 5
+    
     
     var body: some View {
         VStack {
@@ -19,32 +21,44 @@ struct GenerateFlashcardSheet: View {
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $content)
                         .autocorrectionDisabled()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 300)
-                        .background(Color.gray.opacity(0.2))
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .frame(maxWidth: .infinity, minHeight: 150, maxHeight: 300)
+                        .background(Color(UIColor.systemGray6))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color.white, lineWidth: 2)
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.blue.opacity(0.7), lineWidth: 1.5)
                         )
+                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
                         .padding(.horizontal)
+
                     if content.isEmpty {
                         Text("Enter flashcards description...")
                             .foregroundColor(Color.gray)
-                            .padding(.top, 10)
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 24) // Match padding to align correctly
+                            .padding(.vertical, 11) // Adjust top padding to match text entry
                     }
                 }
-                .padding(.top, 25)
+                .padding(.top, 30)
+                HStack {
+                    Text("Number of flashcards to create")
+                    Picker("Select Number", selection: $selectedNrOfFlashcards) {
+                        ForEach(5...12, id: \.self) { i in
+                            Text(String(i)) // Convert Int to String
+                                .tag(i)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                }
+                
                 Button {
                     appCoordinator.dismissSheet()
                     if isInteractive {
                         appCoordinator.pushCustom(
-                            SmartInteractiveFlashcardsView(content: content)
+                            SmartInteractiveFlashcardsView(nrOfFlashcards: selectedNrOfFlashcards, content: content)
                         )
                     } else {
                         appCoordinator.pushCustom(
-                            SmartFlashcardsView(content: content)
+                            SmartFlashcardsView(nrOfFlashcards: selectedNrOfFlashcards, content: content)
                         )
                     }
                     content = ""
@@ -58,12 +72,20 @@ struct GenerateFlashcardSheet: View {
                         .padding(.horizontal)
                 }
                 .padding(.top, 25)
+                
+                Text("Please make the flashcard description concise and clear. The longer the question the better it will be able to help you learn.")
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            
         }
         .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
         .background(Color(.systemGray6).edgesIgnoringSafeArea(.all))
     }
+}
+
+#Preview {
+    GenerateFlashcardSheet(isInteractive: false, content: .constant(""))
 }

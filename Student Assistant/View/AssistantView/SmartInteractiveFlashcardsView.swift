@@ -10,10 +10,15 @@ import SwiftUI
 struct SmartInteractiveFlashcardsView: View {
     
     @EnvironmentObject var viewModel: ChatViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var currentIndex: Int = 0
     @State private var selectedAnswer: String? = nil
     @State private var isCorrectAnswer: Bool? = nil
     @State private var showNextButton: Bool = false
+    @State private var list: [String] = []
+    @State var showTimeoutAlert: Bool = false
+    @State var didTimeout: Bool = false
+    let nrOfFlashcards: Int
     var progress: Double {
         if let flashcards = viewModel.interactiveFlashcards, !flashcards.isEmpty {
             return Double(currentIndex + 1) / Double(flashcards.count)
@@ -25,13 +30,6 @@ struct SmartInteractiveFlashcardsView: View {
     var body: some View {
         VStack {
             if let flashcards = viewModel.interactiveFlashcards, !flashcards.isEmpty {
-                ProgressView(value: progress) {
-                    Text("Progress")
-                } currentValueLabel: {
-                    Text("\(currentIndex + 1) of \(viewModel.interactiveFlashcards!.count)")
-                }
-                .padding()
-
                 VStack {
                     // Display the current question
                     Text(flashcards[currentIndex].question)
@@ -41,12 +39,19 @@ struct SmartInteractiveFlashcardsView: View {
                         .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.1)))
                         .padding(.bottom, 20)
                     
+                    ProgressView(value: progress) {
+                        Text("Progress")
+                    } currentValueLabel: {
+                        Text("\(currentIndex + 1) of \(viewModel.interactiveFlashcards!.count)")
+                    }
+                    .padding()
+                    
                     Text("Select the correct answer:")
                         .font(.subheadline)
                         .padding(.top, 10)
                     
                     // Display the three answer choices
-                    ForEach([flashcards[currentIndex].answerOne, flashcards[currentIndex].answerTwo, flashcards[currentIndex].answerThree].shuffled(), id: \.self) { answer in
+                    ForEach(list, id: \.self) { answer in
                         Button(action: {
                             selectedAnswer = answer
                             isCorrectAnswer = (answer == flashcards[currentIndex].answerOne)
@@ -66,17 +71,23 @@ struct SmartInteractiveFlashcardsView: View {
                     // "Next" or "Finish" button
                     if showNextButton {
                         Button(action: {
-                            withAnimation {
-                                if isCorrectAnswer == true, currentIndex < flashcards.count - 1 {
-                                    currentIndex += 1
-                                    resetQuestion()
-                                } else if currentIndex == flashcards.count - 1 {
-                                    // Optionally handle finish
-                                    print("Flashcards completed!")
+                            if currentIndex == flashcards.count - 1 {
+                                withAnimation {
+                                    presentationMode.wrappedValue.dismiss()
                                 }
-                                selectedAnswer = nil
-                                isCorrectAnswer = nil
-                                showNextButton = false
+                            } else {
+                                withAnimation {
+                                    if isCorrectAnswer == true, currentIndex < flashcards.count - 1 {
+                                        currentIndex += 1
+                                        resetQuestion()
+                                    } else if currentIndex == flashcards.count - 1 {
+                                        // Optionally handle finish
+                                        print("Flashcards completed!")
+                                    }
+                                    selectedAnswer = nil
+                                    isCorrectAnswer = nil
+                                    showNextButton = false
+                                }
                             }
                         }) {
                             Text(currentIndex == flashcards.count - 1 ? "Finish" : "Next Question")
@@ -88,6 +99,13 @@ struct SmartInteractiveFlashcardsView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .padding(.top)
+                    }
+                }
+                .onChange(of: currentIndex) {
+                    if let flashcards = viewModel.interactiveFlashcards, !flashcards.isEmpty {
+                        list = [flashcards[currentIndex].answerOne,
+                                flashcards[currentIndex].answerTwo,
+                                flashcards[currentIndex].answerThree].shuffled()
                     }
                 }
                 .padding()
@@ -102,12 +120,38 @@ struct SmartInteractiveFlashcardsView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }
+                .alert(isPresented: $showTimeoutAlert) {
+                    Alert(
+                        title: Text("Timeout"),
+                        message: Text("Flashcards could not be generated in time. Please try again."),
+                        dismissButton: .default(Text("OK")) {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    )
+                }
             }
         }
         .onAppear {
             Task {
-                await viewModel.generateInteractiveFlashcards(content)
+                await viewModel.generateInteractiveFlashcards(content, nrOfCards: nrOfFlashcards)
                 resetQuestion()
+                // Cancel timeout if flashcards are generated
+                if viewModel.flashcards != nil, !viewModel.flashcards!.isEmpty {
+                    didTimeout = false
+                }
+                if let flashcards = viewModel.interactiveFlashcards, !flashcards.isEmpty {
+                    list = [flashcards[currentIndex].answerOne,
+                            flashcards[currentIndex].answerTwo,
+                            flashcards[currentIndex].answerThree].shuffled()
+                }
+            }
+            
+            // Set a 5-second timeout
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15.0) {
+                if viewModel.flashcards == nil || viewModel.flashcards!.isEmpty {
+                    didTimeout = true
+                    showTimeoutAlert = true
+                }
             }
         }
     }
@@ -120,6 +164,6 @@ struct SmartInteractiveFlashcardsView: View {
 }
 
 #Preview {
-    SmartInteractiveFlashcardsView(content: "In limba romana te rog sa imi faci flashcarduri interactive despre istoria romaniei")
+    SmartInteractiveFlashcardsView(nrOfFlashcards: 5, content: "In limba romana te rog sa imi faci flashcarduri interactive despre istoria romaniei")
         .environmentObject(ChatViewModel())
 }

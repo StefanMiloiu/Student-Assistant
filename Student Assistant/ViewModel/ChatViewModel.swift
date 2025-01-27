@@ -56,16 +56,16 @@ class ChatViewModel: ObservableObject {
         }
     }
     
-    func generateFlashcards(_ content: String) async {
-        if let flashcards = await openAIManager.generateStudyCards(from: content) {
+    func generateFlashcards(_ content: String, nrOfCards: Int = 5) async {
+        if let flashcards = await openAIManager.generateStudyCards(from: content, nrOfCards: nrOfCards) {
             await MainActor.run {
                 self.flashcards = flashcards
             }
         }
     }
     
-    func generateInteractiveFlashcards(_ content: String) async {
-        if let flashcards = await openAIManager.generateInteractiveStudyCards(from: content) {
+    func generateInteractiveFlashcards(_ content: String, nrOfCards: Int = 5) async {
+        if let flashcards = await openAIManager.generateInteractiveStudyCards(from: content, nrOfCards: nrOfCards) {
             await MainActor.run {
                 self.interactiveFlashcards = flashcards
             }

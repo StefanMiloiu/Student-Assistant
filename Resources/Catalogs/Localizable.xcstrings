@@ -27,6 +27,16 @@
         }
       }
     },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
     "%lld" : {
 
     },
@@ -174,6 +184,9 @@
     "Finish" : {
 
     },
+    "Flashcards could not be generated in time. Please try again." : {
+
+    },
     "Forgot your password" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -195,6 +208,9 @@
 
     },
     "Generate \nInteractive flashcards" : {
+
+    },
+    "Generate Harder" : {
 
     },
     "Generate Quiz" : {
@@ -241,6 +257,9 @@
     "Next" : {
 
     },
+    "Next gen AI tools\n From PDF's or Images" : {
+
+    },
     "Next Question" : {
 
     },
@@ -263,6 +282,9 @@
 
     },
     "Notes" : {
+
+    },
+    "Number of flashcards to create" : {
 
     },
     "OCR & AI Assistant" : {
@@ -309,6 +331,9 @@
     "Please enter a subject and location." : {
 
     },
+    "Please make the flashcard description concise and clear. The longer the question the better it will be able to help you learn." : {
+
+    },
     "Please select a date in the future." : {
 
     },
@@ -319,6 +344,9 @@
 
     },
     "Progress" : {
+
+    },
+    "Quizzes" : {
 
     },
     "Recomandations" : {
@@ -334,6 +362,9 @@
 
     },
     "Select Date" : {
+
+    },
+    "Select Number" : {
 
     },
     "Select the correct answer:" : {
@@ -394,13 +425,16 @@
     "Subject" : {
 
     },
-    "Summarize or generate quiz\nbased on pdfs or images" : {
-
-    },
     "Summarize Text" : {
 
     },
+    "Summary" : {
+
+    },
     "Synchronize Assignments" : {
+
+    },
+    "Timeout" : {
 
     },
     "To get help by our smart assistant please click the button that the owl indicates to. Also please be specific if you want the best results." : {
